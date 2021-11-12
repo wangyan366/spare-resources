@@ -13,6 +13,7 @@
         <van-icon name="search" size="18" />
       </template>
     </van-nav-bar>
+    <h1>333</h1>
   </div>
 </template>
 
