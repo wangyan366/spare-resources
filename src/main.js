@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import 'amfe-flexible'
 import 'vant/lib/index.less'
+import '@/assets/style/common.css'
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

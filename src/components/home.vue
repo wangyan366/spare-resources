@@ -1,6 +1,8 @@
 <template>
-  <div>
-    <component :is="componentId"></component>
+  <div id="home">
+    <keep-alive>
+      <component :is="componentId" class="component"></component>
+    </keep-alive>
     <van-tabbar v-model="active" :border="false" @change="onChange">
       <van-tabbar-item name="home" icon="home-o">标签</van-tabbar-item>
       <van-tabbar-item name="search" icon="search">标签</van-tabbar-item>
@@ -25,6 +27,7 @@ import {
   Tabs,
 } from "vant";
 import index1 from "./index.vue";
+import caCenter from "./car-center.vue";
 export default {
   name: "Home",
   components: {
@@ -57,7 +60,16 @@ export default {
 
   methods: {
     onChange(val) {
-    console.log("🚀 ~ file: home.vue ~ line 60 ~ onChange ~ index", index)
+      switch (val) {
+        case "search":
+          this.componentId = caCenter;
+          break;
+        case "home":
+          this.componentId = index1;
+          break;
+        default:
+          this.componentId = index1;
+      }
     },
     onClickLeft() {
       Toast("返回");
@@ -70,17 +82,25 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.grid-text {
-  font-size: 14px;
-}
-.card {
-  width: 96%;
-  height: 100px;
-  display: flex;
-  flex-direction: column;
-  background: red;
-  border-radius: 10px;
-  margin: auto;
-  font-size: 13px;
+#home {
+  width: 100%;
+  height: 100%;
+  .grid-text {
+    font-size: 14px;
+  }
+  .card {
+    width: 96%;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    background: red;
+    border-radius: 10px;
+    margin: auto;
+    font-size: 13px;
+  }
+  .component {
+    // width: 100%;
+    // height: 100%;
+  }
 }
 </style>

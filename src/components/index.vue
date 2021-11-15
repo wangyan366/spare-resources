@@ -47,7 +47,7 @@
     <van-tabs swipeable>
       <van-tab v-for="index in 8" :title="'标签 ' + index" :key="index">
         内容 {{ index }}
-        <van-image src="https://img01.yzcdn.cn/vant/apple-3.jpg" />
+        <van-image src="https://img01.yzcdn.cn/vant/apple-3.jpg" height="2000" />
       </van-tab>
     </van-tabs>
     
