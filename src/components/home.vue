@@ -98,9 +98,6 @@ export default {
     margin: auto;
     font-size: 13px;
   }
-  .component {
-    // width: 100%;
-    // height: 100%;
-  }
+ 
 }
 </style>
