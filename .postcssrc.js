@@ -5,7 +5,6 @@ module.exports = ({
 }) => {
   let vantFlag = file && file.dirname && file.dirname.indexOf("vant") > -1;
   let rootValue = vantFlag ? 375 : 750; // 判断条件自行调整
-  console.log("🚀 ~ file: .postcssrc.js ~ line 6 ~ rootValue", rootValue)
   return {
     plugins: {
       autoprefixer: {
@@ -13,7 +12,7 @@ module.exports = ({
       },
       "postcss-px-to-viewport": {
         unitToConvert: 'px',
-        viewportWidth: rootValue,
+        viewportWidth: 375,
         unitPrecision: 3,
         propList: ['*'],
         viewportUnit: 'vw',

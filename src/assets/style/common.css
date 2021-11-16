@@ -11,7 +11,12 @@ abbr,acronym { border:0}
       width: 100%;
       height: 100%;
   }
-
+.r{
+  float: right;
+}
+.l{
+  float: left;
+}
 /**
  * 适配 iphone 底部安全区（指示条，配合index.html <meta name="viewport" ... />使用
  */
