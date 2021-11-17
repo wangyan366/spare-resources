@@ -41,9 +41,28 @@
 
 			</div>
 		</div>
-		<van-dialog v-model="show" :closeOnClickOverlay="true" :showConfirmButton="false">
-			<img src="https://img01.yzcdn.cn/vant/apple-3.jpg" style="height:300px" />
-		</van-dialog>
+		<van-action-sheet v-model="show" title="中国联通充值卡" :closeable="false" safe-area-inset-bottom>
+			<div class="action-sheet-content">
+				<div class="van-sidebar-content-header">
+					<img src="https://img01.yzcdn.cn/vant/cat.jpeg" style="width:100%;height: 102px;border-radius: 10px;" />
+				</div>
+				<div class="submit-way">提交方式</div>
+				<van-tabs swipeable color="#2ecc71" background="#ffffff">
+					<van-tab v-for="(item,index) in submitWay" :title="item.title" :key="index">
+						<div class="form-card" v-if="show">
+							<van-form @submit="onSubmit">
+								<van-field v-model="cardnumber" name="卡号" label="卡号" :rules="[{ required: true, message: '请填写卡号' }]" :border="false" :colon="true" label-width="36" />
+								<van-field v-model="password" type="password" name="密码" label="密码" :rules="[{ required: true, message: '请填写密码' }]" :border="false" :colon="true" label-width="36" />
+								<div style="margin: 16px;">
+									<van-button block type="primary" native-type="submit">提交</van-button>
+								</div>
+							</van-form>
+						</div>
+					</van-tab>
+				</van-tabs>
+			</div>
+		</van-action-sheet>
+
 	</div>
 </template>
 
@@ -55,7 +74,11 @@ import {
 	Sidebar,
 	SidebarItem,
 	Notify,
-	Dialog,
+	ActionSheet,
+	Tab, Tabs,
+	Form,
+	Field,
+	Button
 } from "vant";
 export default {
 	name: "carCenter",
@@ -66,10 +89,20 @@ export default {
 		[Sidebar.name]: Sidebar,
 		[SidebarItem.name]: SidebarItem,
 		[Notify.name]: Notify,
-		[Dialog.Component.name]: Dialog.Component,
+		[ActionSheet.name]: ActionSheet,
+		[Tab.name]: Tab,
+		[Tabs.name]: Tabs,
+		[Form.name]: Form,
+		[Field.name]: Field,
+		[Button.name]: Button,
 	},
 	data() {
 		return {
+			cardnumber: '',
+			password: '',
+			submitWay:
+				[{ id: 1, title: "单张提交" },
+				{ id: 2, title: "批量提交" }],
 			rechargeCurrent: 0,
 			current: 0,
 			value: "",
@@ -97,8 +130,12 @@ export default {
 	},
 
 	methods: {
+		onSubmit(values) {
+			console.log('submit', values);
+		},
 		handleRechargeClick(index) {
 			this.rechargeCurrent = index
+			this.show = true
 		},
 		handleClick(index) {
 			this.current = index;
@@ -125,6 +162,37 @@ export default {
 	height: 100%;
 	display: flex;
 	flex-direction: column;
+	/deep/ .van-action-sheet__header {
+		font-size: 20px;
+		font-weight: 600;
+	}
+	.form-card {
+		border: 1px solid #f0f0f0;
+		border-radius: 10px;
+		margin-top: 10px;
+		padding-top: 16px;
+	}
+	.action-sheet-content {
+		padding: 0 30px 36px;
+
+		/deep/ .van-field__control {
+			border: 1px solid #ccc;
+		}
+		// /deep/ .van-field__label {
+		// 	width: 50px;
+		// 	margin-right: 0px;
+		// }
+		// /deep/ .van-cell::after {
+		// 	border-bottom: 1 px solid #fff;
+		// }
+	}
+	.submit-way {
+		font-size: 16px;
+		font-weight: 600;
+		line-height: 40px;
+		margin-top: 30px;
+		margin-left: 8px;
+	}
 	.car-center-content {
 		flex: 1;
 		display: flex;
@@ -171,6 +239,9 @@ export default {
 	/deep/ .van-sidebar-item {
 		text-align: center;
 		font-weight: 600;
+	}
+	/deep/ .van-tabs__nav {
+		width: 150px;
 	}
 	.van-sidebar-content-header {
 		height: 100px;
