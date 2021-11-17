@@ -6,7 +6,7 @@
 		<van-tabbar v-model="active" :border="false" @change="onChange" active-color="#2ecc71">
 			<van-tabbar-item name="home" icon="home-o">首页</van-tabbar-item>
 			<van-tabbar-item name="search" icon="search">兑卡中心</van-tabbar-item>
-			<van-tabbar-item name="friends" icon="friends-o">我的</van-tabbar-item>
+			<van-tabbar-item name="my" icon="friends-o">我的</van-tabbar-item>
 		</van-tabbar>
 	</div>
 </template>
@@ -28,6 +28,7 @@ import {
 } from "vant";
 import index1 from "./index.vue";
 import caCenter from "./car-center.vue";
+import my from "./my.vue";
 export default {
 	name: "Home",
 	components: {
@@ -66,6 +67,9 @@ export default {
 					break;
 				case "home":
 					this.componentId = index1;
+					break;
+				case "my":
+					this.componentId = my;
 					break;
 				default:
 					this.componentId = index1;

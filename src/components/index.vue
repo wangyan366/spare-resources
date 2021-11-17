@@ -46,16 +46,16 @@
 			<van-tab v-for="index in 8" :title="'标签 ' + index" :key="index">
 				<van-grid :border="false" :column-num="2" :gutter="12">
 					<van-grid-item>
-						<van-image src="https://img01.yzcdn.cn/vant/apple-1.jpg" height="100" />
+						<van-image src="https://img01.yzcdn.cn/vant/apple-1.jpg" height="100" fit="contain" />
 					</van-grid-item>
 					<van-grid-item>
-						<van-image src="https://img01.yzcdn.cn/vant/apple-1.jpg" height="100" />
+						<van-image src="https://img01.yzcdn.cn/vant/apple-1.jpg" height="100" fit="contain" />
 					</van-grid-item>
 					<van-grid-item>
-						<van-image src="https://img01.yzcdn.cn/vant/apple-1.jpg" height="100" />
+						<van-image src="https://img01.yzcdn.cn/vant/apple-1.jpg" height="100" fit="contain" />
 					</van-grid-item>
 					<van-grid-item>
-						<van-image src="https://img01.yzcdn.cn/vant/apple-1.jpg" height="100" />
+						<van-image src="https://img01.yzcdn.cn/vant/apple-1.jpg" height="100" fit="contain" />
 					</van-grid-item>
 				</van-grid>
 			</van-tab>
@@ -147,7 +147,7 @@ export default {
 		line-height: 18px;
 		margin-left: 18px;
 		margin-right: 8px;
-    border-radius: 4px;
+		border-radius: 4px;
 	}
 	p {
 		flex: 1;
@@ -178,5 +178,8 @@ export default {
 }
 /deep/ .van-tab__pane {
 	padding-top: 20px;
+}
+/deep/ .van-grid-item__content {
+	border-radius: 8px;
 }
 </style>
