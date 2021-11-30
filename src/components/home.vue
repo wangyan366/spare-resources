@@ -9,10 +9,19 @@
 				<template #icon="props">
 					<img :src="props.active ? home.active : home.inactive" />
 				</template>
-
 			</van-tabbar-item>
-			<van-tabbar-item name="search" icon="search">兑卡中心</van-tabbar-item>
-			<van-tabbar-item name="my" icon="friends-o">我的</van-tabbar-item>
+			<van-tabbar-item name="search">
+				<span>兑卡中心</span>
+				<template #icon="props">
+					<img :src="props.active ? center.active : center.inactive" />
+				</template>
+			</van-tabbar-item>
+			<van-tabbar-item name="my">
+				<span>我的</span>
+				<template #icon="props">
+					<img :src="props.active ? my.active : my.inactive" />
+				</template>
+			</van-tabbar-item>
 		</van-tabbar>
 	</div>
 </template>
@@ -31,7 +40,7 @@ import {
 	TabbarItem,
 	Tab,
 	Tabs,
-	
+
 } from "vant";
 import index1 from "./index.vue";
 import caCenter from "./car-center.vue";
@@ -62,11 +71,11 @@ export default {
 				inactive: require("@/assets/images/bar/home-page.png"),
 			},
 			center: {
-				active: require("@/assets/images/bar/center.png"),
+				active: require("@/assets/images/bar/center-tri.png"),
 				inactive: require("@/assets/images/bar/center.png"),
 			},
 			my: {
-				active: require("@/assets/images/bar/my.png"),
+				active: require("@/assets/images/bar/my-tri.png"),
 				inactive: require("@/assets/images/bar/my.png"),
 			},
 			images: [

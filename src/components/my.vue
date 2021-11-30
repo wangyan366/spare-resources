@@ -47,7 +47,9 @@ export default {
 	.card {
 		font-size: 14px;
 		width: 90%;
-		background: #2ecc71;
+		background-image: url("../assets/images/bg2.png");
+		background-color: #2ecc71;
+		    background-size: cover;
 		margin: auto;
 		border-radius: 16px;
 		color: #fff;
