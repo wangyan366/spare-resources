@@ -35,12 +35,24 @@
 			</van-grid>
 		</div>
 		<div class="card">
-			<div class="logo">
-				<van-image src="https://img01.yzcdn.cn/vant/apple-1.jpg" width="38" height="100%" />
+			<div class="card-header">
+				<van-image :src="cardItem.component" width="66" height="16" />
+				<van-image :src="cardItem.laba" width="15" height="15" />
 			</div>
-			<span class="label">天猫</span>
-			<p>天猫超市...天猫超市天猫超市天猫超市天猫超市天猫超市..</p>
-			<span class="time">2021-10-25</span>
+			<div class="card-top">
+				<div class="text">京东优惠升级，请于12月31日登陆APP升级</div>
+				<van-image :src="cardItem.you" width="10" height="10" />
+			</div>
+			<div class="card-content">
+				<span class="label">天猫</span>
+				<p>天猫超市...天猫超市天猫超市天猫超市天猫超市天猫超市..</p>
+				<span class="time">2021-10-25</span>
+			</div>
+			<div class="card-content">
+				<span class="label">天猫</span>
+				<p>天猫超市...天猫超市天猫超市天猫超市天猫超市天猫超市..</p>
+				<span class="time">2021-10-25</span>
+			</div>
 		</div>
 		<van-tabs swipeable color="#2ecc71" background="#f5f7fa">
 			<van-tab v-for="index in 8" :title="'标签 ' + index" :key="index">
@@ -108,6 +120,11 @@ export default {
 				renzheng: require("@/assets/images/renzheng.png"),
 				tijiao: require("@/assets/images/tijiao.png"),
 				zhanghu: require("@/assets/images/zhanghu.png"),
+			},
+			cardItem: {
+				component: require("@/assets/images/component.png"),
+				laba: require("@/assets/images/laba.png"),
+				you: require("@/assets/images/you.png"),
 			}
 		};
 	},
@@ -169,23 +186,54 @@ export default {
 	margin-top: 6px;
 }
 .card {
+	// margin: 0 10px;
+	width: 94%;
+	// height: 70px;
+	margin: 0 auto;
 	margin-top: 31px;
-	width: 100%;
-	height: 70px;
-	display: flex;
-	align-items: center;
-	padding: 0 12px;
 	box-sizing: border-box;
 	font-size: 14px;
 	background: #fff;
-	padding-top: 20px;
+	padding-top: 6px;
+	border-radius: 8px;
+	.card-content {
+		display: flex;
+		align-items: center;
+		height: 46px;
+		border-bottom: 1px solid #f3f3f3;
+	}
+	.card-content:nth-child(1) {
+		border-bottom: 1px solid #f3f3f3;
+	}
+	.card-header {
+		line-height: 28px;
+		height: 28px;
+		padding-left: 7px;
+	}
+	.card-top {
+		line-height: 18px;
+		height: 18px;
+		background: #2ecc71;
+		font-size: 12px;
+		color: #fff;
+		display: flex;
+		align-items: center;
+		width: 100%;
+		.text {
+			flex: 1;
+			transform: scale(0.94);
+		}
+		/deep/ .van-image {
+			margin-right: 14px;
+		}
+	}
 	.label {
 		color: #fff;
 		background: #2ecc71;
 		padding: 0 6px;
 		font-size: 12px;
 		line-height: 18px;
-		margin-left: 18px;
+		margin-left: 8px;
 		margin-right: 8px;
 		border-radius: 4px;
 	}
@@ -199,6 +247,7 @@ export default {
 	.time {
 		font-size: 14px;
 		color: #e6e6e6;
+		margin-right: 16px;
 	}
 }
 
