@@ -4,7 +4,13 @@
 			<component :is="componentId" class="component"></component>
 		</keep-alive>
 		<van-tabbar v-model="active" :border="false" @change="onChange" active-color="#2ecc71">
-			<van-tabbar-item name="home" icon="home-o">首页</van-tabbar-item>
+			<van-tabbar-item name="home">
+				<span>首页</span>
+				<template #icon="props">
+					<img :src="props.active ? home.active : home.inactive" />
+				</template>
+
+			</van-tabbar-item>
 			<van-tabbar-item name="search" icon="search">兑卡中心</van-tabbar-item>
 			<van-tabbar-item name="my" icon="friends-o">我的</van-tabbar-item>
 		</van-tabbar>
@@ -25,6 +31,7 @@ import {
 	TabbarItem,
 	Tab,
 	Tabs,
+	
 } from "vant";
 import index1 from "./index.vue";
 import caCenter from "./car-center.vue";
@@ -50,6 +57,18 @@ export default {
 		return {
 			componentId: index1,
 			active: "home",
+			home: {
+				active: require("@/assets/images/bar/home-page-tri.png"),
+				inactive: require("@/assets/images/bar/home-page.png"),
+			},
+			center: {
+				active: require("@/assets/images/bar/center.png"),
+				inactive: require("@/assets/images/bar/center.png"),
+			},
+			my: {
+				active: require("@/assets/images/bar/my.png"),
+				inactive: require("@/assets/images/bar/my.png"),
+			},
 			images: [
 				"https://img01.yzcdn.cn/vant/apple-1.jpg",
 				"https://img01.yzcdn.cn/vant/apple-2.jpg",
