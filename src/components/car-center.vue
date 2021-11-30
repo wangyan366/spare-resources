@@ -43,8 +43,19 @@
 		</div>
 		<van-action-sheet v-model="show" title="中国联通充值卡" :closeable="false" safe-area-inset-bottom>
 			<div class="action-sheet-content">
-				<div class="van-sidebar-content-header">
-					<img src="https://img01.yzcdn.cn/vant/cat.jpeg" style="width:100%;height: 102px;border-radius: 10px;" />
+				<div class="van-sidebar-content-header2">
+					<div class="sola">
+						单张面值
+					</div>
+					<div class="money">
+						20
+					</div>
+					<div class="money2">
+						￥19.7
+					</div>
+					<div class="fold">
+						9.5折
+					</div>
 				</div>
 				<div class="submit-way">提交方式</div>
 				<van-tabs swipeable color="#2ecc71" background="#ffffff">
@@ -156,12 +167,51 @@ export default {
 
 <style lang="less" scoped>
 #car-center {
-	//   width: 100%;
-	//   height: 100%;
 	background: #f5f7fa;
 	height: 100%;
 	display: flex;
 	flex-direction: column;
+	.van-sidebar-content-header2 {
+		width: 300px;
+		height: 100px;
+		margin: auto;
+		background-color: #2ecc71;
+		background-image: url("../assets/images/bg1.png");
+		background-size: cover;
+		border-radius: 10px;
+		color: #fff;
+		position: relative;
+		.sola {
+			font-size: 16px;
+			font-family: Alibaba PuHuiTi-Bold, Alibaba PuHuiTi;
+			position: absolute;
+			left: 12px;
+			top: 6px;
+		}
+		.money {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			text-align: center;
+			font-weight: 600;
+			font-size: 80px;
+		}
+		.money2 {
+			position: absolute;
+			right: 54px;
+			bottom: 44px;
+			font-family: DIN-Bold, DIN;
+			font-size: 16px;
+		}
+		.fold {
+			position: absolute;
+			right: 58px;
+			bottom: 24px;
+			font-family: DIN-Bold, DIN;
+			font-size: 16px;
+		}
+	}
 	/deep/ .van-action-sheet__header {
 		font-size: 20px;
 		font-weight: 600;
@@ -178,19 +228,12 @@ export default {
 		/deep/ .van-field__control {
 			border: 1px solid #ccc;
 		}
-		// /deep/ .van-field__label {
-		// 	width: 50px;
-		// 	margin-right: 0px;
-		// }
-		// /deep/ .van-cell::after {
-		// 	border-bottom: 1 px solid #fff;
-		// }
 	}
 	.submit-way {
 		font-size: 16px;
 		font-weight: 600;
 		line-height: 40px;
-		margin-top: 30px;
+		margin-top: 10px;
 		margin-left: 8px;
 	}
 	.car-center-content {
@@ -242,6 +285,9 @@ export default {
 	}
 	/deep/ .van-tabs__nav {
 		width: 150px;
+	}
+	/deep/ .van-button--block {
+		border-radius: 10px;
 	}
 	.van-sidebar-content-header {
 		height: 100px;
