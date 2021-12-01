@@ -12,7 +12,7 @@
 			</template>
 		</van-nav-bar>
 		<div class="swipe">
-			<img src="https://img01.yzcdn.cn/vant/cat.jpeg" alt="" style="width:95%;border-radius: 14px;">
+			<img src="https://img01.yzcdn.cn/vant/cat.jpeg" alt="">
 			<!-- <van-image width="95%" height="132" src="" radius="14" fit="cover" /> -->
 		</div>
 		<div class="mark">
@@ -162,6 +162,7 @@ export default {
 	text-align: center;
 	height: 132px;
 	object-fit: cover;
+	width:95%;border-radius: 14px;
 }
 .nav-bar-left {
 	text-align: left;
