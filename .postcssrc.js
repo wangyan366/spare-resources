@@ -23,8 +23,8 @@ module.exports = ({
         replace: true,
         exclude: [],
         landscape: false,
-        landscapeUnit: 'vw',
-        landscapeWidth: 2048
+        // landscapeUnit: 'vw',
+        // landscapeWidth: 2048
       }
     }
   }

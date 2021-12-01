@@ -23,6 +23,7 @@
 				</template>
 			</van-tabbar-item>
 		</van-tabbar>
+		<div style="height: 43px;"></div>
 	</div>
 </template>
 
@@ -117,6 +118,9 @@ export default {
 #home {
 	width: 100%;
 	height: 100%;
+	.component {
+		height: calc(100% - 45px);
+	}
 	.grid-text {
 		font-size: 14px;
 	}

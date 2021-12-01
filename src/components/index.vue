@@ -12,7 +12,8 @@
 			</template>
 		</van-nav-bar>
 		<div class="swipe">
-			<van-image width="354" height="132" src="https://img01.yzcdn.cn/vant/cat.jpeg" radius="14" fit="cover" />
+			<img src="https://img01.yzcdn.cn/vant/cat.jpeg" alt="" style="width:95%;border-radius: 14px;">
+			<!-- <van-image width="95%" height="132" src="" radius="14" fit="cover" /> -->
 		</div>
 		<div class="mark">
 			<van-grid :border="false" square class="grid">
@@ -149,21 +150,22 @@ export default {
 }
 .swipe {
 	background: rgba(46, 204, 113, 1);
-	padding-top: 20px;
 	position: relative;
-	height: 160px;
 	box-sizing: border-box;
+	height: 160px;
 }
-.swipe .van-image {
+.swipe img {
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	text-align: center;
+	height: 132px;
+	object-fit: cover;
 }
 .nav-bar-left {
 	text-align: left;
-	margin-top: 18px;
+	margin-top: 6px;
 }
 .nav-bar-left :first-child {
 	font-size: 22px;
@@ -179,6 +181,7 @@ export default {
 #home-index {
 	background: #f5f7fa;
 	height: 100%;
+	overflow-x: auto;
 }
 .grid-text {
 	font-size: 14px;
@@ -278,6 +281,7 @@ export default {
 /deep/ .van-tabs {
 	background: #f5f7fa;
 	padding-top: 20px;
+	padding-bottom: 10px;
 }
 /deep/ .van-tab__pane {
 	padding-top: 20px;

@@ -171,6 +171,8 @@ export default {
 	height: 100%;
 	display: flex;
 	flex-direction: column;
+	box-sizing: border-box;
+	overflow-y: auto;
 	.van-sidebar-content-header2 {
 		width: 300px;
 		height: 100px;
