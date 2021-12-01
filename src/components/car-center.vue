@@ -14,7 +14,7 @@
 			</van-sidebar>
 			<div class="van-sidebar-content">
 				<div class="van-sidebar-content-header">
-					<img src="https://img01.yzcdn.cn/vant/apple-3.jpg" style="width:252px;height: 84px;" />
+					<img src="https://img01.yzcdn.cn/vant/cat.jpeg" style="" />
 				</div>
 				<div class="van-sidebar-content-nav">
 					<div class="nav-title">移动运营商</div>
@@ -300,6 +300,9 @@ export default {
 		img {
 			margin: auto;
 			display: block;
+			width: 252px;
+			height: 84px;
+			object-fit: cover;
 		}
 	}
 	.van-sidebar-content-nav {
