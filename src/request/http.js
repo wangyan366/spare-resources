@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-// çŽ¯å¢ƒçš„åˆ‡æ¢
+// »·¾³µÄÇÐ»»
 if (process.env.NODE_ENV === 'development') {
   axios.defaults.baseURL = ''
 } else if (process.env.NODE_ENV === 'debug') {
@@ -11,11 +11,11 @@ if (process.env.NODE_ENV === 'development') {
 axios.defaults.timeout = 10000
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8;multipart/form-data'
 
-// // è¯·æ±‚æ‹¦æˆªå™¨
+// // ÇëÇóÀ¹½ØÆ÷
 // axios.interceptors.request.use(
 //   config => {
-//     // æ¯æ¬¡å‘é€è¯·æ±‚ä¹‹å‰åˆ¤æ–­æ˜¯å¦å­˜åœ¨tokenï¼Œå¦‚æžœå­˜åœ¨ï¼Œåˆ™ç»Ÿä¸€åœ¨httpè¯·æ±‚çš„headeréƒ½åŠ ä¸Štokenï¼Œä¸ç”¨æ¯æ¬¡è¯·æ±‚éƒ½æ‰‹åŠ¨æ·»åŠ äº†
-//     // å³ä½¿æœ¬åœ°å­˜åœ¨tokenï¼Œä¹Ÿæœ‰å¯èƒ½tokenæ˜¯è¿‡æœŸçš„ï¼Œæ‰€ä»¥åœ¨å“åº”æ‹¦æˆªå™¨ä¸­è¦å¯¹è¿”å›žçŠ¶æ€è¿›è¡Œåˆ¤æ–­
+//     // Ã¿´Î·¢ËÍÇëÇóÖ®Ç°ÅÐ¶ÏÊÇ·ñ´æÔÚtoken£¬Èç¹û´æÔÚ£¬ÔòÍ³Ò»ÔÚhttpÇëÇóµÄheader¶¼¼ÓÉÏtoken£¬²»ÓÃÃ¿´ÎÇëÇó¶¼ÊÖ¶¯Ìí¼ÓÁË
+//     // ¼´Ê¹±¾µØ´æÔÚtoken£¬Ò²ÓÐ¿ÉÄÜtokenÊÇ¹ýÆÚµÄ£¬ËùÒÔÔÚÏìÓ¦À¹½ØÆ÷ÖÐÒª¶Ô·µ»Ø×´Ì¬½øÐÐÅÐ¶Ï
 //     const token = store.state.token
 //     token && (config.headers.Authorization = token)
 //     return config
@@ -24,7 +24,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 //     return Promise.error(error)
 //   })
 //
-// // å“åº”æ‹¦æˆªå™¨
+// // ÏìÓ¦À¹½ØÆ÷
 // axios.interceptors.response.use(
 //   response => {
 //     if (response.status === 200) {
@@ -33,33 +33,33 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 //       return Promise.reject(response)
 //     }
 //   },
-//   // æœåŠ¡å™¨çŠ¶æ€ç ä¸æ˜¯200çš„æƒ…å†µ
+//   // ·þÎñÆ÷×´Ì¬Âë²»ÊÇ200µÄÇé¿ö
 //   error => {
 //     if (error.response.status) {
 //       switch (error.response.status) {
-//         // 401: æœªç™»å½•
-//         // æœªç™»å½•åˆ™è·³è½¬ç™»å½•é¡µé¢ï¼Œå¹¶æºå¸¦å½“å‰é¡µé¢çš„è·¯å¾„
-//         // åœ¨ç™»å½•æˆåŠŸåŽè¿”å›žå½“å‰é¡µé¢ï¼Œè¿™ä¸€æ­¥éœ€è¦åœ¨ç™»å½•é¡µæ“ä½œã€‚
+//         // 401: Î´µÇÂ¼
+//         // Î´µÇÂ¼ÔòÌø×ªµÇÂ¼Ò³Ãæ£¬²¢Ð¯´øµ±Ç°Ò³ÃæµÄÂ·¾¶
+//         // ÔÚµÇÂ¼³É¹¦ºó·µ»Øµ±Ç°Ò³Ãæ£¬ÕâÒ»²½ÐèÒªÔÚµÇÂ¼Ò³²Ù×÷¡£
 //         case 401:
 //           router.replace({
 //             path: '/login',
 //             query: { redirect: router.currentRoute.fullPath }
 //           })
 //           break
-//         // 403 tokenè¿‡æœŸ
-//         // ç™»å½•è¿‡æœŸå¯¹ç”¨æˆ·è¿›è¡Œæç¤º
-//         // æ¸…é™¤æœ¬åœ°tokenå’Œæ¸…ç©ºvuexä¸­tokenå¯¹è±¡
-//         // è·³è½¬ç™»å½•é¡µé¢
+//         // 403 token¹ýÆÚ
+//         // µÇÂ¼¹ýÆÚ¶ÔÓÃ»§½øÐÐÌáÊ¾
+//         // Çå³ý±¾µØtokenºÍÇå¿ÕvuexÖÐtoken¶ÔÏó
+//         // Ìø×ªµÇÂ¼Ò³Ãæ
 //         case 403:
 //           Toast({
-//             message: 'ç™»å½•è¿‡æœŸï¼Œè¯·é‡æ–°ç™»å½•',
+//             message: 'µÇÂ¼¹ýÆÚ£¬ÇëÖØÐÂµÇÂ¼',
 //             duration: 1000,
 //             forbidClick: true
 //           })
-//           // æ¸…é™¤token
+//           // Çå³ýtoken
 //           localStorage.removeItem('token')
 //           store.commit('loginSuccess', null)
-//           // è·³è½¬ç™»å½•é¡µé¢ï¼Œå¹¶å°†è¦æµè§ˆçš„é¡µé¢fullPathä¼ è¿‡åŽ»ï¼Œç™»å½•æˆåŠŸåŽè·³è½¬éœ€è¦è®¿é—®çš„é¡µé¢
+//           // Ìø×ªµÇÂ¼Ò³Ãæ£¬²¢½«Òªä¯ÀÀµÄÒ³ÃæfullPath´«¹ýÈ¥£¬µÇÂ¼³É¹¦ºóÌø×ªÐèÒª·ÃÎÊµÄÒ³Ãæ
 //           setTimeout(() => {
 //             router.replace({
 //               path: '/login',
@@ -69,15 +69,15 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 //             })
 //           }, 1000)
 //           break
-//         // 404è¯·æ±‚ä¸å­˜åœ¨
+//         // 404ÇëÇó²»´æÔÚ
 //         case 404:
 //           Toast({
-//             message: 'ç½‘ç»œè¯·æ±‚ä¸å­˜åœ¨',
+//             message: 'ÍøÂçÇëÇó²»´æÔÚ',
 //             duration: 1500,
 //             forbidClick: true
 //           })
 //           break
-//         // å…¶ä»–é”™è¯¯ï¼Œç›´æŽ¥æŠ›å‡ºé”™è¯¯æç¤º
+//         // ÆäËû´íÎó£¬Ö±½ÓÅ×³ö´íÎóÌáÊ¾
 //         default:
 //           Toast({
 //             message: error.response.data.message,
@@ -91,9 +91,9 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 // )
 
 /**
- * getæ–¹æ³•ï¼Œå¯¹åº”getè¯·æ±‚
- * @param {String} url [è¯·æ±‚çš„urlåœ°å€]
- * @param {Object} params [è¯·æ±‚æ—¶æºå¸¦çš„å‚æ•°]
+ * get·½·¨£¬¶ÔÓ¦getÇëÇó
+ * @param {String} url [ÇëÇóµÄurlµØÖ·]
+ * @param {Object} params [ÇëÇóÊ±Ð¯´øµÄ²ÎÊý]
  */
 export function get (url, params) {
   return new Promise((resolve, reject) => {
@@ -107,9 +107,9 @@ export function get (url, params) {
   })
 }
 /**
- * postæ–¹æ³•ï¼Œå¯¹åº”postè¯·æ±‚
- * @param {String} url [è¯·æ±‚çš„urlåœ°å€]
- * @param {Object} params [è¯·æ±‚æ—¶æºå¸¦çš„å‚æ•°]
+ * post·½·¨£¬¶ÔÓ¦postÇëÇó
+ * @param {String} url [ÇëÇóµÄurlµØÖ·]
+ * @param {Object} params [ÇëÇóÊ±Ð¯´øµÄ²ÎÊý]
  */
 export function post (url, params) {
   return new Promise((resolve, reject) => {
