@@ -32,12 +32,13 @@
 
 <script>
 import { mapMutations, mapActions } from "vuex";
-import { Field, Form } from "vant";
+import { Field, Form, Toast } from "vant";
 import { get, post } from "../request/http";
 export default {
   components: {
     [Field.name]: Field,
     [Form.name]: Form,
+    [Toast.name]: Toast,
   },
   data() {
     return {
@@ -66,11 +67,11 @@ export default {
 
     loginClick(values) {
       if (!this.username || this.username == "") {
-        this.$toast.fail("请填写账号");
+        Toast.fail("请填写账号");
         return;
       }
       if (!this.password || this.password == "") {
-        this.$toast.fail("请填写密码");
+        Toast.fail("请填写密码");
         return;
       }
       var new_obj = {
@@ -121,6 +122,7 @@ export default {
   width: 100%;
   //   background-image: url('../../assets/login1.png');
   background-size: 100% 100%;
+  margin-top: 130px;
 }
 
 .banner-title {

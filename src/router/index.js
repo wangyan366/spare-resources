@@ -19,13 +19,17 @@ const router = new Router({
     path: '/carCenter',
     name: 'carCenter',
     component: resolve => (require(["@/components/car-center"], resolve))
+  }, {
+    path: '/refresh',
+    name: 'refresh',
+    component: resolve => (require(["@/components/refresh"], resolve))
   }]
 })
-const isLogin = () => Boolean(sessionStorage.getItem('token') || localStorage.getItem('token'))//判断登录
+const isLogin = () => Boolean(localStorage.getItem('token'))//判断登录
 //路由守卫
+
 router.beforeEach((to, from, next) => {
   if (to.path == '/login') {
-    sessionStorage.removeItem("token");
     localStorage.removeItem("token");
   }
   if (!isLogin() && to.path != '/login') {

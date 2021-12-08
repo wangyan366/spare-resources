@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from "axios"
 import cryptoJs from 'crypto-js'
+// import services from '@/store/services';
 Vue.use(Vuex) //安装使用这个功能
 const store = new Vuex.Store({
 	state: {
@@ -14,7 +15,8 @@ const store = new Vuex.Store({
 		showGoods: 2,
 		showContestRate: 2,
 		netcase: 2,
-		safeDiploma: 2
+		safeDiploma: 2,
+		network: true
 	},
 
 	actions: {
@@ -77,26 +79,14 @@ const store = new Vuex.Store({
 				time: payload.timestamp,
 				verifyCode: payload.verificationCode
 			}), key);
-
-			// 留学生调用加密函数
-			const returnedEncrypted = aesEncrypt(JSON.stringify({
-				keyNumber: payload.userName,
-				password: payload.password,
-				time: payload.timestamp,
-				verifyCode: payload.captchaCode
-			}), key);
-
 			console.log("? ~ file: index.js ~ line 95 ~ login ~ data", data)
-			if (payload.entry === 'foods') {
-				return services.foodsLogin({ data: encrypted });
-			} else if (payload.entry === 'returnedStudent') {
-				return services.returnedStudentLogin({ data: returnedEncrypted });
-			} else {
-				return services.login({ data: encrypted });
-			}
+			return services.login({ data: encrypted });
 		},
 	},
 	mutations: {
+		changeNetwork(state, payload) {
+			this.network = payload
+		},
 		changeLogin(state, user) {
 			state.token = user.token;
 			localStorage.setItem("token", user.token)
