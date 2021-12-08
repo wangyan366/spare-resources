@@ -22,9 +22,9 @@ export default {
 		};
 	},
 	mounted() {
-		setTimeout(() => {
-			this.$router.push({ path: "/home" }); // 强制切换当前路由 path
-		}, 3000);
+		// setTimeout(() => {
+		// 	this.$router.push({ path: "/login" }); // 强制切换当前路由 path
+		// }, 3000);
 	},
 };
 </script>
