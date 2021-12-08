@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from "axios"
+import cryptoJs from 'crypto-js'
 Vue.use(Vuex) //安装使用这个功能
 const store = new Vuex.Store({
 	state: {
@@ -85,6 +86,7 @@ const store = new Vuex.Store({
 				verifyCode: payload.captchaCode
 			}), key);
 
+			console.log("? ~ file: index.js ~ line 95 ~ login ~ data", data)
 			if (payload.entry === 'foods') {
 				return services.foodsLogin({ data: encrypted });
 			} else if (payload.entry === 'returnedStudent') {
