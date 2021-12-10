@@ -8,13 +8,13 @@ const router = new Router({
     name: 'login',
     component: resolve => (require(["@/components/login"], resolve))
   }, {
-    path: '/online',
+    path: '/',
     name: 'online',
     component: resolve => (require(["@/components/online"], resolve))
   }, {
-    path: '/home',
-    name: 'home',
-    component: resolve => (require(["@/components/home"], resolve))
+    path: '/index',
+    name: 'index',
+    component: resolve => (require(["@/components/index"], resolve))
   }, {
     path: '/carCenter',
     name: 'carCenter',
@@ -32,12 +32,12 @@ router.beforeEach((to, from, next) => {
   if (to.path == '/login') {
     localStorage.removeItem("token");
   }
-  if (!isLogin() && to.path != '/login') {
-    next({ path: '/login' })
-  } else {
-    next();
-  }
-
+  // if (!isLogin() && to.path != '/login') {
+  //   next({ path: '/login' })
+  // } else {
+  //   next();
+  // }
+  next();
 
 });
 export default router

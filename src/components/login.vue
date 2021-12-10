@@ -33,7 +33,6 @@
 <script>
 import { mapMutations, mapActions } from "vuex";
 import { Field, Form, Toast } from "vant";
-import { get, post } from "../request/http";
 export default {
   components: {
     [Field.name]: Field,
@@ -66,36 +65,38 @@ export default {
     },
 
     loginClick(values) {
-      if (!this.username || this.username == "") {
-        Toast.fail("请填写账号");
-        return;
-      }
-      if (!this.password || this.password == "") {
-        Toast.fail("请填写密码");
-        return;
-      }
-      var new_obj = {
-        captcha: "",
-        username: this.username,
-        password: this.password,
-        target: "WEB_UI",
-        groupId: this.groupId,
-      };
-      this.$ajax({
-        method: "post",
-        url: this._ngx + "/v1/token",
-        data: new_obj,
-      })
-        .then((res) => {
-          // 储存vuex和localStorage
-          this.changeLogin(res.data);
-        })
-        .catch((error) => {
-          this.$toast(error.message);
-          if (error.message == "用户名或密码错误") {
-            this.errorInfoShow = true;
-          }
-        });
+      debugger
+        this.$router.push({ path: "/home" });
+      // if (!this.username || this.username == "") {
+      //   Toast.fail("请填写账号");
+      //   return;
+      // }
+      // if (!this.password || this.password == "") {
+      //   Toast.fail("请填写密码");
+      //   return;
+      // }
+      // var new_obj = {
+      //   captcha: "",
+      //   username: this.username,
+      //   password: this.password,
+      //   target: "WEB_UI",
+      //   groupId: this.groupId,
+      // };
+      // this.$ajax({
+      //   method: "post",
+      //   url: this._ngx + "/v1/token",
+      //   data: new_obj,
+      // })
+      //   .then((res) => {
+      //     // 储存vuex和localStorage
+      //     this.changeLogin(res.data);
+      //   })
+      //   .catch((error) => {
+      //     this.$toast(error.message);
+      //     if (error.message == "用户名或密码错误") {
+      //       this.errorInfoShow = true;
+      //     }
+      //   });
     },
   },
 };

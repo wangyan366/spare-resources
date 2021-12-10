@@ -2,7 +2,7 @@
   <div id="app">
     <!-- 开启顶部安全区适配 -->
     <!-- <van-nav-bar safe-area-inset-top /> -->
-    <div v-if="!network">
+    <div v-if="!network" class="network">
       <h3>我没网了</h3>
       <div @click="onRefresh">刷新</div>
     </div>
@@ -30,6 +30,23 @@ export default {
 </script>
 
 <style>
+.network {
+  text-align: center;
+  margin: 100px auto;
+}
+.network h3{
+  font-size: 26px;
+}
+.network div{
+  background: #2ecc71;
+  padding: 10px 60px;
+  color: #fff;
+  display: inline-block;
+  border-radius: 8px;
+  margin-top: 30px;
+   font-size: 16px;
+   cursor: pointer;
+}
 #app {
   height: 100%;
   min-height: 100vh;

@@ -79,7 +79,7 @@
          token && (config.headers.Authorization = token);        
          return config;    
      },    
-     error => Promise.error(error))
+     error => Promise.reject(error))
  
  // ÏìÓ¦À¹½ØÆ÷
  instance.interceptors.response.use(    

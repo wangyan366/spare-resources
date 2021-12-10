@@ -16,7 +16,7 @@ const store = new Vuex.Store({
 		showContestRate: 2,
 		netcase: 2,
 		safeDiploma: 2,
-		network: true
+		network: true,
 	},
 
 	actions: {
