@@ -23,6 +23,18 @@ const router = new Router({
     path: '/refresh',
     name: 'refresh',
     component: resolve => (require(["@/components/refresh"], resolve))
+  }, {
+    path: '/phone',
+    name: 'phone',
+    component: resolve => (require(["@/components/phone"], resolve))
+  }, {
+    path: '/home',
+    name: 'home',
+    component: resolve => (require(["@/components/home"], resolve))
+  }, {
+    path: '/my',
+    name: 'my',
+    component: resolve => (require(["@/components/my"], resolve))
   }]
 })
 const isLogin = () => Boolean(localStorage.getItem('token'))//判断登录
