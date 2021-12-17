@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 Vue.use(Router)
-
 const router = new Router({
   routes: [{
     path: '/login',
@@ -16,10 +15,6 @@ const router = new Router({
     name: 'index',
     component: resolve => (require(["@/components/index"], resolve))
   }, {
-    path: '/carCenter',
-    name: 'carCenter',
-    component: resolve => (require(["@/components/car-center"], resolve))
-  }, {
     path: '/refresh',
     name: 'refresh',
     component: resolve => (require(["@/components/refresh"], resolve))
@@ -28,13 +23,17 @@ const router = new Router({
     name: 'phone',
     component: resolve => (require(["@/components/phone"], resolve))
   }, {
-    path: '/home',
-    name: 'home',
-    component: resolve => (require(["@/components/home"], resolve))
+    path: '/withdrawal',
+    name: 'withdrawal',
+    component: resolve => (require(["@/components/withdrawal"], resolve))
   }, {
-    path: '/my',
-    name: 'my',
-    component: resolve => (require(["@/components/my"], resolve))
+    path: '/certification',
+    name: 'certification',
+    component: resolve => (require(["@/components/certification"], resolve))
+  }, {
+    path: '/password',
+    name: 'password',
+    component: resolve => (require(["@/components/password"], resolve))
   }]
 })
 const isLogin = () => Boolean(localStorage.getItem('token'))//判断登录

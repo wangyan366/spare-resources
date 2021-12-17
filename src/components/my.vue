@@ -22,11 +22,11 @@
     </div>
 
     <div class="my-down">
-      <div class="down-card">
+      <div class="down-card" @click="certificationClick">
         <div class="pic"></div>
         <span>实名认证</span>
       </div>
-      <div class="down-card">
+      <div class="down-card" @click="passwordClick">
         <div class="pic"></div>
         <span>修改密码</span>
       </div>
@@ -34,7 +34,7 @@
         <div class="pic"></div>
         <span>更换手机</span>
       </div>
-      <div class="down-card">
+      <div class="down-card" @click="withdrawalClick">
         <div class="pic"></div>
         <span>提现账号</span>
       </div>
@@ -59,6 +59,15 @@ export default {
   mounted() {},
 
   methods: {
+    passwordClick(){
+      this.$router.push({ path: "/password" });
+    },
+    certificationClick() {
+      this.$router.push({ path: "/certification" });
+    },
+    withdrawalClick() {
+      this.$router.push({ path: "/withdrawal" });
+    },
     phoneClick() {
       this.$router.push({ path: "/phone" });
     },
