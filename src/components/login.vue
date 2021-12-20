@@ -22,7 +22,19 @@
             :rules="[{ required: true }]"
             v-on:input="inputFunc"
           />
-          <p class="error-info" v-show="errorInfoShow">*密码输入错误</p>
+
+          <van-field
+            v-model="verifyCode"
+            name="验证码"
+            placeholder="请填写验证码"
+            :rules="[{ required: true }]"
+          />
+          <img
+            class="capchaImg"
+            :src="captchaSrc"
+            @click.stop="getCaptchaSrc()"
+          />
+          <!-- <span @click.stop="getCaptchaSrc()" class="barter">换一张</span> -->
           <div class="submit-button" @click="loginClick">登录</div>
         </van-form>
       </div>
@@ -33,6 +45,8 @@
 <script>
 import { mapMutations, mapActions } from "vuex";
 import { Field, Form, Toast } from "vant";
+import base from "@/api/base.js"; // 导入接口域名列表
+import axios from "axios";
 export default {
   components: {
     [Field.name]: Field,
@@ -41,6 +55,9 @@ export default {
   },
   data() {
     return {
+      time: "",
+      captchaSrc: "",
+      verifyCode: "",
       password: "",
       username: "",
       groupId: "",
@@ -54,8 +71,15 @@ export default {
   watch: {},
   mounted() {
     //监听事件
+    this.getCaptchaSrc();
   },
   methods: {
+    // 获取图片验证码
+    getCaptchaSrc() {
+      // 也可以处理图片
+      this.time = new Date().getTime();
+      this.captchaSrc = `${base.test}/voucher/login/randImage.do?time=${this.time}`;
+    },
     ...mapMutations(["changeLogin"]),
     ...mapActions(["login"]),
     inputFunc() {
@@ -65,44 +89,52 @@ export default {
     },
 
     loginClick(values) {
-      debugger
-        this.$router.push({ path: "/home" });
-      // if (!this.username || this.username == "") {
-      //   Toast.fail("请填写账号");
-      //   return;
-      // }
-      // if (!this.password || this.password == "") {
-      //   Toast.fail("请填写密码");
-      //   return;
-      // }
-      // var new_obj = {
-      //   captcha: "",
-      //   username: this.username,
-      //   password: this.password,
-      //   target: "WEB_UI",
-      //   groupId: this.groupId,
-      // };
-      // this.$ajax({
-      //   method: "post",
-      //   url: this._ngx + "/v1/token",
-      //   data: new_obj,
-      // })
-      //   .then((res) => {
-      //     // 储存vuex和localStorage
-      //     this.changeLogin(res.data);
-      //   })
-      //   .catch((error) => {
-      //     this.$toast(error.message);
-      //     if (error.message == "用户名或密码错误") {
-      //       this.errorInfoShow = true;
-      //     }
-      //   });
+      debugger;
+      // this.$router.push({ path: "/home" });
+      if (!this.username || this.username == "") {
+        Toast.fail("请填写账号");
+        return;
+      }
+      if (!this.password || this.password == "") {
+        Toast.fail("请填写密码");
+        return;
+      }
+      if (!this.verifyCode || this.verifyCode == "") {
+        Toast.fail("请填写验证码");
+        return;
+      }
+      var new_obj = {
+        abc: "liushuai",
+        def: "123456",
+        time: this.time,
+        verifyCode: this.verifyCode,
+      };
+      axios({
+        method: "post",
+        url: base.test + "/voucher.login.login",
+        data: new_obj,
+      })
+        .then((res) => {
+          console.log("🚀 ~ file: login.vue ~ line 92 ~ .then ~ res", res);
+          // 储存vuex和localStorage
+          this.changeLogin(res.data);
+          this.$toast(res);
+        })
+        .catch((error) => {
+          this.$toast(error.message);
+        });
     },
   },
 };
 </script>
 
 <style scoped="scoped" lang="less">
+.capchaImg {
+  border: 1px solid #ccc;
+  position: relative;
+  right: -95px;
+  top: -43px;
+}
 .title {
   height: 44px;
   line-height: 44px;
@@ -179,7 +211,7 @@ export default {
     }
 
     > div:nth-child(2) {
-      margin-top: 10px;
+      margin: 10px 0;
     }
   }
 }
@@ -192,7 +224,7 @@ export default {
   line-height: normal;
   font-size: 16px;
   padding: 11px 0px;
-  margin-top: 15px;
+  // margin-top: 15px;
 
   span {
     font-size: 16px;
@@ -245,5 +277,8 @@ export default {
 .autologon span {
   font-size: 12px;
   color: #111111;
+}
+/deep/ .van-cell:nth-child(3) {
+  width: 65%;
 }
 </style>

@@ -43,12 +43,12 @@ router.beforeEach((to, from, next) => {
   if (to.path == '/login') {
     localStorage.removeItem("token");
   }
-  // if (!isLogin() && to.path != '/login') {
-  //   next({ path: '/login' })
-  // } else {
-  //   next();
-  // }
-  next();
+  if (!isLogin() && to.path != '/login') {
+    next({ path: '/login' })
+  } else {
+    next();
+  }
+  // next();
 
 });
 export default router

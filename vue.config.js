@@ -1,7 +1,8 @@
 const path = require("path");
 const myTheme = path.resolve(__dirname, "src/assets/style/vantChange.less");
 module.exports = {
-      css: {
+
+  css: {
     loaderOptions: {
       less: {
         modifyVars: {
