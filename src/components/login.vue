@@ -78,7 +78,7 @@ export default {
     getCaptchaSrc() {
       // 也可以处理图片
       this.time = new Date().getTime();
-      this.captchaSrc = `${base.test}/voucher/login/randImage.do?time=${this.time}`;
+      this.captchaSrc = `${base.VUE_APP_BASE_API}/voucher/login/randImage.do?time=${this.time}`;
     },
     ...mapMutations(["changeLogin"]),
     ...mapActions(["login"]),
@@ -87,7 +87,7 @@ export default {
         this.errorInfoShow = false;
       }
     },
-
+   
     loginClick(values) {
       debugger;
       // this.$router.push({ path: "/home" });
@@ -109,20 +109,21 @@ export default {
         time: this.time,
         verifyCode: this.verifyCode,
       };
-      axios({
-        method: "post",
-        url: base.test + "/voucher.login.login",
-        data: new_obj,
-      })
-        .then((res) => {
-          console.log("🚀 ~ file: login.vue ~ line 92 ~ .then ~ res", res);
-          // 储存vuex和localStorage
-          this.changeLogin(res.data);
-          this.$toast(res);
-        })
-        .catch((error) => {
-          this.$toast(error.message);
-        });
+      this.login(new_obj);
+      // axios({
+      //   method: "post",
+      //   url: base.test + "/voucher.login.login",
+      //   data: new_obj,
+      // })
+      //   .then((res) => {
+      //     console.log("🚀 ~ file: login.vue ~ line 92 ~ .then ~ res", res);
+      //     // 储存vuex和localStorage
+      //     this.changeLogin(res.data);
+      //     this.$toast(res);
+      //   })
+      //   .catch((error) => {
+      //     this.$toast(error.message);
+      //   });
     },
   },
 };

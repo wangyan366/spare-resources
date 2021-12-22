@@ -43,23 +43,28 @@
 </template>
 
 <script>
-import { NavBar, Card, Icon } from "vant";
+import { NavBar, Card, Icon, Toast } from "vant";
+import { mapMutations, mapActions } from "vuex";
 export default {
   name: "My",
   components: {
     [NavBar.name]: NavBar,
     [Card.name]: Card,
     [Icon.name]: Icon,
+    [Toast.name]: Toast,
   },
 
   data() {
     return {};
   },
 
-  mounted() {},
+  mounted() {
+    this.getMy()
+  },
 
   methods: {
-    passwordClick(){
+       ...mapActions(["getMy"]),
+    passwordClick() {
       this.$router.push({ path: "/password" });
     },
     certificationClick() {

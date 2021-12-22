@@ -1,108 +1,364 @@
 /**
- * axios·â×°
- * ÇëÇóÀ¹½Ø¡¢ÏìÓ¦À¹½Ø¡¢´íÎóÍ³Ò»´¦Àí
+ * axioså°è£…
+ * è¯·æ±‚æ‹¦æˆªã€å“åº”æ‹¦æˆªã€é”™è¯¯ç»Ÿä¸€å¤„ç†
  */
- import axios from 'axios';
- import router from '@/router/index';
- import store from '@/store/index';
- import { Toast } from 'vant';
- 
- /** 
-  * ÌáÊ¾º¯Êý 
-  * ½ûÖ¹µã»÷ÃÉ²ã¡¢ÏÔÊ¾Ò»Ãëºó¹Ø±Õ
-  */
- const tip = msg => {    
-     Toast({        
-         message: msg,        
-         duration: 1000,        
-         forbidClick: true    
-     });
- }
- 
- /** 
-  * Ìø×ªµÇÂ¼Ò³
-  * Ð¯´øµ±Ç°Ò³ÃæÂ·ÓÉ£¬ÒÔÆÚÔÚµÇÂ¼Ò³ÃæÍê³ÉµÇÂ¼ºó·µ»Øµ±Ç°Ò³Ãæ
-  */
- const toLogin = () => {
-     router.replace({
-         path: '/login',        
-         query: {
-             redirect: router.currentRoute.fullPath
-         }
-     });
- }
- 
- /** 
-  * ÇëÇóÊ§°ÜºóµÄ´íÎóÍ³Ò»´¦Àí 
-  * @param {Number} status ÇëÇóÊ§°ÜµÄ×´Ì¬Âë
-  */
- const errorHandle = (status, other) => {
-     // ×´Ì¬ÂëÅÐ¶Ï
-     switch (status) {
-         // 401: Î´µÇÂ¼×´Ì¬£¬Ìø×ªµÇÂ¼Ò³
-         case 401:
-             toLogin();
-             break;
-         // 403 token¹ýÆÚ
-         // Çå³ýtoken²¢Ìø×ªµÇÂ¼Ò³
-         case 403:
-             tip('µÇÂ¼¹ýÆÚ£¬ÇëÖØÐÂµÇÂ¼');
-             localStorage.removeItem('token');
-             store.commit('loginSuccess', null);
-             setTimeout(() => {
-                 toLogin();
-             }, 1000);
-             break;
-         // 404ÇëÇó²»´æÔÚ
-         case 404:
-             tip('ÇëÇóµÄ×ÊÔ´²»´æÔÚ'); 
-             break;
-         default:
-             console.log(other);   
-         }}
- 
- // ´´½¨axiosÊµÀý
- var instance = axios.create({    timeout: 1000 * 12});
- // ÉèÖÃpostÇëÇóÍ·
- instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
- /** 
-  * ÇëÇóÀ¹½ØÆ÷ 
-  * Ã¿´ÎÇëÇóÇ°£¬Èç¹û´æÔÚtokenÔòÔÚÇëÇóÍ·ÖÐÐ¯´øtoken 
-  */ 
- instance.interceptors.request.use(    
-     config => {        
-         // µÇÂ¼Á÷³Ì¿ØÖÆÖÐ£¬¸ù¾Ý±¾µØÊÇ·ñ´æÔÚtokenÅÐ¶ÏÓÃ»§µÄµÇÂ¼Çé¿ö        
-         // µ«ÊÇ¼´Ê¹token´æÔÚ£¬Ò²ÓÐ¿ÉÄÜtokenÊÇ¹ýÆÚµÄ£¬ËùÒÔÔÚÃ¿´ÎµÄÇëÇóÍ·ÖÐÐ¯´øtoken        
-         // ºóÌ¨¸ù¾ÝÐ¯´øµÄtokenÅÐ¶ÏÓÃ»§µÄµÇÂ¼Çé¿ö£¬²¢·µ»Ø¸øÎÒÃÇ¶ÔÓ¦µÄ×´Ì¬Âë        
-         // ¶øºóÎÒÃÇ¿ÉÒÔÔÚÏìÓ¦À¹½ØÆ÷ÖÐ£¬¸ù¾Ý×´Ì¬Âë½øÐÐÒ»Ð©Í³Ò»µÄ²Ù×÷¡£        
-         const token = store.state.token;        
-         token && (config.headers.Authorization = token);        
-         return config;    
-     },    
-     error => Promise.reject(error))
- 
- // ÏìÓ¦À¹½ØÆ÷
- instance.interceptors.response.use(    
-     // ÇëÇó³É¹¦
-     res => res.status === 200 ? Promise.resolve(res) : Promise.reject(res),    
-     // ÇëÇóÊ§°Ü
-     error => {
-         const { response } = error;
-         if (response) {
-             // ÇëÇóÒÑ·¢³ö£¬µ«ÊÇ²»ÔÚ2xxµÄ·¶Î§ 
-             errorHandle(response.status, response.data.message);
-             return Promise.reject(response);
-         } else {
-             // ´¦Àí¶ÏÍøµÄÇé¿ö
-             // eg:ÇëÇó³¬Ê±»ò¶ÏÍøÊ±£¬¸üÐÂstateµÄnetwork×´Ì¬
-             // network×´Ì¬ÔÚapp.vueÖÐ¿ØÖÆ×ÅÒ»¸öÈ«¾ÖµÄ¶ÏÍøÌáÊ¾×é¼þµÄÏÔÊ¾Òþ²Ø
-             // ¹ØÓÚ¶ÏÍø×é¼þÖÐµÄË¢ÐÂÖØÐÂ»ñÈ¡Êý¾Ý£¬»áÔÚ¶ÏÍø×é¼þÖÐËµÃ÷
-             if (!window.navigator.onLine) {
-              store.commit('changeNetwork', false);
-           } else {
-               return Promise.reject(error);
-           }
-         }
-     });
- 
- export default instance;
+import axios from 'axios';
+import router from '@/router/index';
+import store from '@/store/index';
+import { Toast } from 'vant';
+import { now, keys } from 'lodash';
+import qs from 'qs';
+import base from "@/api/base.js"; // å¯¼å…¥æŽ¥å£åŸŸååˆ—è¡¨
+import * as config from '@/config';
+
+const secretKey = config.secretKey;
+const baseAPI = base.VUE_APP_BASE_API;
+/** 
+ * æç¤ºå‡½æ•° 
+ * ç¦æ­¢ç‚¹å‡»è’™å±‚ã€æ˜¾ç¤ºä¸€ç§’åŽå…³é—­
+ */
+const tip = msg => {
+    Toast({
+        message: msg,
+        duration: 1000,
+        forbidClick: true
+    });
+}
+// æ ‡å‡†åŒ–å‚æ•°
+const standardiseParams = (params, ignores = []) => {
+    const signParams = {
+        format: config.format,
+        timestamp: now(),
+        tenantCode: 'dev'
+    };
+    keys(params).forEach(key => {
+        // å¿½ç•¥å‚ä¸Žç­¾å,åŒ…æ‹¬configæ–‡ä»¶é…ç½®çš„å…¨å±€ignoresä»¥åŠå„è¯·æ±‚paramsä¼ å…¥çš„ignores
+        if (config.ignores.indexOf(key) !== -1 || ignores.indexOf(key) !== -1) {
+            return;
+        }
+        if (params[key] === null) {
+            signParams[key] = '';
+        } else {
+            signParams[key] = params[key];
+        }
+    });
+
+    // params.ns = ignores.join();
+    // if (!params.ns) {
+    //     delete params.ns;
+    // }
+
+    return qs.stringify(
+        // {
+        // ...params,
+        // ...signParams,
+        createSign(signParams)
+        // }
+    );
+};
+/** 
+ * è·³è½¬ç™»å½•é¡µ
+ * æºå¸¦å½“å‰é¡µé¢è·¯ç”±ï¼Œä»¥æœŸåœ¨ç™»å½•é¡µé¢å®Œæˆç™»å½•åŽè¿”å›žå½“å‰é¡µé¢
+ */
+const toLogin = () => {
+    router.replace({
+        path: '/login',
+        query: {
+            redirect: router.currentRoute.fullPath
+        }
+    });
+}
+
+/** 
+ * è¯·æ±‚å¤±è´¥åŽçš„é”™è¯¯ç»Ÿä¸€å¤„ç† 
+ * @param {Number} status è¯·æ±‚å¤±è´¥çš„çŠ¶æ€ç 
+ */
+const errorHandle = (status, other) => {
+    // çŠ¶æ€ç åˆ¤æ–­
+    switch (status) {
+        // 401: æœªç™»å½•çŠ¶æ€ï¼Œè·³è½¬ç™»å½•é¡µ
+        case 401:
+            toLogin();
+            break;
+        // 403 tokenè¿‡æœŸ
+        // æ¸…é™¤tokenå¹¶è·³è½¬ç™»å½•é¡µ
+        case 403:
+            tip('ç™»å½•è¿‡æœŸï¼Œè¯·é‡æ–°ç™»å½•');
+            localStorage.removeItem('token');
+            store.commit('changeLogin', null);
+            setTimeout(() => {
+                toLogin();
+            }, 1000);
+            break;
+        // 404è¯·æ±‚ä¸å­˜åœ¨
+        case 404:
+            tip('è¯·æ±‚çš„èµ„æºä¸å­˜åœ¨');
+            break;
+        default:
+            console.log(other);
+    }
+}
+
+// åˆ›å»ºaxioså®žä¾‹
+var instance = axios.create({ timeout: 1000 * 12 });
+instance.defaults.baseURL = '/api'
+// è®¾ç½®postè¯·æ±‚å¤´
+instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf8';
+/** 
+ * è¯·æ±‚æ‹¦æˆªå™¨ 
+ * æ¯æ¬¡è¯·æ±‚å‰ï¼Œå¦‚æžœå­˜åœ¨tokenåˆ™åœ¨è¯·æ±‚å¤´ä¸­æºå¸¦token 
+ */
+instance.interceptors.request.use(
+    config => {
+        // console.log(store.getters.token);
+        if (localStorage.getItem('token')) {
+            config.headers['X-Token'] = localStorage.getItem('token');
+        }
+        return config;
+    },
+    error => {
+        return Promise.reject(error);
+    })
+
+// å“åº”æ‹¦æˆªå™¨
+instance.interceptors.response.use(
+    // è¯·æ±‚æˆåŠŸ
+    res => res.status === 200 ? Promise.resolve(res) : Promise.reject(res),
+    // è¯·æ±‚å¤±è´¥
+    error => {
+        const { response } = error;
+        const res = response.data.result;
+        if (response) {
+            // è¯·æ±‚å·²å‘å‡ºï¼Œä½†æ˜¯ä¸åœ¨2xxçš„èŒƒå›´ 
+            errorHandle(res.code, res.message);
+            return Promise.reject(response);
+        } else {
+            // å¤„ç†æ–­ç½‘çš„æƒ…å†µ
+            // eg:è¯·æ±‚è¶…æ—¶æˆ–æ–­ç½‘æ—¶ï¼Œæ›´æ–°stateçš„networkçŠ¶æ€
+            // networkçŠ¶æ€åœ¨app.vueä¸­æŽ§åˆ¶ç€ä¸€ä¸ªå…¨å±€çš„æ–­ç½‘æç¤ºç»„ä»¶çš„æ˜¾ç¤ºéšè—
+            // å…³äºŽæ–­ç½‘ç»„ä»¶ä¸­çš„åˆ·æ–°é‡æ–°èŽ·å–æ•°æ®ï¼Œä¼šåœ¨æ–­ç½‘ç»„ä»¶ä¸­è¯´æ˜Ž
+            if (!window.navigator.onLine) {
+                store.commit('changeNetwork', false);
+            } else {
+                return Promise.reject(error);
+            }
+        }
+    });
+// export default instance;
+const request = function (method, data) {
+    // const request = function ({ url: apiURL, method, data: params = {}, ignores }) {
+    debugger
+
+    // instance.defaults.baseURL = baseAPI;
+    return new Promise(function (resolve, reject) {
+        const signParams = {
+            format: config.format,
+            timestamp: now(),
+            tenantCode: 'dev'
+        };
+        let jsonObj = JSON.parse(JSON.stringify(data));
+        jsonObj.sign = createSign(signParams);
+
+        instance({
+            method: method || 'post',
+            url: '/voucher/router',
+            data: qs.stringify(jsonObj)
+        }).then(response => {
+            resolve(response);
+        }).catch(error => {
+            const res = error.response;
+            reject(res);
+        });
+
+        // instance
+        //     .request({
+        //         url: "/voucher/router",
+        //         method: method || 'post',
+        //         data: {
+        //             data: params,
+        //             service: apiURL,
+        //             sign: standardiseParams(params, ignores)
+        //         }
+        //     })
+        //     .then(response => {
+        //         if (response.code === '1') {
+        //             resolve(response);
+        //         } else {
+        //             reject(response);
+        //         }
+        //     })
+        //     .catch(error => {
+        //         const res = error.response;
+        //         reject(res);
+        //     });
+    });
+};
+
+export default request;
+/* ============================ ä»¥ä¸‹ä¸ºåŠ å¯†ç®—æ³• ============================== */
+function createSign(params) {
+    const keys = Object.keys(params);
+    const hashMap = [];
+
+    keys.forEach(key => {
+        hashMap.push({
+            key,
+            value: params[key]
+        });
+    });
+    hashMap.sort(orderBy('key'));
+
+    return ropsign(hashMap, secretKey || '');
+}
+
+function orderBy(name) {
+    return function (o, p) {
+        var a, b;
+        if (typeof o === 'object' && typeof p === 'object' && o && p) {
+            a = o[name];
+            b = p[name];
+            if (a === b) {
+                return 0;
+            }
+            if (typeof a === typeof b) {
+                return a < b ? -1 : 1;
+            }
+            return typeof a < typeof b ? -1 : 1;
+        } else {
+            throw new Error('error');
+        }
+    };
+}
+
+function ropsign(arrtest, secretKey) {
+    var sss = '';
+    sss = sss + secretKey;
+    for (var key = 0; key < arrtest.length; key++) {
+        sss = sss + arrtest[key].key + arrtest[key].value;
+    }
+    sss = sss + secretKey;
+    return hex_sha1(utf16to8(sss));
+}
+
+function utf16to8(str) {
+    var out, i, len, c;
+
+    out = '';
+    len = str.length;
+    for (i = 0; i < len; i++) {
+        c = str.charCodeAt(i);
+        if (c >= 0x0001 && c <= 0x007f) {
+            out += str.charAt(i);
+        } else if (c > 0x07ff) {
+            out += String.fromCharCode(0xe0 | ((c >> 12) & 0x0f));
+            out += String.fromCharCode(0x80 | ((c >> 6) & 0x3f));
+            out += String.fromCharCode(0x80 | ((c >> 0) & 0x3f));
+        } else {
+            out += String.fromCharCode(0xc0 | ((c >> 6) & 0x1f));
+            out += String.fromCharCode(0x80 | ((c >> 0) & 0x3f));
+        }
+    }
+
+    return out;
+}
+
+/* eslint-disable */
+function hex_sha1(s) {
+    return binb2hex(core_sha1(alignSHA1(s)));
+}
+
+function alignSHA1(str) {
+    var nblk = ((str.length + 8) >> 6) + 1;
+
+    var blks = new Array(nblk * 16);
+    for (var i = 0; i < nblk * 16; i++) blks[i] = 0;
+    for (i = 0; i < str.length; i++) { blks[i >> 2] |= str.charCodeAt(i) << (24 - (i & 3) * 8) }
+    blks[i >> 2] |= 0x80 << (24 - (i & 3) * 8);
+    blks[nblk * 16 - 1] = str.length * 8;
+    return blks;
+}
+
+function core_sha1(blockArray) {
+    var x = blockArray // append padding
+    var w = Array(80)
+    var a = 1732584193
+    var b = -271733879
+    var c = -1732584194
+    var d = 271733878
+    var e = -1009589776
+    for (
+        var i = 0;
+        i < x.length;
+        i += 16 // æ¯æ¬¡å¤„ç†512ä½ 16*32
+    ) {
+        var olda = a
+        var oldb = b
+        var oldc = c
+        var oldd = d
+        var olde = e
+        for (
+            var j = 0;
+            j < 80;
+            j++ // å¯¹æ¯ä¸ª512ä½è¿›è¡Œ80æ­¥æ“ä½œ
+        ) {
+            if (j < 16) w[j] = x[i + j]
+            else w[j] = rol(w[j - 3] ^ w[j - 8] ^ w[j - 14] ^ w[j - 16], 1)
+            var t = safe_add(
+                safe_add(rol(a, 5), sha1_ft(j, b, c, d)),
+                safe_add(safe_add(e, w[j]), sha1_kt(j))
+            )
+            e = d
+            d = c
+            c = rol(b, 30)
+            b = a
+            a = t
+        }
+        a = safe_add(a, olda)
+        b = safe_add(b, oldb)
+        c = safe_add(c, oldc)
+        d = safe_add(d, oldd)
+        e = safe_add(e, olde)
+    }
+    return [a, b, c, d, e]
+}
+
+function rol(num, cnt) {
+    return (num << cnt) | (num >>> (32 - cnt))
+}
+
+function sha1_kt(t) {
+    return t < 20
+        ? 1518500249
+        : t < 40
+            ? 1859775393
+            : t < 60
+                ? -1894007588
+                : -899497514
+}
+
+function sha1_ft(t, b, c, d) {
+    if (t < 20) return (b & c) | (~b & d)
+
+    if (t < 40) return b ^ c ^ d
+
+    if (t < 60) return (b & c) | (b & d) | (c & d)
+    return b ^ c ^ d // t<80
+}
+
+function safe_add(x, y) {
+    var lsw = (x & 0xffff) + (y & 0xffff)
+    var msw = (x >> 16) + (y >> 16) + (lsw >> 16)
+    return (msw << 16) | (lsw & 0xffff)
+}
+
+function binb2hex(binarray) {
+    var hex_tab = config.hexcase ? '0123456789ABCDEF' : '0123456789abcdef'
+    var str = ''
+    for (var i = 0; i < binarray.length * 4; i++) {
+        str +=
+            hex_tab.charAt((binarray[i >> 2] >> ((3 - (i % 4)) * 8 + 4)) & 0xf) +
+            hex_tab.charAt((binarray[i >> 2] >> ((3 - (i % 4)) * 8)) & 0xf)
+    }
+    return str.toUpperCase()
+}
+

@@ -1,9 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from "axios"
-import cryptoJs from 'crypto-js'
+import CryptoJS from 'crypto-js'
+import base from "@/api/base.js"; // å¯¼å…¥æ¥å£åŸŸååˆ—è¡¨
+import request from '@/request/http';
 // import services from '@/store/services';
-Vue.use(Vuex) //°²×°Ê¹ÓÃÕâ¸ö¹¦ÄÜ
+// axios.defaults.baseURL = '/api'  
+Vue.use(Vuex) //å®‰è£…ä½¿ç”¨è¿™ä¸ªåŠŸèƒ½
 const store = new Vuex.Store({
 	state: {
 		token: localStorage.getItem("token") ? localStorage.getItem("token") : '',
@@ -20,12 +23,28 @@ const store = new Vuex.Store({
 	},
 
 	actions: {
+		getMy({ context }, payload) {
+			debugger
+			let obj = {
+				service: 'voucher.my.get',
+				userId: '3429c686-1c91-4a82-b8db-62ea4323c548',
+				// service:'voucher.my.get',
+			}
+			request('post', obj).then((res) => {
+				return console.log("ğŸš€ ~ file: index.js ~ line 92 ~ ).then ~ res", res)
+			}).catch((err) => {
+				return console.log("ğŸš€ ~ file: index.js ~ line 94 ~ ).then ~ err", err)
+
+			})
+		},
 		login({ context }, payload) {
-			const initKey = 'xie2gg';
+			console.log("? ~ file: index.js ~ line 24 ~ login ~ payload", payload)
+			debugger
+			const initKey = 'vou2gg';
 			const keySize = 128;
 			/**
-			 * Éú³ÉÃÜÔ¿×Ö½ÚÊı×é, Ô­Ê¼ÃÜÔ¿×Ö·û´®²»×ã128Î», ²¹Ìî0.
-			 * @param {string} key - Ô­Ê¼ key Öµ
+			 * ç”Ÿæˆå¯†é’¥å­—èŠ‚æ•°ç»„, åŸå§‹å¯†é’¥å­—ç¬¦ä¸²ä¸è¶³128ä½, è¡¥å¡«0.
+			 * @param {string} key - åŸå§‹ key å€¼
 			 * @return Buffer
 			 */
 			const fillKey = (key) => {
@@ -39,18 +58,18 @@ const store = new Vuex.Store({
 			};
 
 			/**
-			 * ¶¨Òå¼ÓÃÜº¯Êı
-			 * @param {string} data - ĞèÒª¼ÓÃÜµÄÊı¾İ, ´«¹ıÀ´Ç°ÏÈ½øĞĞ JSON.stringify(data);
-			 * @param {string} key - ¼ÓÃÜÊ¹ÓÃµÄ key
+			 * å®šä¹‰åŠ å¯†å‡½æ•°
+			 * @param {string} data - éœ€è¦åŠ å¯†çš„æ•°æ®, ä¼ è¿‡æ¥å‰å…ˆè¿›è¡Œ JSON.stringify(data);
+			 * @param {string} key - åŠ å¯†ä½¿ç”¨çš„ key
 			 */
 			const aesEncrypt = (data, key) => {
 
 				/**
-				 * CipherOption, ¼ÓÃÜµÄÒ»Ğ©Ñ¡Ïî:
-				 *   mode: ¼ÓÃÜÄ£Ê½, ¿ÉÈ¡Öµ(CBC, CFB, CTR, CTRGladman, OFB, ECB), ¶¼ÔÚ CryptoJS.mode ¶ÔÏóÏÂ
-				 *   padding: Ìî³ä·½Ê½, ¿ÉÈ¡Öµ(Pkcs7, AnsiX923, Iso10126, Iso97971, ZeroPadding, NoPadding), ¶¼ÔÚ CryptoJS.pad ¶ÔÏóÏÂ
-				 *   iv: Æ«ÒÆÁ¿, mode === ECB Ê±, ²»ĞèÒª iv
-				 * ·µ»ØµÄÊÇÒ»¸ö¼ÓÃÜ¶ÔÏó
+				 * CipherOption, åŠ å¯†çš„ä¸€äº›é€‰é¡¹:
+				 *   mode: åŠ å¯†æ¨¡å¼, å¯å–å€¼(CBC, CFB, CTR, CTRGladman, OFB, ECB), éƒ½åœ¨ CryptoJS.mode å¯¹è±¡ä¸‹
+				 *   padding: å¡«å……æ–¹å¼, å¯å–å€¼(Pkcs7, AnsiX923, Iso10126, Iso97971, ZeroPadding, NoPadding), éƒ½åœ¨ CryptoJS.pad å¯¹è±¡ä¸‹
+				 *   iv: åç§»é‡, mode === ECB æ—¶, ä¸éœ€è¦ iv
+				 * è¿”å›çš„æ˜¯ä¸€ä¸ªåŠ å¯†å¯¹è±¡
 				 */
 				const cipher = CryptoJS.AES.encrypt(data, key, {
 					mode: CryptoJS.mode.ECB,
@@ -58,29 +77,40 @@ const store = new Vuex.Store({
 					iv: '',
 				});
 
-				// ½«¼ÓÃÜºóµÄÊı¾İ×ª»»³É Base64
+				// å°†åŠ å¯†åçš„æ•°æ®è½¬æ¢æˆ Base64
 				const base64Cipher = cipher.ciphertext.toString(CryptoJS.enc.Base64);
 
-				// ´¦Àí Android Ä³Ğ©µÍ°æµÄBUG
+				// å¤„ç† Android æŸäº›ä½ç‰ˆçš„BUG
 				const resultCipher = base64Cipher.replace(/\+/g, '-').replace(/\//g, '_');
 
-				// ·µ»Ø¼ÓÃÜºóµÄ¾­¹ı´¦ÀíµÄ Base64
+				// è¿”å›åŠ å¯†åçš„ç»è¿‡å¤„ç†çš„ Base64
 				return resultCipher;
 			};
 
-			// »ñÈ¡Ìî³äºóµÄkey
+			// è·å–å¡«å……åçš„key
 			const key = CryptoJS.enc.Utf8.parse(fillKey(initKey));
 
-			// µ÷ÓÃ¼ÓÃÜº¯Êı
+			// è°ƒç”¨åŠ å¯†å‡½æ•°
+
 			const encrypted = aesEncrypt(JSON.stringify({
-				keyNumber: payload.userName,
-				password: payload.password,
-				tenantCode: payload.tenantCode,
-				time: payload.timestamp,
-				verifyCode: payload.verificationCode
+				abc: payload.abc,
+				def: payload.def,
+				time: payload.time,
+				verifyCode: payload.verifyCode
 			}), key);
-			console.log("? ~ file: index.js ~ line 95 ~ login ~ data", data)
-			return services.login({ data: encrypted });
+			let obj = {
+				data: encrypted,
+				service: 'voucher.login.login'
+
+			}
+			console.log("? ~ file: index.js ~ line 95 ~ login ~ data", encrypted)
+			// return services.login({ data: encrypted });
+			request('post', obj).then((res) => {
+				return console.log("ğŸš€ ~ file: index.js ~ line 92 ~ ).then ~ res", res)
+			}).catch((err) => {
+				return console.log("ğŸš€ ~ file: index.js ~ line 94 ~ ).then ~ err", err)
+
+			})
 		},
 	},
 	mutations: {
@@ -96,5 +126,5 @@ const store = new Vuex.Store({
 
 
 
-//store "È«¾Ö"¶ÔÏó  Òª¼ÇµÃµ¼³ö
+//store "å…¨å±€"å¯¹è±¡  è¦è®°å¾—å¯¼å‡º
 export default store
