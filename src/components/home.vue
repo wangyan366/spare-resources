@@ -82,7 +82,7 @@
     </van-tabs>
     <van-grid :border="false" :column-num="2" :gutter="12">
       <van-grid-item
-        v-for="item in this.cardInfo.cardCategoryList"
+        v-for="item in this.cardCategoryList"
         :key="item.id"
       >
         <van-image :src="item.icon" height="100" fit="contain" />
@@ -135,6 +135,7 @@ export default {
   },
   data() {
     return {
+      cardCategoryList:[],
       vanActive: 0,
       cardInfo: {},
       active: 0,
@@ -157,6 +158,7 @@ export default {
     this.getHome()
       .then((res) => {
         this.cardInfo = res;
+         this.cardCategoryList=res.cardCategoryList
         console.log("🚀 ~ file: my.vue ~ line 63 ~ this.getHome ~ res", res);
       })
       .catch((err) => {
@@ -189,9 +191,9 @@ export default {
       let cardType = this.cardInfo.cardTypeList.find((m) => {
         return m.name == title;
       });
-      debugger;
       this.listCardCategory(cardType.id)
         .then((res) => {
+          this.cardCategoryList=res
           console.log(
             "🚀 ~ file: home.vue ~ line 170 ~ onGridItemClick ~ res",
             res
