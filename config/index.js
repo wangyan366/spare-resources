@@ -3,9 +3,9 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
-import base from "@/api/base.js"; // 导入接口域名列表
+// import base from "@/api/base.js"; // 导入接口域名列表
 
-const baseAPI = base.VUE_APP_BASE_API;
+const baseAPI = "http://112.74.43.153";
 module.exports = {
   dev: {
 

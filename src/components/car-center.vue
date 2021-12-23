@@ -1,11 +1,12 @@
 <template>
 	<div id="car-center">
-		<div class="car-center-header" ref="header">
+		<!-- <div class="car-center-header" ref="header">
 			<form action="/">
 				<van-search v-model="value" placeholder="搜索商品名称" @search="onSearch" safe-area-inset-top border>
 				</van-search>
 			</form>
-		</div>
+		</div> -->
+		 <van-nav-bar safe-area-inset-top :border="false" />
 		<div class="car-center-content" ref="content">
 			<van-sidebar v-model="activeKey" @change="onChange">
 				<van-sidebar-item title="标签名1" />

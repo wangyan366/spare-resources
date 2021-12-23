@@ -60,12 +60,6 @@ export default {
       verifyCode: "",
       password: "",
       username: "",
-      groupId: "",
-      errorInfoShow: false,
-      _ngx: "",
-      hideshow: true, //显示或者隐藏footer,
-      loginTime: "",
-      Autologon: true,
     };
   },
   watch: {},
@@ -87,10 +81,8 @@ export default {
         this.errorInfoShow = false;
       }
     },
-   
+
     loginClick(values) {
-      debugger;
-      // this.$router.push({ path: "/home" });
       if (!this.username || this.username == "") {
         Toast.fail("请填写账号");
         return;
@@ -109,21 +101,18 @@ export default {
         time: this.time,
         verifyCode: this.verifyCode,
       };
-      this.login(new_obj);
-      // axios({
-      //   method: "post",
-      //   url: base.test + "/voucher.login.login",
-      //   data: new_obj,
-      // })
-      //   .then((res) => {
-      //     console.log("🚀 ~ file: login.vue ~ line 92 ~ .then ~ res", res);
-      //     // 储存vuex和localStorage
-      //     this.changeLogin(res.data);
-      //     this.$toast(res);
-      //   })
-      //   .catch((error) => {
-      //     this.$toast(error.message);
-      //   });
+      this.login(new_obj)
+        .then((response) => {
+          Toast.loading({
+            message: "登陆中...",
+            forbidClick: true,
+          });
+          this.$router.push({ path: "/online" });
+          this.changeLogin( JSON.stringify(response));
+        })
+        .catch((err) => {
+          this.getCaptchaSrc();
+        });
     },
   },
 };

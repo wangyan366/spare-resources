@@ -7,7 +7,7 @@
       safe-area-inset-top
     />
     <div class="withdrawal-row">
-      <div class="withdrawal-box" v-for="index in 8" :key="index" >
+      <div class="withdrawal-box" v-for="index in 8" :key="index">
         <div class="withdrawal-box-header">
           <span class="l">订单号</span>
           <div class="pic r"></div>
@@ -33,13 +33,13 @@
           </div>
         </div>
       </div>
-      
     </div>
   </div>
 </template>
 
 <script>
 import { NavBar, Button } from "vant";
+import { mapMutations, mapActions } from "vuex";
 export default {
   name: "Phone",
   components: {
@@ -47,15 +47,19 @@ export default {
     [Button.name]: Button,
   },
   data() {
-    return {
-        
-    };
+    return {};
   },
 
   mounted() {},
 
   methods: {
+    ...mapMutations(["getTabBarActive"]),
     onClickLeft() {
+      if (this.$route.query.type == "my") {
+        this.getTabBarActive("my");
+      } else {
+        this.getTabBarActive("home");
+      }
       this.$router.push({ path: "/index" }); //返回上一层
     },
   },
@@ -87,18 +91,17 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
-
 }
-.withdrawal-row{
-    overflow-y: auto;
-    flex: 1;
+.withdrawal-row {
+  overflow-y: auto;
+  flex: 1;
 }
 .withdrawal-box {
   margin-top: 18px;
   background: #fff;
 }
-.withdrawal-box:last-child{
-    margin-bottom: 20px;
+.withdrawal-box:last-child {
+  margin-bottom: 20px;
 }
 .withdrawal-box-header {
   height: 40px;

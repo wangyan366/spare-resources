@@ -3,14 +3,14 @@
     <van-nav-bar safe-area-inset-top :border="false" />
     <div style="background: #fff; padding-bottom: 10px">
       <van-card
-        desc="132525555"
-        title="解忧1112"
+        :desc="userInfo.mobileLabel"
+        :title="userInfo.realName"
         thumb="https://img01.yzcdn.cn/vant/cat.jpeg"
       />
       <div class="card">
         <div class="left">
           <div class="yuan">
-            500000.55555
+            {{userInfo.balance}}
             <van-icon name="eye-o" class="icn" />
           </div>
           <div>账户余额（元）</div>
@@ -55,26 +55,33 @@ export default {
   },
 
   data() {
-    return {};
+    return {
+      userInfo:{}
+    };
   },
 
   mounted() {
-    this.getMy()
+    this.getMy().then(res=>{
+      this.userInfo=res
+    console.log("🚀 ~ file: my.vue ~ line 63 ~ this.getMy ~ res", res)
+    }).catch(err=>{
+    console.log("🚀 ~ file: my.vue ~ line 65 ~ this.getMy ~ err", err)
+    })
   },
 
   methods: {
        ...mapActions(["getMy"]),
     passwordClick() {
-      this.$router.push({ path: "/password" });
+      this.$router.push({ path: "/password",query: {type: "my"} });
     },
     certificationClick() {
-      this.$router.push({ path: "/certification" });
+      this.$router.push({ path: "/certification" ,query: {type: "my"}});
     },
     withdrawalClick() {
-      this.$router.push({ path: "/withdrawal" });
+      this.$router.push({ path: "/withdrawal",query: {type: "my"} });
     },
     phoneClick() {
-      this.$router.push({ path: "/phone" });
+      this.$router.push({ path: "/phone" ,query: {type: "my"}});
     },
   },
 };

@@ -9,37 +9,59 @@ import request from '@/request/http';
 Vue.use(Vuex) //安装使用这个功能
 const store = new Vuex.Store({
 	state: {
-		token: localStorage.getItem("token") ? localStorage.getItem("token") : '',
 		user: {},
-		myInfo: {},
-		tabName: 'home',
-		competitionExisting: 2,
-		showDanger: 2,
-		showGoods: 2,
-		showContestRate: 2,
-		netcase: 2,
-		safeDiploma: 2,
 		network: true,
+		tabBarActive:"home",
 	},
 
 	actions: {
-		getMy({ context }, payload) {
-			debugger
-			let obj = {
-				service: 'voucher.my.get',
-				userId: '3429c686-1c91-4a82-b8db-62ea4323c548',
-				// service:'voucher.my.get',
-			}
-			request('post', obj).then((res) => {
-				return console.log("🚀 ~ file: index.js ~ line 92 ~ ).then ~ res", res)
-			}).catch((err) => {
-				return console.log("🚀 ~ file: index.js ~ line 94 ~ ).then ~ err", err)
-
+		listCardCategory(commit, payload) {
+			return new Promise((resolve, reject) => {
+				//接口
+				let obj = {
+					limit:1,
+					cardTypeId:payload,
+					service: 'voucher.index.listCardCategory',
+				}
+				request('post', obj).then(response => {
+					resolve(response)
+				}).catch(error => {
+					reject(error)
+				})
 			})
 		},
+		getHome() {
+			return new Promise((resolve, reject) => {
+				//接口
+				let obj = {
+					service: 'voucher.index.index',
+				}
+				request('post', obj).then(response => {
+					resolve(response)
+				}).catch(error => {
+					reject(error)
+				})
+			})
+		},
+		getMy(commit, payload) {
+			return new Promise((resolve, reject) => {
+				let userId = JSON.stringify(commit.state.user) != "{}" ? JSON.parse(commit.state.user).userId : JSON.parse(localStorage.getItem("user")).userId
+				//接口
+				let obj = {
+					service: 'voucher.my.get',
+					userId: userId,
+					// service:'voucher.my.get',
+				}
+				request('post', obj).then(response => {
+					resolve(response)
+				}).catch(error => {
+					reject(error)
+				})
+			})
+
+		},
 		login({ context }, payload) {
-			console.log("? ~ file: index.js ~ line 24 ~ login ~ payload", payload)
-			debugger
+
 			const initKey = 'vou2gg';
 			const keySize = 128;
 			/**
@@ -103,23 +125,28 @@ const store = new Vuex.Store({
 				service: 'voucher.login.login'
 
 			}
-			console.log("? ~ file: index.js ~ line 95 ~ login ~ data", encrypted)
-			// return services.login({ data: encrypted });
-			request('post', obj).then((res) => {
-				return console.log("🚀 ~ file: index.js ~ line 92 ~ ).then ~ res", res)
-			}).catch((err) => {
-				return console.log("🚀 ~ file: index.js ~ line 94 ~ ).then ~ err", err)
-
+			return new Promise((resolve, reject) => {
+				//接口
+				request('post', obj).then(response => {
+					resolve(response)
+				}).catch(error => {
+					reject(error)
+				})
 			})
+
+
 		},
 	},
 	mutations: {
+		getTabBarActive(state, payload){
+			state.tabBarActive = payload
+		},
 		changeNetwork(state, payload) {
-			this.network = payload
+			state.network = payload
 		},
 		changeLogin(state, user) {
-			state.token = user.token;
-			localStorage.setItem("token", user.token)
+			state.user = user;
+			localStorage.setItem("user", user)
 		}
 	}
 })

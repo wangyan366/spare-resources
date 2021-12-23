@@ -17,7 +17,14 @@
       </template>
     </van-nav-bar>
     <div class="swipe">
-      <img src="https://img01.yzcdn.cn/vant/cat.jpeg" alt="" />
+      <van-swipe @change="onChange" :autoplay="3000">
+        <van-swipe-item>
+          <img src="https://img01.yzcdn.cn/vant/cat.jpeg" alt="" />
+        </van-swipe-item>
+        <van-swipe-item>2</van-swipe-item>
+        <van-swipe-item>3</van-swipe-item>
+        <van-swipe-item>4</van-swipe-item>
+      </van-swipe>
     </div>
     <div class="mark">
       <van-grid :border="false" square class="grid">
@@ -25,15 +32,15 @@
           <van-image :src="gridItem.zhuce" width="26" height="28" />
           <span class="grid-text">注册</span>
         </van-grid-item>
-        <van-grid-item>
+        <van-grid-item @click="certificationClick">
           <van-image :src="gridItem.renzheng" width="22" height="28" />
           <span class="grid-text">实名认证</span>
         </van-grid-item>
-        <van-grid-item>
+        <van-grid-item @click="tijiaokamiClick">
           <van-image :src="gridItem.tijiao" width="28" height="20" />
           <span class="grid-text">提交卡密</span>
         </van-grid-item>
-        <van-grid-item>
+        <van-grid-item @click="withdrawalClick">
           <van-image :src="gridItem.zhanghu" width="28" height="26" />
           <span class="grid-text">账户提现</span>
         </van-grid-item>
@@ -59,23 +66,38 @@
         <span class="time">2021-10-25</span>
       </div>
     </div>
-    <van-tabs swipeable color="#2ecc71" background="#f5f7fa" @click="onClick">
-      <van-tab v-for="index in 8" :title="'标签 ' + index" :key="index">
+    <van-tabs
+      swipeable
+      color="#2ecc71"
+      background="#f5f7fa"
+      @click="onGridItemClick"
+      v-model="vanActive"
+    >
+      <van-tab
+        v-for="item in this.cardInfo.cardTypeList"
+        :title="item.name"
+        :key="item.id"
+      >
       </van-tab>
     </van-tabs>
     <van-grid :border="false" :column-num="2" :gutter="12">
-      <van-grid-item v-for="index in 8" :key="index">
-        <van-image
-          src="https://img01.yzcdn.cn/vant/apple-1.jpg"
-          height="100"
-          fit="contain"
-        />
+      <van-grid-item
+        v-for="item in this.cardInfo.cardCategoryList"
+        :key="item.id"
+      >
+        <van-image :src="item.icon" height="100" fit="contain" />
+        <template v-slot:error>加载失败</template>
       </van-grid-item>
     </van-grid>
+    <div class="problem">
+      <p>{{this.cardInfo.faq.title}}</p>
+      <span>{{this.cardInfo.faq.content}}</span>
+    </div>
   </div>
 </template>
 
 <script>
+import { mapMutations, mapActions } from "vuex";
 import {
   NavBar,
   Icon,
@@ -90,10 +112,12 @@ import {
   Tab,
   Tabs,
   Badge,
+  Toast,
 } from "vant";
 export default {
   name: "Home",
   components: {
+    [Toast.name]: Toast,
     [Tab.name]: Tab,
     [Tabs.name]: Tabs,
     [NavBar.name]: NavBar,
@@ -111,6 +135,8 @@ export default {
   },
   data() {
     return {
+      vanActive: 0,
+      cardInfo: {},
       active: 0,
       images: ["https://img01.yzcdn.cn/vant/apple-1.jpg"],
       gridItem: {
@@ -127,16 +153,66 @@ export default {
     };
   },
 
-  mounted() {},
+  mounted() {
+    this.getHome()
+      .then((res) => {
+        this.cardInfo = res;
+        console.log("🚀 ~ file: my.vue ~ line 63 ~ this.getHome ~ res", res);
+      })
+      .catch((err) => {
+        console.log("🚀 ~ file: my.vue ~ line 65 ~ this.getHome ~ err", err);
+      });
+  },
 
   methods: {
-	  zhuceClick(){
-		  console.log("522")
-	  },
+    ...mapActions(["getHome", "listCardCategory"]),
+    ...mapMutations(["getTabBarActive"]),
+    gridClick(val) {
+      console.log("🚀 ~ file: home.vue ~ line 166 ~ gridClick ~ val", val);
+    },
+    tijiaokamiClick() {
+      this.getTabBarActive("center");
+    },
+    passwordClick() {
+      this.$router.push({ path: "/password" });
+    },
+    certificationClick() {
+      this.$router.push({ path: "/certification" });
+    },
+    withdrawalClick() {
+      this.$router.push({ path: "/withdrawal" });
+    },
+    phoneClick() {
+      this.$router.push({ path: "/phone" });
+    },
+    onGridItemClick(name, title) {
+      let cardType = this.cardInfo.cardTypeList.find((m) => {
+        return m.name == title;
+      });
+      debugger;
+      this.listCardCategory(cardType.id)
+        .then((res) => {
+          console.log(
+            "🚀 ~ file: home.vue ~ line 170 ~ onGridItemClick ~ res",
+            res
+          );
+        })
+        .catch((err) => {
+          console.log(
+            "🚀 ~ file: home.vue ~ line 174 ~ onGridItemClick ~ err",
+            err
+          );
+        });
+    },
+    onChange(index) {
+      // Toast("当前 Swipe 索引：" + index);
+    },
+    zhuceClick() {
+      console.log("522");
+    },
     onClick(name, title) {
-    console.log("🚀 ~ file: home.vue ~ line 135 ~ onClick ~ name", name)
-    console.log("🚀 ~ file: home.vue ~ line 135 ~ onClick ~ title", title)
-    
+      console.log("🚀 ~ file: home.vue ~ line 135 ~ onClick ~ name", name);
+      console.log("🚀 ~ file: home.vue ~ line 135 ~ onClick ~ title", title);
     },
     onClickLeft() {
       Toast("返回");
@@ -152,6 +228,32 @@ export default {
 /deep/ .van-nav-bar__content {
   background: rgba(46, 204, 113, 1);
   color: #fff;
+}
+/deep/ .van-swipe {
+  height: 100%;
+}
+.problem {
+  box-shadow: 0 1px 6px#eee;
+  width: 94%;
+  // height: 70px;
+  margin: 0 auto;
+  margin-top: 31px;
+  box-sizing: border-box;
+  font-size: 14px;
+  background: #fff;
+  padding: 6px 10px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  p {
+    line-height: 28px;
+    height: 28px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  span{
+    color: #ccc;
+    font-size: 12px;
+  }
 }
 .swipe {
   background: rgba(46, 204, 113, 1);

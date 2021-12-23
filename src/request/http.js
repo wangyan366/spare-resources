@@ -24,38 +24,7 @@ const tip = msg => {
         forbidClick: true
     });
 }
-// 标准化参数
-const standardiseParams = (params, ignores = []) => {
-    const signParams = {
-        format: config.format,
-        timestamp: now(),
-        tenantCode: 'dev'
-    };
-    keys(params).forEach(key => {
-        // 忽略参与签名,包括config文件配置的全局ignores以及各请求params传入的ignores
-        if (config.ignores.indexOf(key) !== -1 || ignores.indexOf(key) !== -1) {
-            return;
-        }
-        if (params[key] === null) {
-            signParams[key] = '';
-        } else {
-            signParams[key] = params[key];
-        }
-    });
 
-    // params.ns = ignores.join();
-    // if (!params.ns) {
-    //     delete params.ns;
-    // }
-
-    return qs.stringify(
-        // {
-        // ...params,
-        // ...signParams,
-        createSign(signParams)
-        // }
-    );
-};
 /** 
  * 跳转登录页
  * 携带当前页面路由，以期在登录页面完成登录后返回当前页面
@@ -69,39 +38,41 @@ const toLogin = () => {
     });
 }
 
-/** 
- * 请求失败后的错误统一处理 
- * @param {Number} status 请求失败的状态码
- */
-const errorHandle = (status, other) => {
-    // 状态码判断
-    switch (status) {
-        // 401: 未登录状态，跳转登录页
-        case 401:
-            toLogin();
-            break;
-        // 403 token过期
-        // 清除token并跳转登录页
-        case 403:
-            tip('登录过期，请重新登录');
-            localStorage.removeItem('token');
-            store.commit('changeLogin', null);
-            setTimeout(() => {
-                toLogin();
-            }, 1000);
-            break;
-        // 404请求不存在
-        case 404:
-            tip('请求的资源不存在');
-            break;
-        default:
-            console.log(other);
-    }
-}
+// /** 
+//  * 请求失败后的错误统一处理 
+//  * @param {Number} status 请求失败的状态码
+//  */
+// const errorHandle = (status, other) => {
+//     // 状态码判断
+//     switch (status) {
+//         // 401: 未登录状态，跳转登录页
+//         case 401:
+//             tip('请重新登录');
+//             toLogin();
+//             break;
+//         // 403 token过期
+//         // 清除token并跳转登录页
+//         case 403:
+//             tip('登录过期，请重新登录');
+//             localStorage.removeItem('token');
+//             store.commit('changeLogin', null);
+//             setTimeout(() => {
+//                 toLogin();
+//             }, 1000);
+//             break;
+//         // 404请求不存在
+//         case 404:
+//             tip('请求的资源不存在');
+//             break;
+//         default:
+//             console.log(other);
+//     }
+// }
 
 // 创建axios实例
 var instance = axios.create({ timeout: 1000 * 12 });
-instance.defaults.baseURL = '/api'
+// instance.defaults.baseURL = '/api'
+instance.defaults.baseURL = baseAPI;
 // 设置post请求头
 instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf8';
 /** 
@@ -121,44 +92,62 @@ instance.interceptors.request.use(
     })
 
 // 响应拦截器
+
 instance.interceptors.response.use(
-    // 请求成功
-    res => res.status === 200 ? Promise.resolve(res) : Promise.reject(res),
-    // 请求失败
-    error => {
-        const { response } = error;
-        const res = response.data.result;
-        if (response) {
-            // 请求已发出，但是不在2xx的范围 
-            errorHandle(res.code, res.message);
-            return Promise.reject(response);
-        } else {
-            // 处理断网的情况
-            // eg:请求超时或断网时，更新state的network状态
-            // network状态在app.vue中控制着一个全局的断网提示组件的显示隐藏
-            // 关于断网组件中的刷新重新获取数据，会在断网组件中说明
-            if (!window.navigator.onLine) {
-                store.commit('changeNetwork', false);
-            } else {
-                return Promise.reject(error);
-            }
+    response => {
+        const res = response.data;
+        if (!res) {
+            return response.data;
         }
-    });
+        if (res && res.code && res.code !== '0') {
+            tip(res.msg || 'Error');
+            toLogin();
+            return Promise.reject(res.msg || 'Error');
+        } else {
+            return JSON.parse(res.data)
+        }
+    },
+    error => {
+        tip(error.message);
+        return Promise.reject(error);
+    }
+);
+// instance.interceptors.response.use(
+//     // 请求成功
+//     res => res.status === 200 ? Promise.resolve(res) : Promise.reject(res),
+//     // 请求失败
+//     error => {
+//         const { response } = error;
+//         const res = response.data.result;
+//         if (response) {
+//             // 请求已发出，但是不在2xx的范围 
+//             errorHandle(res.status, res.statusText);
+//             return Promise.reject(response);
+//         } else {
+//             // 处理断网的情况
+//             // eg:请求超时或断网时，更新state的network状态
+//             // network状态在app.vue中控制着一个全局的断网提示组件的显示隐藏
+//             // 关于断网组件中的刷新重新获取数据，会在断网组件中说明
+//             if (!window.navigator.onLine) {
+//                 store.commit('changeNetwork', false);
+//             } else {
+//                 return Promise.reject(error);
+//             }
+//         }
+//     });
 // export default instance;
 const request = function (method, data) {
     // const request = function ({ url: apiURL, method, data: params = {}, ignores }) {
-    debugger
-
-    // instance.defaults.baseURL = baseAPI;
     return new Promise(function (resolve, reject) {
         const signParams = {
             format: config.format,
             timestamp: now(),
-            tenantCode: 'dev'
         };
-        let jsonObj = JSON.parse(JSON.stringify(data));
-        jsonObj.sign = createSign(signParams);
-
+        let jsonObj = JSON.parse(JSON.stringify({
+            ...data, ...signParams
+        }));
+        var signs = createSign(jsonObj);
+        jsonObj.sign = signs;
         instance({
             method: method || 'post',
             url: '/voucher/router',
@@ -166,31 +155,10 @@ const request = function (method, data) {
         }).then(response => {
             resolve(response);
         }).catch(error => {
-            const res = error.response;
-            reject(res);
+            reject(error);
         });
 
-        // instance
-        //     .request({
-        //         url: "/voucher/router",
-        //         method: method || 'post',
-        //         data: {
-        //             data: params,
-        //             service: apiURL,
-        //             sign: standardiseParams(params, ignores)
-        //         }
-        //     })
-        //     .then(response => {
-        //         if (response.code === '1') {
-        //             resolve(response);
-        //         } else {
-        //             reject(response);
-        //         }
-        //     })
-        //     .catch(error => {
-        //         const res = error.response;
-        //         reject(res);
-        //     });
+
     });
 };
 

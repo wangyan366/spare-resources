@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import { mapMutations, mapActions } from "vuex";
 import { NavBar, Button } from "vant";
 export default {
   name: "Phone",
@@ -33,8 +34,14 @@ export default {
   mounted() {},
 
   methods: {
+    ...mapMutations(["getTabBarActive"]),
     onClickLeft() {
-      this.$router.push({ path: "/index" }); //返回上一层
+      if (this.$route.query.type == "my") {
+        this.getTabBarActive("my");
+      } else {
+        this.getTabBarActive("home");
+      }
+      this.$router.push({ path: "/index" });
     },
   },
 };

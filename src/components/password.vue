@@ -24,6 +24,7 @@
 
 <script>
 import { NavBar, Button, Field, Cell, CellGroup } from "vant";
+import { mapMutations, mapActions } from "vuex";
 export default {
   name: "Phone",
   components: {
@@ -42,7 +43,13 @@ export default {
   mounted() {},
 
   methods: {
+   ...mapMutations(["getTabBarActive"]),
     onClickLeft() {
+      if (this.$route.query.type == "my") {
+        this.getTabBarActive("my");
+      } else {
+        this.getTabBarActive("home");
+      }
       this.$router.push({ path: "/index" }); //返回上一层
     },
   },

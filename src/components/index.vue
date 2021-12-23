@@ -15,7 +15,7 @@
           <img :src="props.active ? home.active : home.inactive" />
         </template>
       </van-tabbar-item>
-      <van-tabbar-item name="search">
+      <van-tabbar-item name="center">
         <span>兑卡中心</span>
         <template #icon="props">
           <img :src="props.active ? center.active : center.inactive" />
@@ -50,6 +50,7 @@ import {
 import home from "./home.vue";
 import caCenter from "./car-center.vue";
 import my from "./my.vue";
+import { mapMutations, mapActions, mapState } from "vuex";
 export default {
   name: "Home",
   components: {
@@ -66,14 +67,6 @@ export default {
     [Tabbar.name]: Tabbar,
     [TabbarItem.name]: TabbarItem,
     //  'van-lazyload': Lazyload
-  },
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      if (from.name == "phone"||from.name =="withdrawal"||from.name =="certification" ||from.name =="password") {
-        vm.onChange("my");
-        vm.active = "my";
-      }
-    });
   },
   data() {
     return {
@@ -98,25 +91,32 @@ export default {
     };
   },
 
-  //   watch: {
-  //     $route(to, from) {
-  // 		debugger
-  //       if (from.name == "phone") {
-  //         this.componentId = home;
-  //       }
-  //       console.log(from.path); //从哪来
-  //       console.log(to.path); //到哪去
-  //     },
-  //   },
+  computed: {
+    ...mapState({
+      tabBarActivewatcher: "tabBarActive",
+    }),
+  },
+  watch: {
+    tabBarActivewatcher: {
+      immediate: true,
+      handler: function (newval) {
+        this.onChange(newval);
+        this.active=newval
+        console.log("🚀 ~ file: index.vue ~ line 108 ~ newval", newval);
+      },
+    },
+  },
+
   mounted() {},
 
   methods: {
+    ...mapMutations(["getTabBarActive"]),
     // getPath() {
     //   console.log(this.$route.path);
     // },
     onChange(val) {
       switch (val) {
-        case "search":
+        case "center":
           this.componentId = caCenter;
           break;
         case "home":
