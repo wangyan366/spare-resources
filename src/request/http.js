@@ -31,7 +31,7 @@ const tip = msg => {
  */
 const toLogin = () => {
     router.replace({
-        path: '/login',
+        path: '/home',
         query: {
             redirect: router.currentRoute.fullPath
         }

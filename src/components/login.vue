@@ -101,19 +101,34 @@ export default {
         time: this.time,
         verifyCode: this.verifyCode,
       };
+      let that =this
       this.login(new_obj)
         .then((response) => {
           Toast.loading({
             message: "登陆中...",
             forbidClick: true,
           });
-          this.$router.push({ path: "/online" });
-          this.changeLogin( JSON.stringify(response));
+          debugger
+          if (that.$route.query.redirect) {
+            that.$router.push({
+              path: decodeURIComponent(that.$route.query.redirect),
+            });
+          }
+          that.changeLogin(response.id);
         })
         .catch((err) => {
           this.getCaptchaSrc();
         });
     },
+  },
+  beforeRouteLeave(to, from, next) {
+    debugger;
+    console.log("to", to);
+    console.log("from", from);
+    console.log("next", next);
+    next((vm) => {
+      vm.$router.replace(from.fullPath);
+    });
   },
 };
 </script>

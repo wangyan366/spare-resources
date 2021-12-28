@@ -52,18 +52,13 @@
         <van-image :src="cardItem.laba" width="15" height="15" />
       </div>
       <div class="card-top">
-        <div class="text">京东优惠升级，请于12月31日登陆APP升级</div>
+        <div class="text">{{ cardInfo.notice.title }}</div>
         <van-image :src="cardItem.you" width="10" height="10" />
       </div>
       <div class="card-content">
-        <span class="label">天猫</span>
-        <p>天猫超市...天猫超市天猫超市天猫超市天猫超市天猫超市..</p>
-        <span class="time">2021-10-25</span>
-      </div>
-      <div class="card-content">
-        <span class="label">天猫</span>
-        <p>天猫超市...天猫超市天猫超市天猫超市天猫超市天猫超市..</p>
-        <span class="time">2021-10-25</span>
+        <!-- <span class="label">天猫</span> -->
+        <p>{{ cardInfo.notice.content }}</p>
+        <span class="time">{{ cardInfo.notice.publishTimeLabel }}</span>
       </div>
     </div>
     <van-tabs
@@ -81,17 +76,14 @@
       </van-tab>
     </van-tabs>
     <van-grid :border="false" :column-num="2" :gutter="12">
-      <van-grid-item
-        v-for="item in this.cardCategoryList"
-        :key="item.id"
-      >
+      <van-grid-item v-for="item in this.cardCategoryList" :key="item.index">
         <van-image :src="item.icon" height="100" fit="contain" />
         <template v-slot:error>加载失败</template>
       </van-grid-item>
     </van-grid>
     <div class="problem">
-      <p>{{this.cardInfo.faq.title}}</p>
-      <span>{{this.cardInfo.faq.content}}</span>
+      <p>{{ this.cardInfo.faq.title }}</p>
+      <div>{{ this.cardInfo.faq.content }}</div>
     </div>
   </div>
 </template>
@@ -135,9 +127,9 @@ export default {
   },
   data() {
     return {
-      cardCategoryList:[],
+      cardCategoryList: [],
       vanActive: 0,
-      cardInfo: {},
+      cardInfo: this.creatCardInfo(),
       active: 0,
       images: ["https://img01.yzcdn.cn/vant/apple-1.jpg"],
       gridItem: {
@@ -158,7 +150,7 @@ export default {
     this.getHome()
       .then((res) => {
         this.cardInfo = res;
-         this.cardCategoryList=res.cardCategoryList
+        this.cardCategoryList = res.cardCategoryList;
         console.log("🚀 ~ file: my.vue ~ line 63 ~ this.getHome ~ res", res);
       })
       .catch((err) => {
@@ -167,6 +159,20 @@ export default {
   },
 
   methods: {
+    creatCardInfo() {
+      return {
+        faq: {
+          title:"",
+          content:"",
+          },
+          cardTypeList:[],
+          notice:{
+            "title":"",
+            "content":"",
+            "publishTimeLabel":"",
+          }
+      };
+    },
     ...mapActions(["getHome", "listCardCategory"]),
     ...mapMutations(["getTabBarActive"]),
     gridClick(val) {
@@ -191,9 +197,9 @@ export default {
       let cardType = this.cardInfo.cardTypeList.find((m) => {
         return m.name == title;
       });
-      this.listCardCategory(cardType.id)
+      this.listCardCategory({cardTypeId:cardType.id,limit: 4})
         .then((res) => {
-          this.cardCategoryList=res
+          this.cardCategoryList = res;
           console.log(
             "🚀 ~ file: home.vue ~ line 170 ~ onGridItemClick ~ res",
             res
@@ -252,9 +258,12 @@ export default {
     font-weight: 600;
     margin-bottom: 4px;
   }
-  span{
+  div {
     color: #ccc;
     font-size: 12px;
+    word-break: break-all;
+    width: 100%;
+    overflow: hidden;
   }
 }
 .swipe {
@@ -314,6 +323,9 @@ export default {
     align-items: center;
     height: 46px;
     border-bottom: 1px solid #f3f3f3;
+  }
+  .card-content p {
+    word-break: break-all;
   }
   .card-content:nth-child(1) {
     border-bottom: 1px solid #f3f3f3;
