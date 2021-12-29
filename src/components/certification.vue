@@ -38,17 +38,19 @@ export default {
     };
   },
 
-  mounted() {},
+ mounted() {
+    this.setTabbarShow(false);
+  },
 
   methods: {
-    ...mapMutations(["getTabBarActive"]),
+    ...mapMutations(["setTabbarShow"]),
     onClickLeft() {
-      if (this.$route.query.type == "my") {
-        this.getTabBarActive("my");
-      } else {
-        this.getTabBarActive("home");
+      if (this.$route.query.redirect) {
+        this.$router.push({
+          path: decodeURIComponent(this.$route.query.redirect),
+        });
+         this.setTabbarShow(true);
       }
-      this.$router.push({ path: "/index" }); //返回上一层
     },
   },
 };

@@ -8,17 +8,12 @@
     />
 
     <div class="password">
-      <van-form @submit="onSubmit" scroll-to-error show-error-message>
+      <van-form @submit="onSubmit">
         <span class="title">旧密码</span>
         <van-field
-          v-model="oldPassword"
+          v-model="value"
           placeholder="请输入原始密码 "
-          :rules="[
-            {
-              required: true,
-              trigger: 'onBlur',
-            },
-          ]"
+          :rules="[{ required: true, trigger: 'onBlur' }]"
           name="oldPassword"
         />
         <!-- <span class="bar"></span> -->
@@ -30,9 +25,6 @@
           :formatter="formatter"
           :error-message="errorText"
           :rules="[{ required: true, trigger: 'onBlur' }]"
-          right-icon="eye"
-          :type="!passwordStatus ? 'password' : 'text'"
-          @click-right-icon="passwordStatus = !passwordStatus"
         />
         <!-- <span class="bar"></span> -->
         <!-- <span class="title"></span> -->
@@ -41,8 +33,8 @@
           v-model="newPassword1"
           name="newPassword1"
           placeholder="请设置密码，字母、数字、符号至少两种"
-          :error-message="errorText1"
-          :rules="[{ validator: validatornewPassword1, trigger: 'onBlur' }]"
+ 
+          :rules="[{ validator, message: '请输入正确内容' }]"
         />
         <van-button type="primary" native-type="submit">提交</van-button>
         <van-button type="default" @click="onClickLeft">取消</van-button>
@@ -69,10 +61,10 @@ export default {
     return {
       newPassword1: "",
       newPassword: "",
-      oldPassword: "",
+      value: "",
       errorText: "",
       errorText1: "",
-      passwordStatus: false,
+      pattern: /\d{6}/,
     };
   },
 
@@ -81,19 +73,20 @@ export default {
   },
 
   methods: {
-    validatornewPassword1(val) {
-      if (!val) return true;
-      if (val !== this.newPassword) {
-        this.errorText1 = "重复输入密码错误";
-        return false;
+        // 校验函数返回 true 表示校验通过，false 表示不通过
+    validator(val) {
+      return val!== this.newPassword;
+    },
+    ...mapMutations(["setTabbarShow"]),
+    phoneBlur(val) {
+      console.log("🚀 ~ file: password.vue ~ line 67 ~ phoneBlur ~ val", val);
+      if (this.newPassword1 !== this.newPassword) {
+        this.errorText1 = "输入与上次不同";
       }
       this.errorText1 = "";
-      return true;
     },
-
-    ...mapActions(["updatePassword"]),
-    ...mapMutations(["mapActions"]),
     formatter(val) {
+      //  修改密码   密码正则   /^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?![,\.#%'\+\*\-:;^_`]+$)[,\.#%'\+\*\-:;^_`0-9A-Za-z]{6,20}$/       请输入字母、数字、符号至少两种组合的字符
       const reg =
         /^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?![,\.#%'\+\*\-:;^_`]+$)[,\.#%'\+\*\-:;^_`0-9A-Za-z]{6,20}$/;
 
@@ -109,33 +102,6 @@ export default {
 
     onSubmit(val) {
       console.log("🚀 ~ file: password.vue ~ line 57 ~ onSubmit ~ val", val);
-      if (!this.oldPassword || this.oldPassword == "") {
-        Toast.fail("请填写原始密码");
-        return;
-      }
-      if (!this.newPassword || this.newPassword == "") {
-        Toast.fail("请填写新密码");
-        return;
-      }
-      if (!this.newPassword1 || this.newPassword1 == "") {
-        Toast.fail("请重复输入密码");
-        return;
-      }
-      if (this.newPassword1 !== this.newPassword) {
-        this.errorText1 = "重复输入密码错误";
-        Toast.fail("重复输入密码错误");
-        return;
-      }
-      let newObj = {
-        oldPassword: val.oldPassword,
-        newPassword: val.newPassword,
-      };
-      this.updatePassword(newObj).then((res) => {
-        Toast.success("修改成功，请重新登录");
-        that.$router.push({
-          path: "/login",
-        });
-      });
     },
     onClickLeft() {
       if (this.$route.query.redirect) {

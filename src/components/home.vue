@@ -81,10 +81,28 @@
         <template v-slot:error>加载失败</template>
       </van-grid-item>
     </van-grid>
-    <div class="problem">
-      <p>{{ this.cardInfo.faq.title }}</p>
+    <!-- <div class="problem">
+      <div>
+        <p>{{ this.cardInfo.faq.title }}</p>
+        <span>更多</span>
+      </div>
       <div>{{ this.cardInfo.faq.content }}</div>
+    </div> -->
+    <div class="problem-box">
+      <div class="problem-box-title">
+        <div>常见问题</div>
+        <span @click="moreClick">更多</span>
+      </div>
+      <div class="problem-box-top">
+        <div class="problem-box-top-pic"></div>
+        <div class="problem-box-content">{{ this.cardInfo.faq.title }}</div>
+      </div>
+      <div class="problem-box-down">
+        <div class="problem-box-down-pic"></div>
+        <div class="problem-box-content">{{ this.cardInfo.faq.content }}</div>
+      </div>
     </div>
+    <div style="height: 43px"></div>
   </div>
 </template>
 
@@ -159,51 +177,80 @@ export default {
   },
 
   methods: {
+    moreClick() {
+      this.$router.replace({
+        path: "/problem",
+        query: {
+          redirect: this.$router.currentRoute.fullPath,
+        },
+      });
+    },
     creatCardInfo() {
       return {
         faq: {
-          title:"",
-          content:"",
-          },
-          cardTypeList:[],
-          notice:{
-            "title":"",
-            "content":"",
-            "publishTimeLabel":"",
-          }
+          title: "",
+          content: "",
+        },
+        cardTypeList: [],
+        notice: {
+          title: "",
+          content: "",
+          publishTimeLabel: "",
+        },
       };
     },
     ...mapActions(["getHome", "listCardCategory"]),
-    ...mapMutations(["getTabBarActive"]),
     gridClick(val) {
       console.log("🚀 ~ file: home.vue ~ line 166 ~ gridClick ~ val", val);
     },
     tijiaokamiClick() {
-      this.getTabBarActive("center");
+      this.$router.replace({
+        path: "/carCenter",
+        query: {
+          redirect: this.$router.currentRoute.fullPath,
+          active: "carCenter",
+        },
+      });
     },
     passwordClick() {
-      this.$router.push({ path: "/password" });
+      this.$router.replace({
+        path: "/password",
+        query: {
+          redirect: this.$router.currentRoute.fullPath,
+        },
+      });
     },
     certificationClick() {
-      this.$router.push({ path: "/certification" });
+      this.$router.replace({
+        path: "/certification",
+        query: {
+          redirect: this.$router.currentRoute.fullPath,
+        },
+      });
     },
     withdrawalClick() {
-      this.$router.push({ path: "/withdrawal" });
+      this.$router.replace({
+        path: "/withdrawal",
+        query: {
+          redirect: this.$router.currentRoute.fullPath,
+        },
+      });
     },
     phoneClick() {
-      this.$router.push({ path: "/phone" });
+      this.$router.replace({
+        path: "/phone",
+        query: {
+          redirect: this.$router.currentRoute.fullPath,
+        },
+      });
     },
     onGridItemClick(name, title) {
       let cardType = this.cardInfo.cardTypeList.find((m) => {
         return m.name == title;
       });
-      this.listCardCategory({cardTypeId:cardType.id,limit: 4})
+      this.listCardCategory({ cardTypeId: cardType.id, limit: 1 })
         .then((res) => {
           this.cardCategoryList = res;
-          console.log(
-            "🚀 ~ file: home.vue ~ line 170 ~ onGridItemClick ~ res",
-            res
-          );
         })
         .catch((err) => {
           console.log(
@@ -217,10 +264,6 @@ export default {
     },
     zhuceClick() {
       console.log("522");
-    },
-    onClick(name, title) {
-      console.log("🚀 ~ file: home.vue ~ line 135 ~ onClick ~ name", name);
-      console.log("🚀 ~ file: home.vue ~ line 135 ~ onClick ~ title", title);
     },
     onClickLeft() {
       Toast("返回");
@@ -240,30 +283,58 @@ export default {
 /deep/ .van-swipe {
   height: 100%;
 }
-.problem {
-  box-shadow: 0 1px 6px#eee;
-  width: 94%;
-  // height: 70px;
-  margin: 0 auto;
-  margin-top: 31px;
-  box-sizing: border-box;
-  font-size: 14px;
+.problem-box {
+  border-radius: 10px;
   background: #fff;
-  padding: 6px 10px;
-  border-radius: 8px;
+  box-shadow: 0px 1px 21px 0px rgba(40, 46, 45, 0.06);
+  width: 90%;
+  margin: auto;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  margin-top: 20px;
   margin-bottom: 20px;
-  p {
-    line-height: 28px;
-    height: 28px;
-    font-weight: 600;
-    margin-bottom: 4px;
+  .problem-box-content {
+    flex: 1;
   }
-  div {
-    color: #ccc;
-    font-size: 12px;
-    word-break: break-all;
-    width: 100%;
-    overflow: hidden;
+  .problem-box-title {
+    font-size: 18px;
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+    span {
+      font-size: 14px;
+      cursor: pointer;
+      color: #256df3;
+    }
+  }
+  .problem-box-top {
+    line-height: 30px;
+    border-bottom: 1px dashed #ccc;
+    font-size: 16px;
+    display: flex;
+    padding: 6px 0;
+    .problem-box-top-pic {
+      width: 25px;
+      height: 25px;
+      background: url("../assets/images/problem/b.png");
+      background-size: cover;
+      display: inline-block;
+      margin-right: 6px;
+    }
+  }
+  .problem-box-down {
+    font-size: 14px;
+    display: flex;
+    color: #747474;
+    padding: 6px 0;
+    .problem-box-down-pic {
+      margin-right: 14px;
+      width: 20px;
+      height: 20px;
+      background: url("../assets/images/problem/c.png");
+      background-size: cover;
+      display: inline-block;
+    }
   }
 }
 .swipe {

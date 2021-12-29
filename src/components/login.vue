@@ -64,6 +64,7 @@ export default {
   },
   watch: {},
   mounted() {
+    this.setTabbarShow(false);
     //监听事件
     this.getCaptchaSrc();
   },
@@ -74,7 +75,7 @@ export default {
       this.time = new Date().getTime();
       this.captchaSrc = `${base.VUE_APP_BASE_API}/voucher/login/randImage.do?time=${this.time}`;
     },
-    ...mapMutations(["changeLogin"]),
+    ...mapMutations(["changeLogin", "setTabbarShow"]),
     ...mapActions(["login"]),
     inputFunc() {
       if (!this.password || this.password == "") {
@@ -101,34 +102,33 @@ export default {
         time: this.time,
         verifyCode: this.verifyCode,
       };
-      let that =this
+      let that = this;
       this.login(new_obj)
         .then((response) => {
+          console.log(
+            "🚀 ~ file: login.vue ~ line 108 ~ .then ~ response",
+            response
+          );
           Toast.loading({
             message: "登陆中...",
             forbidClick: true,
           });
-          debugger
+          this.setTabbarShow(true);
+          that.changeLogin(response.userId);
           if (that.$route.query.redirect) {
             that.$router.push({
               path: decodeURIComponent(that.$route.query.redirect),
             });
+          } else {
+            that.$router.push({
+              path: "/home",
+            });
           }
-          that.changeLogin(response.id);
         })
         .catch((err) => {
           this.getCaptchaSrc();
         });
     },
-  },
-  beforeRouteLeave(to, from, next) {
-    debugger;
-    console.log("to", to);
-    console.log("from", from);
-    console.log("next", next);
-    next((vm) => {
-      vm.$router.replace(from.fullPath);
-    });
   },
 };
 </script>

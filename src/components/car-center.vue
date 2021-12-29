@@ -107,6 +107,7 @@
         </div>
       </div>
     </van-action-sheet>
+    <div style="height: 43px"></div>
   </div>
 </template>
 
@@ -227,19 +228,26 @@ export default {
     onSubmit(values) {
       debugger;
       console.log("submit", values);
-      if (!this.userId) {
+      if (this.userId == "") {
         this.$router.replace({
           path: "/login",
           query: {
             redirect: this.$router.currentRoute.fullPath,
           },
         });
+        return;
       }
       let saveInfo = {
         info: values,
         userId: this.userId,
         cardValueId: this.cardInfo.id,
       };
+      this.setSave(saveInfo).then((res) => {
+        console.log(
+          "🚀 ~ file: car-center.vue ~ line 245 ~ this.setSave ~ res",
+          res
+        );
+      });
       console.log(
         "🚀 ~ file: car-center.vue ~ line 238 ~ onSubmit ~ saveInfo",
         saveInfo

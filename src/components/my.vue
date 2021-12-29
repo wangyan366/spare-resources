@@ -10,7 +10,7 @@
       <div class="card">
         <div class="left">
           <div class="yuan">
-            {{userInfo.balance}}
+            {{ userInfo.balance }}
             <van-icon name="eye-o" class="icn" />
           </div>
           <div>账户余额（元）</div>
@@ -39,12 +39,13 @@
         <span>提现账号</span>
       </div>
     </div>
+    <div style="height: 43px"></div>
   </div>
 </template>
 
 <script>
 import { NavBar, Card, Icon, Toast } from "vant";
-import { mapMutations, mapActions } from "vuex";
+import { mapMutations, mapActions, mapState } from "vuex";
 export default {
   name: "My",
   components: {
@@ -56,33 +57,78 @@ export default {
 
   data() {
     return {
-      userInfo:{}
+      userInfo: {},
     };
   },
-
-  mounted() {
-    this.getMy().then(res=>{
-      this.userInfo=res
-    console.log("🚀 ~ file: my.vue ~ line 63 ~ this.getMy ~ res", res)
-    }).catch(err=>{
-    console.log("🚀 ~ file: my.vue ~ line 65 ~ this.getMy ~ err", err)
-    })
+  computed: {
+    ...mapState({
+      userId: "userId", // 第一种写法
+    }),
   },
+  mounted() {},
 
   methods: {
-       ...mapActions(["getMy"]),
+    ...mapActions(["getMy"]),
     passwordClick() {
-      this.$router.push({ path: "/password",query: {type: "my"} });
+      this.$router.replace({
+        path: "/password",
+        query: {
+          redirect: this.$router.currentRoute.fullPath,
+        },
+      });
+
+      // this.$router.push({ path: "/password" });
     },
     certificationClick() {
-      this.$router.push({ path: "/certification" ,query: {type: "my"}});
+      this.$router.replace({
+        path: "/certification",
+        query: {
+          redirect: this.$router.currentRoute.fullPath,
+        },
+      });
+      // this.$router.push({ path: "/certification" });
     },
     withdrawalClick() {
-      this.$router.push({ path: "/withdrawal",query: {type: "my"} });
+      this.$router.replace({
+        path: "/withdrawal",
+        query: {
+          redirect: this.$router.currentRoute.fullPath,
+        },
+      });
+      // this.$router.push({ path: "/withdrawal" });
     },
     phoneClick() {
-      this.$router.push({ path: "/phone" ,query: {type: "my"}});
+      this.$router.replace({
+        path: "/phone",
+        query: {
+          redirect: this.$router.currentRoute.fullPath,
+        },
+      });
+      // this.$router.push({ path: "/phone" });
     },
+  },
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      // vm.$router.replace(from.fullPath);
+      if (vm.userId == "") {
+        vm.$router.replace({
+          path: "/login",
+          query: {
+            redirect: vm.$router.currentRoute.fullPath,
+          },
+        });
+        return;
+      }
+      vm.getMy()
+        .then((res) => {
+          vm.userInfo = res;
+          console.log("🚀 ~ file: my.vue ~ line 63 ~ this.getMy ~ res", res);
+        })
+        .catch((err) => {
+          console.log("🚀 ~ file: my.vue ~ line 65 ~ this.getMy ~ err", err);
+        });
+      next();
+    });
   },
 };
 </script>

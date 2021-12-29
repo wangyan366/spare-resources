@@ -3,32 +3,7 @@
     <keep-alive>
       <component :is="componentId" class="component"></component>
     </keep-alive>
-    <van-tabbar
-      v-model="active"
-      :border="false"
-      @change="onChange"
-      active-color="#2ecc71"
-    >
-      <van-tabbar-item name="home">
-        <span>首页</span>
-        <template #icon="props">
-          <img :src="props.active ? home.active : home.inactive" />
-        </template>
-      </van-tabbar-item>
-      <van-tabbar-item name="center">
-        <span>兑卡中心</span>
-        <template #icon="props">
-          <img :src="props.active ? center.active : center.inactive" />
-        </template>
-      </van-tabbar-item>
-      <van-tabbar-item name="my">
-        <span>我的</span>
-        <template #icon="props">
-          <img :src="props.active ? my.active : my.inactive" />
-        </template>
-      </van-tabbar-item>
-    </van-tabbar>
-    <div style="height: 43px"></div>
+
   </div>
 </template>
 
@@ -92,9 +67,7 @@ export default {
   },
 
   computed: {
-    ...mapState({
-      tabBarActivewatcher: "tabBarActive",
-    }),
+  
   },
   watch: {
     tabBarActivewatcher: {
@@ -110,7 +83,6 @@ export default {
   mounted() {},
 
   methods: {
-    ...mapMutations(["getTabBarActive"]),
     // getPath() {
     //   console.log(this.$route.path);
     // },

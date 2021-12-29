@@ -12,11 +12,39 @@ const store = new Vuex.Store({
 		userId: "",
 		network: true,
 		tabBarActive: "home",
+		tabbarShow: true,
 	},
 
 	actions: {
+		getlistFaq() {
+			return new Promise((resolve, reject) => {
+				//接口
+				let obj = {
+					service: 'voucher.index.listFaq',
+				}
+				request('post', obj).then(response => {
+					resolve(response)
+				}).catch(error => {
+					reject(error)
+				})
+			})
+		},
+		updatePassword(commit, payload) {
+			return new Promise((resolve, reject) => {
+				//接口
+				let obj = {
+					userId: commit.state.userId,
+					service: 'voucher.my.updatePassword',
+					...payload
+				}
+				request('post', obj).then(response => {
+					resolve(response)
+				}).catch(error => {
+					reject(error)
+				})
+			})
+		},
 		setSave(commit, payload) {
-
 			const initKey = 'vou2gg';
 			const keySize = 128;
 			/**
@@ -69,12 +97,22 @@ const store = new Vuex.Store({
 
 			// 调用加密函数
 
-			const encrypted = aesEncrypt(JSON.stringify({
-				abc: payload.abc,
-				def: payload.def,
-				time: payload.time,
-				verifyCode: payload.verifyCode
-			}), key);
+			const encrypted = aesEncrypt(JSON.stringify([payload.info]), key);
+			return new Promise((resolve, reject) => {
+				//接口
+				let obj = {
+					cardJson: encrypted,
+					service: 'voucher.usersell.save',
+					userId: payload.userId,
+					cardValueId: payload.cardValueId,
+				}
+				request('post', obj).then(response => {
+					resolve(response)
+				}).catch(error => {
+					reject(error)
+				})
+			})
+
 		},
 		getCarCenter(commit, limit) {
 			return new Promise((resolve, reject) => {
@@ -137,11 +175,11 @@ const store = new Vuex.Store({
 		},
 		getMy(commit, payload) {
 			return new Promise((resolve, reject) => {
-				let userId = JSON.stringify(commit.state.user) != "{}" ? JSON.parse(commit.state.user).userId : JSON.parse(localStorage.getItem("user")).userId
+
 				//接口
 				let obj = {
 					service: 'voucher.my.get',
-					userId: userId,
+					userId: commit.state.userId,
 					// service:'voucher.my.get',
 				}
 				request('post', obj).then(response => {
@@ -229,16 +267,18 @@ const store = new Vuex.Store({
 
 		},
 	},
+
 	mutations: {
-		getTabBarActive(state, payload) {
-			state.tabBarActive = payload
+		setTabbarShow(state, payload) {
+			state.tabbarShow = payload
 		},
 		changeNetwork(state, payload) {
 			state.network = payload
 		},
-		changeLogin(state, user) {
-			state.userId = user.id;
-			localStorage.setItem("userId", user.id)
+		changeLogin(state, userId) {
+			debugger
+			state.userId = userId;
+			localStorage.setItem("userId", userId)
 		}
 	}
 })

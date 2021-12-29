@@ -4,7 +4,7 @@ Vue.use(Router)
 const router = new Router({
   routes: [{
     path: '/',
-    redirect: '/index'　// 路由重定向，当用户访问根路径时，重新跳转到home下的login组件　
+    redirect: '/home'　// 路由重定向，当用户访问根路径时，重新跳转到home下的login组件　
   }, {
     path: '/login',
     name: 'login',
@@ -37,6 +37,22 @@ const router = new Router({
     path: '/password',
     name: 'password',
     component: resolve => (require(["@/components/password"], resolve))
+  }, {
+    path: '/home',
+    name: 'home',
+    component: resolve => (require(["@/components/home"], resolve))
+  }, {
+    path: '/carCenter',
+    name: 'carCenter',
+    component: resolve => (require(["@/components/car-center"], resolve))
+  }, {
+    path: '/my',
+    name: 'my',
+    component: resolve => (require(["@/components/my"], resolve))
+  }, {
+    path: '/problem',
+    name: 'problem',
+    component: resolve => (require(["@/components/problem"], resolve))
   }]
 })
 // const isLogin = () => Boolean(localStorage.getItem('token'))//判断登录
