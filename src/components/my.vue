@@ -36,7 +36,7 @@
       </div>
       <div class="down-card" @click="withdrawalClick">
         <div class="pic"></div>
-        <span>提现账号</span>
+        <span>提现记录</span>
       </div>
     </div>
     <div style="height: 43px"></div>

@@ -53,8 +53,13 @@ const router = new Router({
     path: '/problem',
     name: 'problem',
     component: resolve => (require(["@/components/problem"], resolve))
+  }, {
+    path: '/noticepage',
+    name: 'noticepage',
+    component: resolve => (require(["@/components/noticepage"], resolve))
   }]
 })
+// notice
 // const isLogin = () => Boolean(localStorage.getItem('token'))//判断登录
 //路由守卫
 

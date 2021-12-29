@@ -19,9 +19,8 @@
     <div class="swipe">
       <van-swipe @change="onChange" :autoplay="3000">
         <van-swipe-item v-for="item in cardInfo.bannerList" :key="item.id">
-          <img :src="item.imageUrl" alt="" class="swipe-pic"/>
+          <img :src="item.imageUrl" alt="" class="swipe-pic" />
         </van-swipe-item>
-      
       </van-swipe>
     </div>
     <div class="mark">
@@ -48,10 +47,17 @@
       <div class="card-header">
         <van-image :src="cardItem.component" width="66" height="16" />
         <van-image :src="cardItem.laba" width="15" height="15" />
+        <div class="you" @click="moreNoticeClick">
+          <span>更多</span>
+          <van-image :src="cardItem.you" width="20" height="20" />
+        </div>
       </div>
       <div class="card-top">
-        <div class="text">{{ cardInfo.notice.title }}</div>
-        <van-image :src="cardItem.you" width="10" height="10" />
+        <div class="text marquee">
+          <span> {{ cardInfo.notice.title }}</span>
+        </div>
+        <!-- <van-notice-bar  left-icon="volume-o" scrollable :text="cardInfo.notice.title" /> -->
+        <!-- <van-image :src="cardItem.you" width="10" height="10" /> -->
       </div>
       <div class="card-content">
         <!-- <span class="label">天猫</span> -->
@@ -121,6 +127,7 @@ import {
   Tabs,
   Badge,
   Toast,
+  NoticeBar,
 } from "vant";
 export default {
   name: "Home",
@@ -139,6 +146,7 @@ export default {
     [Tabbar.name]: Tabbar,
     [TabbarItem.name]: TabbarItem,
     [Badge.name]: Badge,
+    [NoticeBar.name]: NoticeBar,
     //  'van-lazyload': Lazyload
   },
   data() {
@@ -175,6 +183,14 @@ export default {
   },
 
   methods: {
+    moreNoticeClick() {
+      this.$router.replace({
+        path: "/noticepage",
+        query: {
+          redirect: this.$router.currentRoute.fullPath,
+        },
+      });
+    },
     moreClick() {
       this.$router.replace({
         path: "/problem",
@@ -281,6 +297,37 @@ export default {
 /deep/ .van-swipe {
   height: 100%;
 }
+.you {
+  float: right;
+  font-size: 12px;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  color: rgba(46, 204, 113, 1);
+}
+.marquee {
+  width: 100%;
+  // margin: 0 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  position: absolute;
+}
+
+.marquee span {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marquee 25s linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-100%, 0);
+  }
+}
+
 .problem-box {
   border-radius: 10px;
   background: #fff;
@@ -395,6 +442,7 @@ export default {
   }
   .card-content p {
     word-break: break-all;
+    margin-left: 10px;
   }
   .card-content:nth-child(1) {
     border-bottom: 1px solid #f3f3f3;
@@ -410,12 +458,20 @@ export default {
     background: #2ecc71;
     font-size: 12px;
     color: #fff;
-    display: flex;
+    overflow: hidden;
+    // display: flex;
     align-items: center;
     width: 100%;
     .text {
-      flex: 1;
+      display: inline-block;
+      // width: 90%;
       transform: scale(0.94);
+      // word-break: break-all;
+      // height: 100%;
+      // overflow: hidden;
+      // text-overflow: ellipsis;
+      // -webkit-line-clamp: 1;
+      // -webkit-box-orient: vertical;
     }
     /deep/ .van-image {
       margin-right: 14px;
