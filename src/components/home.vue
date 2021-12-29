@@ -18,12 +18,10 @@
     </van-nav-bar>
     <div class="swipe">
       <van-swipe @change="onChange" :autoplay="3000">
-        <van-swipe-item>
-          <img src="https://img01.yzcdn.cn/vant/cat.jpeg" alt="" />
+        <van-swipe-item v-for="item in cardInfo.bannerList" :key="item.id">
+          <img :src="item.imageUrl" alt="" class="swipe-pic"/>
         </van-swipe-item>
-        <van-swipe-item>2</van-swipe-item>
-        <van-swipe-item>3</van-swipe-item>
-        <van-swipe-item>4</van-swipe-item>
+      
       </van-swipe>
     </div>
     <div class="mark">
