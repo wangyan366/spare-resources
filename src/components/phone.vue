@@ -1,34 +1,45 @@
 <template>
   <div>
     <van-nav-bar
-      title="更换手机"
+      title="更换手机号"
       left-arrow
       @click-left="onClickLeft"
       safe-area-inset-top
     />
     <div id="phone-app">
       <span class="top"> 已绑定手机号 </span>
-      <div class="phone">156******74</div>
+      <div class="phone">{{userInfo.mobileLabel}}</div>
       <div class="down">
         一个手机号只可以绑定一个账号，绑定手机号将作为您身份验证的
         重要方式，请慎重操作！
       </div>
-      <van-button type="primary">更换手机号</van-button>
+      <van-button type="primary" @click="changephoneClick">更换手机号</van-button>
     </div>
+ 
   </div>
 </template>
 
 <script>
-import { mapMutations, mapActions } from "vuex";
-import { NavBar, Button } from "vant";
+import { mapMutations, mapActions,mapState } from "vuex";
+import { NavBar, Button,Dialog , Step, Steps  } from "vant";
 export default {
   name: "Phone",
   components: {
     [NavBar.name]: NavBar,
     [Button.name]: Button,
+    [Step.name]: Step,
+    [Steps.name]: Steps,
+    [Dialog.Component.name]: Dialog.Component,
+  },
+  computed:{
+
+     ...mapState(["userInfo"])
   },
   data() {
-    return {};
+    return {
+      dialogshow:false,
+       active: 1,
+    };
   },
 
   mounted() {
@@ -37,12 +48,20 @@ export default {
 
   methods: {
     ...mapMutations(["setTabbarShow"]),
+    changephoneClick(){
+        this.$router.replace({
+        path: "/changephone",
+        query: {
+          redirect: this.$router.currentRoute.fullPath,
+        },
+      });
+    },
     onClickLeft() {
       if (this.$route.query.redirect) {
         this.$router.push({
           path: decodeURIComponent(this.$route.query.redirect),
         });
-         this.setTabbarShow(true);
+        this.setTabbarShow(true);
       }
     },
   },

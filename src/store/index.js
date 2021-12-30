@@ -13,15 +13,77 @@ const store = new Vuex.Store({
 		network: true,
 		tabBarActive: "home",
 		tabbarShow: true,
+		userInfo: {}
 	},
 
 	actions: {
+		save(commit, payload){
+			return new Promise((resolve, reject) => {
+				//接口
+				let obj = {
+					service: 'voucher.register.save',
+					...payload
+				}
+				request('post', obj).then(response => {
+					resolve(response)
+					commit.state.userInfo = response
+				}).catch(error => {
+					reject(error)
+				})
+			})
+		},
+		updateMobile(commit, payload){
+			return new Promise((resolve, reject) => {
+				//接口
+				let obj = {
+					service: 'voucher.my.updateMobile',
+					userId:commit.state.userId,
+					...payload
+				}
+				request('post', obj).then(response => {
+					resolve(response)
+					commit.state.userInfo = response
+				}).catch(error => {
+					reject(error)
+				})
+			})
+		},
+		confirmMobile(commit, payload) {
+			return new Promise((resolve, reject) => {
+				//接口
+				let obj = {
+					service: 'voucher.my.sendMessage',
+					...payload
+				}
+				request('post', obj).then(response => {
+					resolve(response)
+				}).catch(error => {
+					reject(error)
+				})
+			})
+		},
+		// 验证手机号
+		sendMessage(commit, payload) {
+			return new Promise((resolve, reject) => {
+				//接口
+				let obj = {
+					service: 'voucher.my.sendMessage',
+					userId: payload.sendType == 3 ? commit.state.userId : "",
+					...payload
+				}
+				request('post', obj).then(response => {
+					resolve(response)
+				}).catch(error => {
+					reject(error)
+				})
+			})
+		},
 		getMaiKaList(commit, payload) {
 			return new Promise((resolve, reject) => {
 				//接口
 				let obj = {
 					service: 'voucher.usersell.list',
-					userId:commit.state.userId,
+					userId: commit.state.userId,
 					...payload
 				}
 				request('post', obj).then(response => {
@@ -36,7 +98,7 @@ const store = new Vuex.Store({
 				//接口
 				let obj = {
 					service: 'voucher.tixianlog.list',
-					userId:commit.state.userId,
+					userId: commit.state.userId,
 					...payload
 				}
 				request('post', obj).then(response => {
@@ -227,6 +289,7 @@ const store = new Vuex.Store({
 				}
 				request('post', obj).then(response => {
 					resolve(response)
+					commit.state.userInfo = response
 				}).catch(error => {
 					reject(error)
 				})

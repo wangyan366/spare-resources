@@ -36,7 +36,7 @@
         />
         <!-- <span class="bar"></span> -->
         <!-- <span class="title"></span> -->
-        <span class="title">重复输入密码</span>
+        <span class="title">确认密码</span>
         <van-field
           v-model="newPassword1"
           name="newPassword1"

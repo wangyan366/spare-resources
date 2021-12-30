@@ -1,11 +1,14 @@
 <template>
   <div class="loginBox">
-    <div class="title">
-      <span>登录</span>
-    </div>
+    <van-nav-bar
+      title="登录"
+      left-arrow
+      @click-left="onClickLeft"
+      safe-area-inset-top
+    />
     <div class="banner">
       <div class="login">
-        <van-form>
+        <van-form @submit="loginClick">
           <van-field
             v-model="username"
             name="用户名"
@@ -35,7 +38,9 @@
             @click.stop="getCaptchaSrc()"
           />
           <!-- <span @click.stop="getCaptchaSrc()" class="barter">换一张</span> -->
-          <div class="submit-button" @click="loginClick">登录</div>
+          <van-button round block type="danger" native-type="submit">
+            登录
+          </van-button>
         </van-form>
       </div>
     </div>
@@ -44,14 +49,16 @@
 
 <script>
 import { mapMutations, mapActions } from "vuex";
-import { Field, Form, Toast } from "vant";
+import { Field, Form, Toast, NavBar, Button } from "vant";
 import base from "@/api/base.js"; // 导入接口域名列表
 import axios from "axios";
 export default {
   components: {
+    [Button.name]: Button,
     [Field.name]: Field,
     [Form.name]: Form,
     [Toast.name]: Toast,
+    [NavBar.name]: NavBar,
   },
   data() {
     return {
@@ -69,6 +76,23 @@ export default {
     this.getCaptchaSrc();
   },
   methods: {
+    onClickLeft() {
+      debugger;
+      if (this.$route.query.redirect && this.$route.query.redirect != "/my") {
+        this.$router.push({
+          path: decodeURIComponent(this.$route.query.redirect),
+        });
+        this.setTabbarShow(true);
+      } else {
+         this.$router.push({
+        path: "/home",
+        query: {
+          redirect: this.$router.currentRoute.fullPath,
+          active: "home",
+        },
+      });
+      }
+    },
     // 获取图片验证码
     getCaptchaSrc() {
       // 也可以处理图片
@@ -103,37 +127,43 @@ export default {
         verifyCode: this.verifyCode,
       };
       let that = this;
-      this.login(new_obj)
-        .then((response) => {
-          console.log(
-            "🚀 ~ file: login.vue ~ line 108 ~ .then ~ response",
-            response
-          );
-          Toast.loading({
-            message: "登陆中...",
-            forbidClick: true,
-          });
-          this.setTabbarShow(true);
-          that.changeLogin(response.userId);
-          if (that.$route.query.redirect) {
-            that.$router.push({
-              path: decodeURIComponent(that.$route.query.redirect),
-            });
-          } else {
-            that.$router.push({
-              path: "/home",
-            });
-          }
-        })
-        .catch((err) => {
-          this.getCaptchaSrc();
+      this.login(new_obj).then((response) => {
+        console.log(
+          "🚀 ~ file: login.vue ~ line 108 ~ .then ~ response",
+          response
+        );
+        Toast.loading({
+          message: "登陆中...",
+          forbidClick: true,
         });
+        this.setTabbarShow(true);
+        that.changeLogin(response.userId);
+        if (that.$route.query.redirect) {
+          that.$router.push({
+            path: decodeURIComponent(that.$route.query.redirect),
+          });
+        } else {
+          that.$router.push({
+            path: "/home",
+          });
+        }
+      });
     },
   },
 };
 </script>
 
 <style scoped="scoped" lang="less">
+/deep/ .van-nav-bar__content {
+  background: rgba(44, 193, 107, 1);
+  color: #fff;
+}
+/deep/ .van-nav-bar__title {
+  color: #fff;
+}
+/deep/ .van-nav-bar .van-icon {
+  color: #fff;
+}
 .capchaImg {
   border: 1px solid #ccc;
   position: relative;

@@ -88,7 +88,6 @@ export default {
           redirect: this.$router.currentRoute.fullPath,
         },
       });
-
     },
     certificationClick() {
       this.$router.replace({

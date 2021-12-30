@@ -61,9 +61,17 @@ const router = new Router({
     path: '/maikapage',
     name: 'maikapage',
     component: resolve => (require(["@/components/maikapage"], resolve))
+  }, {
+    path: '/changephone',
+    name: 'changephone',
+    component: resolve => (require(["@/components/changephone"], resolve))
+  }, {
+    path: '/register',
+    name: 'register',
+    component: resolve => (require(["@/components/register"], resolve))
   }]
 })
-// maika
+// register
 // notice
 // const isLogin = () => Boolean(localStorage.getItem('token'))//判断登录
 //路由守卫

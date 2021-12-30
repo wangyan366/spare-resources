@@ -171,6 +171,7 @@ export default {
   },
 
   mounted() {
+    this.setTabbarShow(true);
     this.getHome()
       .then((res) => {
         this.cardInfo = res;
@@ -183,6 +184,7 @@ export default {
   },
 
   methods: {
+    ...mapMutations(["setTabbarShow"]),
     moreNoticeClick() {
       this.$router.replace({
         path: "/noticepage",
@@ -277,7 +279,12 @@ export default {
       // Toast("当前 Swipe 索引：" + index);
     },
     zhuceClick() {
-      console.log("522");
+      this.$router.replace({
+        path: "/refresh",
+        query: {
+          redirect: this.$router.currentRoute.fullPath,
+        },
+      });
     },
     onClickLeft() {
       Toast("返回");

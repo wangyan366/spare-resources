@@ -102,8 +102,10 @@ instance.interceptors.response.use(
         }
         if (res && res.code && res.code !== '0') {
             tip(res.msg || 'Error');
-            toLogin();
-            store.commit('setTabbarShow',true);
+            // if (res.detailCode != 109||res.detailCode != 109) {
+            //     toLogin();
+            //     store.commit('setTabbarShow', true);
+            // }
             return Promise.reject(res.msg || 'Error');
         } else {
             return JSON.parse(res.data)
