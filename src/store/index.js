@@ -16,6 +16,21 @@ const store = new Vuex.Store({
 	},
 
 	actions: {
+		getMaiKaList(commit, payload) {
+			return new Promise((resolve, reject) => {
+				//接口
+				let obj = {
+					service: 'voucher.usersell.list',
+					userId:commit.state.userId,
+					...payload
+				}
+				request('post', obj).then(response => {
+					resolve(response)
+				}).catch(error => {
+					reject(error)
+				})
+			})
+		},
 		getWithdrawalList(commit, payload) {
 			return new Promise((resolve, reject) => {
 				//接口

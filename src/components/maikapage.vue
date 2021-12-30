@@ -1,18 +1,18 @@
 <template>
-  <div class="withdrawal">
+  <div class="maikapage">
     <van-nav-bar
-      title="提现记录"
+      title="卖卡记录"
       left-arrow
       @click-left="onClickLeft"
       safe-area-inset-top
     />
-    <div class="withdrawal-row">
+    <div class="maikapage-row">
       <van-tabs
         type="card"
         v-model="timeRange"
         @click="onClick"
         color="#2ecc71"
-        class="withdrawal-row-tabs"
+        class="maikapage-row-tabs"
       >
         <van-tab title="全部"></van-tab>
         <van-tab title="今天"></van-tab>
@@ -27,40 +27,46 @@
         @load="onLoad"
       >
         <div
-          class="withdrawal-box"
+          class="maikapage-box"
           v-for="(item, index) in dataList"
           :key="index"
         >
-          <div class="withdrawal-box-header">
-            <span class="l">订单号{{item.sno}}</span>
-            <div class="pic r"></div>
+          <div class="maikapage-box-header">
+            <span class="l">订单号{{ item.sno }}</span>
+            <div class="pic r">{{item.sellState}}</div>
           </div>
-          <div class="withdrawal-box-content">
+          <div class="maikapage-box-content">
             <div>
               <span>日 期</span>
               <p>{{ item.createTime }}</p>
             </div>
             <div>
-              <span>提现金额</span>
-              <p>{{ item.tixianMoney }}</p>
+              <span>卡种</span>
+              <p>{{ item.cardCategoryName }}</p>
             </div>
-            <!-- <div>
-              <span>手 续 费</span>
-            </div> -->
+            <div>
+              <span>预计可得</span>
+              <p>{{item.discountValue }}</p>
+            </div>
             <div>
               <span>实际到账</span>
+              <p>
+                {{ item.auditValue }}
+              </p>
             </div>
             <div>
-              <span>提现类型</span>
+              <span>交易状态</span>
+             <p> {{item.sellStateLabel}}</p>
             </div>
             <div>
-              <span>提现账号</span>
-              <p>{{ item.account }}</p>
+              <span> 审核备注 </span>
+              <p>{{ item.remark }}</p>
             </div>
           </div>
         </div>
       </van-list>
     </div>
+    
   </div>
 </template>
 
@@ -95,6 +101,19 @@ export default {
   },
 
   methods: {
+    getsellState(val) {
+    console.log("🚀 ~ file: maikapage.vue ~ line 103 ~ getsellState ~ val", val)
+    //   switch (val) {
+    //     case Wait:
+    //       return "等待受理";
+    //     case Success:
+    //       return "审核通过";
+    //     case Fail:
+    //       return "审核不通过";
+    //     default:
+    //       break;
+    //   }
+    },
     clearData() {
       this.page = 1;
       this.totalCount = 2;
@@ -118,15 +137,15 @@ export default {
         timeRange: this.timeRange,
       };
       var that = this;
-      this.getWithdrawalList(obj).then((res) => {
+      this.getMaiKaList(obj).then((res) => {
         that.dataList = [...that.dataList, ...res.paginateData]; //追加数据
         that.loading = false;
         console.log(
-          "🚀 ~ file: withdrawal.vue ~ line 120 ~ this.getWithdrawalList ~ this",
+          "🚀 ~ file: maikapage.vue ~ line 120 ~ this.getWithdrawalList ~ this",
           this
         );
         console.log(
-          "🚀 ~ file: withdrawal.vue ~ line 121 ~ this.getWithdrawalList ~ that",
+          "🚀 ~ file: maikapage.vue ~ line 121 ~ this.getWithdrawalList ~ that",
           that
         );
         that.totalCount = res.totalCount;
@@ -139,7 +158,7 @@ export default {
         }
       });
     },
-    ...mapActions(["getWithdrawalList"]),
+    ...mapActions(["getMaiKaList"]),
     ...mapMutations(["setTabbarShow"]),
     onClickLeft() {
       if (this.$route.query.redirect) {
@@ -172,27 +191,27 @@ export default {
   transform: translate(-50%, 0%);
   text-align: center;
 }
-.withdrawal {
+.maikapage {
   background: rgba(245, 247, 250, 1);
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
 }
-.withdrawal-row {
+.maikapage-row {
   overflow-y: auto;
   flex: 1;
   padding-top: 20px;
   box-sizing: border-box;
 }
-.withdrawal-box {
+.maikapage-box {
   margin-top: 18px;
   background: #fff;
 }
-.withdrawal-box:last-child {
+.maikapage-box:last-child {
   margin-bottom: 20px;
 }
-.withdrawal-box-header {
+.maikapage-box-header {
   height: 40px;
   line-height: 40px;
   font-size: 16px;
@@ -207,13 +226,13 @@ export default {
     background-size: cover;
   }
 }
-.withdrawal-box-content {
+.maikapage-box-content {
   display: flex;
   flex-flow: row wrap;
   align-content: flex-start;
   padding-bottom: 10px;
 }
-.withdrawal-box-content > div {
+.maikapage-box-content > div {
   width: 50%;
   padding-left: 13px;
   box-sizing: border-box;

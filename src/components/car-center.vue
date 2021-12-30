@@ -17,9 +17,9 @@
         </van-sidebar-item>
       </van-sidebar>
       <div class="van-sidebar-content">
-        <div class="van-sidebar-content-header">
+        <!-- <div class="van-sidebar-content-header">
           <img src="https://img01.yzcdn.cn/vant/cat.jpeg" style="" />
-        </div>
+        </div> -->
         <div class="van-sidebar-content-nav">
           <div class="nav-title">移动运营商</div>
           <div class="nav-choose-content">
@@ -430,6 +430,7 @@ function copy(obj) {
     }
   }
   .van-sidebar-content-nav {
+    margin-top: 30px;
     .nav-title {
       font-size: 16px;
       font-weight: 600;

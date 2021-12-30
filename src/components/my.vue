@@ -15,9 +15,9 @@
           </div>
           <div>账户余额（元）</div>
         </div>
-        <div class="view">
+        <!-- <div class="view">
           <span>查看</span>
-        </div>
+        </div> -->
       </div>
     </div>
 
@@ -37,6 +37,10 @@
       <div class="down-card" @click="withdrawalClick">
         <div class="pic"></div>
         <span>提现记录</span>
+      </div>
+      <div class="down-card" @click="maikaClick">
+        <div class="pic"></div>
+        <span>卖卡记录</span>
       </div>
     </div>
     <div style="height: 43px"></div>
@@ -69,6 +73,14 @@ export default {
 
   methods: {
     ...mapActions(["getMy"]),
+    maikaClick() {
+      this.$router.replace({
+        path: "/maikapage",
+        query: {
+          redirect: this.$router.currentRoute.fullPath,
+        },
+      });
+    },
     passwordClick() {
       this.$router.replace({
         path: "/password",
@@ -77,7 +89,6 @@ export default {
         },
       });
 
-      // this.$router.push({ path: "/password" });
     },
     certificationClick() {
       this.$router.replace({
@@ -86,7 +97,6 @@ export default {
           redirect: this.$router.currentRoute.fullPath,
         },
       });
-      // this.$router.push({ path: "/certification" });
     },
     withdrawalClick() {
       this.$router.replace({
@@ -95,7 +105,6 @@ export default {
           redirect: this.$router.currentRoute.fullPath,
         },
       });
-      // this.$router.push({ path: "/withdrawal" });
     },
     phoneClick() {
       this.$router.replace({
@@ -104,12 +113,10 @@ export default {
           redirect: this.$router.currentRoute.fullPath,
         },
       });
-      // this.$router.push({ path: "/phone" });
     },
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      // vm.$router.replace(from.fullPath);
       if (vm.userId == "") {
         vm.$router.replace({
           path: "/login",
@@ -180,7 +187,7 @@ export default {
     height: 90px;
     background-color: #ffffff;
     border-radius: 10px 10px 10px 10px;
-    margin: auto;
+    // margin: auto;
     margin-bottom: 16px;
     display: flex;
     align-items: center;
@@ -197,7 +204,7 @@ export default {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    margin-top: 20px;
+    margin: 20px 16px;
   }
   .down-card:nth-child(1) {
     background-image: url("../assets/images/Component4.png");
@@ -228,6 +235,14 @@ export default {
     background-size: cover;
   }
   .down-card:nth-child(4) .pic {
+    background-image: url("../assets/images/Group4.png");
+    background-size: cover;
+  }
+  .down-card:nth-child(5) {
+    background-image: url("../assets/images/Component5.png");
+    background-size: cover;
+  }
+  .down-card:nth-child(5) .pic {
     background-image: url("../assets/images/Group4.png");
     background-size: cover;
   }

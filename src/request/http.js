@@ -33,7 +33,8 @@ const toLogin = () => {
     router.replace({
         path: '/home',
         query: {
-            redirect: router.currentRoute.fullPath
+            redirect: router.currentRoute.fullPath,
+            active: "home",
         }
     });
 }
