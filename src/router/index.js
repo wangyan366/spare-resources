@@ -69,6 +69,10 @@ const router = new Router({
     path: '/register',
     name: 'register',
     component: resolve => (require(["@/components/register"], resolve))
+  }, {
+    path: '/tixian',
+    name: 'tixian',
+    component: resolve => (require(["@/components/tixian"], resolve))
   }]
 })
 // register

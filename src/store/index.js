@@ -17,6 +17,37 @@ const store = new Vuex.Store({
 	},
 
 	actions: {
+		doPay(commit, payload){
+			return new Promise((resolve, reject) => {
+				//接口
+				let obj = {
+					service: 'voucher.tixianlog.getDetail',
+					userId:commit.state.userId,
+					...payload
+				}
+				request('post', obj).then(response => {
+					resolve(response)
+					commit.state.userInfo = response
+				}).catch(error => {
+					reject(error)
+				})
+			})
+		},
+		getDetail(commit, payload){
+			return new Promise((resolve, reject) => {
+				//接口
+				let obj = {
+					service: 'voucher.tixianlog.getDetail',
+					userId:commit.state.userId,
+				}
+				request('post', obj).then(response => {
+					resolve(response)
+					commit.state.userInfo = response
+				}).catch(error => {
+					reject(error)
+				})
+			})
+		},
 		save(commit, payload){
 			return new Promise((resolve, reject) => {
 				//接口

@@ -246,7 +246,7 @@ export default {
     },
     withdrawalClick() {
       this.$router.replace({
-        path: "/withdrawal",
+        path: "/tixian",
         query: {
           redirect: this.$router.currentRoute.fullPath,
         },
