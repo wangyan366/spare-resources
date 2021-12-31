@@ -1,7 +1,7 @@
 <template>
   <div id="notice">
     <van-nav-bar
-      title="公告"
+      title="通知"
       left-arrow
       @click-left="onClickLeft"
       safe-area-inset-top
@@ -12,10 +12,12 @@
           <div class="notice-box-content">{{ item.title }}</div>
         </div>
         <div class="notice-box-down">
-          <div class="notice-box-content">{{item.content}}</div>
+          <div class="notice-box-content">{{ item.content }}</div>
+        </div>
+        <div style="font-size: 12px;color: #333;">
+          {{ item.publishTimeLabel }}
         </div>
       </div>
-      
     </div>
   </div>
 </template>
@@ -82,7 +84,7 @@ export default {
   .notice-box-content {
     width: 100%;
     overflow: hidden;
-     word-wrap:break-word; 
+    word-wrap: break-word;
   }
   .notice-box-top {
     line-height: 30px;

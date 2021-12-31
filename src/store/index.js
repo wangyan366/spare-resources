@@ -79,11 +79,12 @@ const store = new Vuex.Store({
 				})
 			})
 		},
+				// 验证手机号
 		confirmMobile(commit, payload) {
 			return new Promise((resolve, reject) => {
 				//接口
 				let obj = {
-					service: 'voucher.my.sendMessage',
+					service: 'voucher.my.confirmMobile',
 					...payload
 				}
 				request('post', obj).then(response => {
@@ -93,7 +94,7 @@ const store = new Vuex.Store({
 				})
 			})
 		},
-		// 验证手机号
+		// 发送短信
 		sendMessage(commit, payload) {
 			return new Promise((resolve, reject) => {
 				//接口
@@ -232,6 +233,7 @@ const store = new Vuex.Store({
 			const key = CryptoJS.enc.Utf8.parse(fillKey(initKey));
 
 			// 调用加密函数
+			 
 
 			const encrypted = aesEncrypt(JSON.stringify([payload.info]), key);
 			return new Promise((resolve, reject) => {
@@ -413,7 +415,7 @@ const store = new Vuex.Store({
 			state.network = payload
 		},
 		changeLogin(state, userId) {
-			debugger
+			 
 			state.userId = userId;
 			localStorage.setItem("userId", userId)
 		}

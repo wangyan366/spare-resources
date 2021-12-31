@@ -126,6 +126,7 @@ import {
   Form,
   Field,
   Button,
+  Toast
 } from "vant";
 export default {
   name: "carCenter",
@@ -142,6 +143,7 @@ export default {
     [Form.name]: Form,
     [Field.name]: Field,
     [Button.name]: Button,
+    [Toast.name]: Toast,
   },
   data() {
     return {
@@ -226,7 +228,7 @@ export default {
       "setSave",
     ]),
     onSubmit(values) {
-      debugger;
+       ;
       console.log("submit", values);
       if (this.userId == "") {
         this.$router.replace({
@@ -243,10 +245,16 @@ export default {
         cardValueId: this.cardInfo.id,
       };
       this.setSave(saveInfo).then((res) => {
+        Toast("提交成功")
+        this.show=false
         console.log(
           "🚀 ~ file: car-center.vue ~ line 245 ~ this.setSave ~ res",
           res
         );
+      }).catch(err=>{
+         Toast(JSON.stringify(err))
+      console.log("🚀 ~ file: car-center.vue ~ line 254 ~ this.setSave ~ err", err)
+        
       });
       console.log(
         "🚀 ~ file: car-center.vue ~ line 238 ~ onSubmit ~ saveInfo",

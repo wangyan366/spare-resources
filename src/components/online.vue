@@ -31,7 +31,7 @@ export default {
  
   },
   //   beforeRouteLeave(to, from, next) {
-  //     // debugger;
+  //     //  ;
   //     // if (this.$store.state.firstLogin) {
   //     //   //   next({ path: "/login" });
   //     //   next({ path: "/login" });

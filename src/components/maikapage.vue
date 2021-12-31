@@ -33,7 +33,7 @@
         >
           <div class="maikapage-box-header">
             <span class="l">订单号{{ item.sno }}</span>
-            <div class="pic r">{{item.sellState}}</div>
+            <div class="pic r" v-show="item.sellState==2"></div>
           </div>
           <div class="maikapage-box-content">
             <div>

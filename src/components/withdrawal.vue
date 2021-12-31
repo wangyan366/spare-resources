@@ -33,7 +33,7 @@
         >
           <div class="withdrawal-box-header">
             <span class="l">订单号{{item.sno}}</span>
-            <div class="pic r"></div>
+            <div class="pic r" v-show="item.successed==1"></div>
           </div>
           <div class="withdrawal-box-content">
             <div>
@@ -48,10 +48,13 @@
               <span>手 续 费</span>
             </div> -->
             <div>
-              <span>实际到账</span>
+              <span>提现方式</span>
+              <p>{{item.tixianTypeLabel}}</p>
             </div>
             <div>
-              <span>提现类型</span>
+              <span>交易状态</span>
+              <p>  {{item.successLabel}}</p>
+            
             </div>
             <div>
               <span>提现账号</span>

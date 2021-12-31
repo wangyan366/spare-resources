@@ -9,7 +9,7 @@
 
     <div class="password">
       <van-form @submit="onSubmit" scroll-to-error show-error-message>
-        <span class="title">旧密码</span>
+        <span class="title">原登录密码</span>
         <van-field
           v-model="oldPassword"
           placeholder="请输入原始密码 "
@@ -22,7 +22,7 @@
           name="oldPassword"
         />
         <!-- <span class="bar"></span> -->
-        <span class="title">新密码</span>
+        <span class="title">新登录密码</span>
         <van-field
           v-model="newPassword"
           name="newPassword"
@@ -36,7 +36,7 @@
         />
         <!-- <span class="bar"></span> -->
         <!-- <span class="title"></span> -->
-        <span class="title">确认密码</span>
+        <span class="title">确认新密码</span>
         <van-field
           v-model="newPassword1"
           name="newPassword1"
@@ -44,6 +44,7 @@
           :error-message="errorText1"
           :rules="[{ validator: validatornewPassword1, trigger: 'onBlur' }]"
         />
+        <p class="explain">由字母加数字或符号至少两种以上字符组成的6-20位半角字符，区分大小写</p>
         <van-button type="primary" native-type="submit">提交</van-button>
         <van-button type="default" @click="onClickLeft">取消</van-button>
       </van-form>
@@ -200,5 +201,12 @@ export default {
     height: 1px;
     background: rgba(51, 51, 51, 0.1);
   }
+  .explain {
+  font-size: 12px;
+  color: #333;
+  margin-top: 20px;
+  background: #eee;
+  padding: 6px;
+}
 }
 </style>

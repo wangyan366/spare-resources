@@ -2,7 +2,7 @@
   <div id="home-index">
     <van-nav-bar
       @click-left="onClickLeft"
-      @click-right="onClickRight"
+      @click-right="moreNoticeClick"
       safe-area-inset-top
       :border="false"
     >
@@ -48,16 +48,11 @@
         <van-image :src="cardItem.component" width="66" height="16" />
         <van-image :src="cardItem.laba" width="15" height="15" />
         <div class="you" @click="moreNoticeClick">
-          <span>更多</span>
           <van-image :src="cardItem.you" width="20" height="20" />
         </div>
       </div>
       <div class="card-top">
-        <div class="text marquee">
-          <span> {{ cardInfo.notice.title }}</span>
-        </div>
-        <!-- <van-notice-bar  left-icon="volume-o" scrollable :text="cardInfo.notice.title" /> -->
-        <!-- <van-image :src="cardItem.you" width="10" height="10" /> -->
+        <van-notice-bar  left-icon="volume-o" scrollable :text="cardInfo.notice.title" background="#27ca6c" color="#fff"/>
       </div>
       <div class="card-content">
         <!-- <span class="label">天猫</span> -->
@@ -128,6 +123,7 @@ import {
   Badge,
   Toast,
   NoticeBar,
+  
 } from "vant";
 export default {
   name: "Home",
@@ -280,7 +276,7 @@ export default {
     },
     zhuceClick() {
       this.$router.replace({
-        path: "/refresh",
+        path: "/register",
         query: {
           redirect: this.$router.currentRoute.fullPath,
         },
@@ -548,5 +544,8 @@ export default {
 }
 /deep/ .grid .van-grid-item:nth-child(4) .van-grid-item__content {
   border-radius: 0px 8px 8px 0;
+}
+/deep/ .van-notice-bar{
+  height: 100%;
 }
 </style>

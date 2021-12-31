@@ -106,14 +106,14 @@ instance.interceptors.response.use(
             //     toLogin();
             //     store.commit('setTabbarShow', true);
             // }
-            return Promise.reject(res.msg || 'Error');
+            return Promise.reject(JSON.stringify(res || 'Error'));
         } else {
-            return JSON.parse(res.data)
+            return Promise.resolve(res.data ? JSON.parse(res.data) : 'success')
         }
     },
     error => {
-        tip(error.message);
-        return Promise.reject(error);
+        tip(JSON.stringify(error));
+        return Promise.reject(JSON.stringify(error));
     }
 );
 // instance.interceptors.response.use(
@@ -147,6 +147,7 @@ const request = function (method, data) {
             format: config.format,
             timestamp: now(),
         };
+         
         let jsonObj = JSON.parse(JSON.stringify({
             ...data, ...signParams
         }));

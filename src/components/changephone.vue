@@ -139,10 +139,9 @@ export default {
     },
     smsVerificationClick() {
       let obj = {
-        time: this.time,
-        verifyCode: this.verifyCode,
-        dynamicCode: this.dynamicCode,
         mobile: this.active == 0 ? this.userInfo.mobile : this.mobile,
+        verifyCode: this.verifyCode,
+        time: this.time,
         sendType: 3,
       };
       this.sendMessage(obj).then((res) => {
@@ -167,12 +166,16 @@ export default {
           verifyCode: this.verifyCode,
           dynamicCode: this.dynamicCode,
         };
-        //   this.confirmMobile(obj).then((res) => {
-        this.active = 1;
-        this.getCaptchaSrc();
-        this.clearObj();
+        this.confirmMobile(obj)
+          .then((res) => {
+            this.active = 1;
+            this.getCaptchaSrc();
+            this.clearObj();
+          })
+          .catch((err) => {
+            this.getCaptchaSrc();
+          });
         return;
-        //   });
       }
       if (this.active == 1) {
         let obj = {
@@ -181,18 +184,21 @@ export default {
           dynamicCode: this.dynamicCode,
           mobile: this.mobile,
         };
-        //   this.updateMobile(obj).then((res) => {
-        this.active = 2;
+        this.updateMobile(obj)
+          .then((res) => {
+            this.active = 2;
+            return;
+          })
+          .catch((err) => {
+            this.active = 2;
+            this.getCaptchaSrc();
+            this.clearObj();
+          });
         return;
-
-        //   }).catch(err=>{
-        //   this.active = 2;
-        //          this.getCaptchaSrc();
-        // this.clearObj();
-        // });
       }
       if (this.active == 2) {
         this.onClickLeft();
+        return;
       }
     },
     onClickLeft() {
