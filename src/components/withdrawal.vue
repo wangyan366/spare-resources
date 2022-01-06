@@ -21,55 +21,56 @@
         <van-tab title="3个月内"></van-tab>
       </van-tabs>
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
-        <van-list
-          v-model="loading"
-          :finished="finished"
-          finished-text="没有更多了"
-          @load="onLoad"
+      <van-list
+        v-model="loading"
+        :finished="finished"
+        finished-text="没有更多了"
+        @load="onLoad"
+      >
+        <div
+          class="withdrawal-box"
+          v-for="(item, index) in dataList"
+          :key="index"
         >
-          <div
-            class="withdrawal-box"
-            v-for="(item, index) in dataList"
-            :key="index"
-          >
-            <div class="withdrawal-box-header">
-              <span class="l">订单号{{ item.sno }}</span>
-              <div class="pic r" v-show="item.successed == 1"></div>
+          <div class="withdrawal-box-header">
+            <span class="l">订单号{{item.sno}}</span>
+            <div class="pic r" v-show="item.successed==1"></div>
+          </div>
+          <div class="withdrawal-box-content">
+            <div>
+              <span>日 期</span>
+              <p>{{ item.createTime }}</p>
             </div>
-            <div class="withdrawal-box-content">
-              <div>
-                <span>日 期</span>
-                <p>{{ item.createTime }}</p>
-              </div>
-              <div>
-                <span>提现金额</span>
-                <p>{{ item.tixianMoney }}</p>
-              </div>
-              <!-- <div>
+            <div>
+              <span>提现金额</span>
+              <p>{{ item.tixianMoney }}</p>
+            </div>
+            <!-- <div>
               <span>手 续 费</span>
             </div> -->
-              <div>
-                <span>提现方式</span>
-                <p>{{ item.tixianTypeLabel }}</p>
-              </div>
-              <div>
-                <span>交易状态</span>
-                <p>{{ item.successLabel }}</p>
-              </div>
-              <div>
-                <span>提现账号</span>
-                <p>{{ item.account }}</p>
-              </div>
+            <div>
+              <span>提现方式</span>
+              <p>{{item.tixianTypeLabel}}</p>
+            </div>
+            <div>
+              <span>交易状态</span>
+              <p>  {{item.successLabel}}</p>
+            
+            </div>
+            <div>
+              <span>提现账号</span>
+              <p>{{ item.account }}</p>
             </div>
           </div>
-        </van-list>
+        </div>
+      </van-list>
       </van-pull-refresh>
     </div>
   </div>
 </template>
 
 <script>
-import { NavBar, Button, List, Tab, Tabs, PullRefresh } from "vant";
+import { NavBar, Button, List, Tab, Tabs,PullRefresh  } from "vant";
 import { mapMutations, mapActions } from "vuex";
 export default {
   name: "Phone",
@@ -79,7 +80,7 @@ export default {
     [List.name]: List,
     [Tab.name]: Tab,
     [Tabs.name]: Tabs,
-    [PullRefresh.name]: PullRefresh,
+    [PullRefresh .name]: PullRefresh ,
   },
   data() {
     return {
@@ -91,7 +92,7 @@ export default {
       totalCount: 2,
       finished: false, //加了个总页数变量，自定义个比page大的数字，否则会直接this.finished = true;
       timeRange: 0,
-      refreshing: false,
+        refreshing: false,
     };
   },
 
@@ -101,9 +102,9 @@ export default {
   },
 
   methods: {
-    onRefresh() {
+      onRefresh() {
       this.finished = false; // 不写这句会导致你上拉到底过后在下拉刷新将不能触发下拉加载事件
-      this.clearData();
+      this.clearData()
       this.onLoad();
     },
     clearData() {
@@ -130,7 +131,7 @@ export default {
       };
       var that = this;
       this.getWithdrawalList(obj).then((res) => {
-        this.refreshing = false;
+         this.refreshing = false
         that.dataList = [...that.dataList, ...res.paginateData]; //追加数据
         that.loading = false;
         console.log(

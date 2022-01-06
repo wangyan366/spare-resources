@@ -47,7 +47,7 @@
       <div class="card-header">
         <van-image :src="cardItem.component" width="66" height="16" />
         <van-image :src="cardItem.laba" width="15" height="15" />
-        <div class="you" @click="moreNoticeClick">
+        <div class="you">
           <van-image :src="cardItem.you" width="20" height="20" />
         </div>
       </div>
@@ -241,8 +241,9 @@ export default {
       });
     },
     withdrawalClick() {
+       
       this.$router.replace({
-        path: "/tixian",
+        path: "/cash",
         query: {
           redirect: this.$router.currentRoute.fullPath,
         },

@@ -80,6 +80,7 @@ export default {
   },
   methods: {
     onClickLeft() {
+       
       if (this.$route.query.redirect && this.$route.query.redirect != "/my") {
         this.$router.push({
           path: decodeURIComponent(this.$route.query.redirect),

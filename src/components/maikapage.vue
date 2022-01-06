@@ -82,6 +82,7 @@ export default {
     [List.name]: List,
     [Tab.name]: Tab,
     [Tabs.name]: Tabs,
+    [PullRefresh.name]: PullRefresh,
   },
   data() {
     return {

@@ -194,12 +194,13 @@ export default {
     },
   },
   beforeRouteEnter(to, from, next) {
+     
     next((vm) => {
       if (vm.userId == "") {
         vm.$router.replace({
           path: "/login",
           query: {
-            redirect: vm.$router.currentRoute.fullPath,
+            redirect: from.fullPath,
           },
         });
         return;
