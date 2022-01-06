@@ -21,7 +21,7 @@ const store = new Vuex.Store({
 			return new Promise((resolve, reject) => {
 				//接口
 				let obj = {
-					service: 'voucher.tixianlog.getDetail',
+					service: 'voucher.tixianlog.doPay',
 					userId:commit.state.userId,
 					...payload
 				}

@@ -4,7 +4,7 @@
     <div style="background: #fff; padding-bottom: 10px">
       <van-card
         :desc="userInfo.mobileLabel"
-        :title="userInfo.realName"
+        :title="userInfo.realName?userInfo.realName:'未知'"
         thumb="https://img01.yzcdn.cn/vant/cat.jpeg"
       />
       <div class="card">

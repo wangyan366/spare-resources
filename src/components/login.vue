@@ -18,9 +18,11 @@
           />
           <van-field
             v-model="password"
-            type="password"
             name="密码"
             placeholder="请填写登录密码"
+            right-icon="eye"
+            :type="!passwordStatus ? 'password' : 'text'"
+            @click-right-icon="passwordStatus = !passwordStatus"
             id="passwordBlur"
             :rules="[{ required: true }]"
             v-on:input="inputFunc"
@@ -38,7 +40,7 @@
             @click.stop="getCaptchaSrc()"
           />
           <!-- <span @click.stop="getCaptchaSrc()" class="barter">换一张</span> -->
-          <van-button round block type="danger" native-type="submit">
+          <van-button round block type="primary" native-type="submit">
             登录
           </van-button>
         </van-form>
@@ -67,6 +69,7 @@ export default {
       verifyCode: "",
       password: "",
       username: "",
+      passwordStatus: false,
     };
   },
   watch: {},
@@ -77,20 +80,19 @@ export default {
   },
   methods: {
     onClickLeft() {
-       ;
       if (this.$route.query.redirect && this.$route.query.redirect != "/my") {
         this.$router.push({
           path: decodeURIComponent(this.$route.query.redirect),
         });
         this.setTabbarShow(true);
       } else {
-         this.$router.push({
-        path: "/home",
-        query: {
-          redirect: this.$router.currentRoute.fullPath,
-          active: "home",
-        },
-      });
+        this.$router.push({
+          path: "/home",
+          query: {
+            redirect: this.$router.currentRoute.fullPath,
+            active: "home",
+          },
+        });
       }
     },
     // 获取图片验证码
@@ -121,33 +123,37 @@ export default {
         return;
       }
       var new_obj = {
-        abc: "liushuai",
-        def: "123456",
+        abc: this.username,
+        def: this.password,
         time: this.time,
         verifyCode: this.verifyCode,
       };
       let that = this;
-      this.login(new_obj).then((response) => {
-        console.log(
-          "🚀 ~ file: login.vue ~ line 108 ~ .then ~ response",
-          response
-        );
-        Toast.loading({
-          message: "登陆中...",
-          forbidClick: true,
+      this.login(new_obj)
+        .then((response) => {
+          console.log(
+            "🚀 ~ file: login.vue ~ line 108 ~ .then ~ response",
+            response
+          );
+          Toast.loading({
+            message: "登陆中...",
+            forbidClick: true,
+          });
+          this.setTabbarShow(true);
+          that.changeLogin(response.userId);
+          if (that.$route.query.redirect) {
+            that.$router.push({
+              path: decodeURIComponent(that.$route.query.redirect),
+            });
+          } else {
+            that.$router.push({
+              path: "/home",
+            });
+          }
+        })
+        .catch((err) => {
+          this.getCaptchaSrc();
         });
-        this.setTabbarShow(true);
-        that.changeLogin(response.userId);
-        if (that.$route.query.redirect) {
-          that.$router.push({
-            path: decodeURIComponent(that.$route.query.redirect),
-          });
-        } else {
-          that.$router.push({
-            path: "/home",
-          });
-        }
-      });
     },
   },
 };

@@ -133,7 +133,7 @@ export default {
       };
       this.updatePassword(newObj).then((res) => {
         Toast.success("修改成功，请重新登录");
-        that.$router.push({
+        this.$router.push({
           path: "/login",
         });
       });

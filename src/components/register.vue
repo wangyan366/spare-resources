@@ -218,7 +218,6 @@ export default {
       this.getCaptchaSrc();
     },
     onSubmit(val) {
-       ;
       if (this.newpassword !== this.password) {
         this.errorText1 = "重复输入密码错误";
         Toast.fail("重复输入密码错误");
@@ -234,10 +233,13 @@ export default {
         QQ: this.QQ,
       };
       console.log("🚀 ~ file: refresh.vue ~ line 193 ~ onSubmit ~ val", obj);
-      this.save(obj).then(res=>{
-      console.log("🚀 ~ file: register.vue ~ line 238 ~ this.save ~ res", res)
-
-      })
+      this.save(obj).then((res) => {
+        console.log(
+          "🚀 ~ file: register.vue ~ line 238 ~ this.save ~ res",
+          res
+        );
+        this.onClickLeft();
+      });
     },
     ...mapMutations(["setTabbarShow"]),
     changephoneClick() {

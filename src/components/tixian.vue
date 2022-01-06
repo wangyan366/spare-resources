@@ -47,7 +47,10 @@
           name="password"
           label="登录密码"
           placeholder="登录密码"
-          :rules="[{ required: true }]"
+          :rules="[{ required: true, trigger: 'onBlur' }]"
+          right-icon="eye"
+          :type="!passwordStatus ? 'password' : 'text'"
+          @click-right-icon="passwordStatus = !passwordStatus"
         >
         </van-field>
 
@@ -107,6 +110,7 @@ export default {
   },
   data() {
     return {
+      passwordStatus: false,
       tixianMoney: "",
       password: "",
       dataInfo: { realName: "", alipay: "", balance: 0.0 },
@@ -168,6 +172,8 @@ export default {
       this.doPay(obj).then((res) => {
         console.log("🚀 ~ file: tixian.vue ~ line 165 ~ this.doPay ~ res", res);
         Toast("提现成功");
+        this.tixianMoney = "";
+        this.password = "";
       });
     },
     changephoneClick() {
