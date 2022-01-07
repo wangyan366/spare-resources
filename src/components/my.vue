@@ -120,7 +120,7 @@ export default {
         vm.$router.replace({
           path: "/login",
           query: {
-            redirect: from.fullPath,
+            redirect:vm.$router.currentRoute.fullPath,
           },
         });
         return;

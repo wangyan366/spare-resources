@@ -5,7 +5,7 @@
 const path = require('path')
 // import base from "@/api/base.js"; // 导入接口域名列表
 
-const baseAPI = "http://112.74.43.153";
+// const baseAPI = "http://112.74.43.153";
 module.exports = {
   dev: {
 
@@ -13,13 +13,13 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api': {                       //需要代理的接口
-        target: baseAPI, //目标服务器
-        changeOrigin: true,　　　　　　 //是否跨域
-        pathRewrite: {
-          '^/api': ''             //重定向
-        }
-      },
+      // '/api': {                       //需要代理的接口
+      //   target: baseAPI, //目标服务器
+      //   changeOrigin: true,　　　　　　 //是否跨域
+      //   pathRewrite: {
+      //     '^/api': ''             //重定向
+      //   }
+      // },
     },
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
@@ -52,7 +52,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: './',
 
     /**
      * Source Maps
