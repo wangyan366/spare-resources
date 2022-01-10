@@ -45,14 +45,26 @@
     </div>
     <div class="card">
       <div class="card-header">
-        <van-image :src="cardItem.component" width="66" height="16" />
-        <van-image :src="cardItem.laba" width="15" height="15" />
-        <div class="you">
+        <!-- <van-image :src="cardItem.component" width="66" height="16" /> -->
+        <span>公告</span>
+        <van-image
+          :src="cardItem.laba"
+          width="15"
+          height="15"
+          style="vertical-align: middle"
+        />
+        <div class="you" @click="moreNoticeClick">
           <van-image :src="cardItem.you" width="20" height="20" />
         </div>
       </div>
       <div class="card-top">
-        <van-notice-bar  left-icon="volume-o" scrollable :text="cardInfo.notice.title" background="#27ca6c" color="#fff"/>
+        <van-notice-bar
+          left-icon="volume-o"
+          scrollable
+          :text="cardInfo.notice.title"
+          background="#27ca6c"
+          color="#fff"
+        />
       </div>
       <div class="card-content">
         <!-- <span class="label">天猫</span> -->
@@ -123,7 +135,6 @@ import {
   Badge,
   Toast,
   NoticeBar,
-  
 } from "vant";
 export default {
   name: "Home",
@@ -241,7 +252,6 @@ export default {
       });
     },
     withdrawalClick() {
-       
       this.$router.replace({
         path: "/cash",
         query: {
@@ -546,7 +556,7 @@ export default {
 /deep/ .grid .van-grid-item:nth-child(4) .van-grid-item__content {
   border-radius: 0px 8px 8px 0;
 }
-/deep/ .van-notice-bar{
+/deep/ .van-notice-bar {
   height: 100%;
 }
 </style>

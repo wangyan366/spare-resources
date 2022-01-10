@@ -73,6 +73,10 @@ const router = new Router({
     path: '/cash',
     name: 'cash',
     component: resolve => (require(["@/components/cash"], resolve))
+  }, {
+    path: '/authentication',
+    name: 'authentication',
+    component: resolve => (require(["@/components/authentication"], resolve))
   }]
 })
 // register

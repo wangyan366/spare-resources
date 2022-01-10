@@ -6,7 +6,7 @@
 				</van-search>
 			</form>
 		</div> -->
-    <van-nav-bar safe-area-inset-top :border="false" />
+    <van-nav-bar safe-area-inset-top :border="false"   title="兑卡中心"/>
     <div class="car-center-content" ref="content">
       <van-sidebar v-model="activeKey" @change="onChange">
         <van-sidebar-item

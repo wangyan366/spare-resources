@@ -44,7 +44,9 @@
           :error-message="errorText1"
           :rules="[{ validator: validatornewPassword1, trigger: 'onBlur' }]"
         />
-        <p class="explain">由字母加数字或符号至少两种以上字符组成的6-20位半角字符，区分大小写</p>
+        <p class="explain">
+          由字母加数字或符号至少两种以上字符组成的6-20位半角字符，区分大小写
+        </p>
         <van-button type="primary" native-type="submit">提交</van-button>
         <van-button type="default" @click="onClickLeft">取消</van-button>
       </van-form>
@@ -93,7 +95,7 @@ export default {
     },
 
     ...mapActions(["updatePassword"]),
-    ...mapMutations(["mapActions"]),
+    ...mapMutations(["setTabbarShow"]),
     formatter(val) {
       const reg =
         /^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?![,\.#%'\+\*\-:;^_`]+$)[,\.#%'\+\*\-:;^_`0-9A-Za-z]{6,20}$/;
@@ -174,17 +176,15 @@ export default {
 .van-button--primary {
   background: rgba(224, 224, 224, 1);
   border-color: rgba(224, 224, 224, 1);
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, 0%);
+  display: block;
+  margin: auto;
+  margin-top: 10px;
 }
 .van-button--default {
-  position: absolute;
-  top: 58%;
-  left: 50%;
-  transform: translate(-50%, 0%);
+  margin: auto;
   color: rgba(224, 224, 224, 1);
+  display: block;
+  margin-top: 10px;
 }
 .password {
   padding: 20px 10px;
@@ -202,11 +202,11 @@ export default {
     background: rgba(51, 51, 51, 0.1);
   }
   .explain {
-  font-size: 12px;
-  color: #333;
-  margin-top: 20px;
-  background: #eee;
-  padding: 6px;
-}
+    font-size: 12px;
+    color: #333;
+    margin-top: 20px;
+    background: #eee;
+    padding: 6px;
+  }
 }
 </style>

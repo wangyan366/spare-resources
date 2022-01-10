@@ -1,6 +1,6 @@
 <template>
   <div id="my">
-    <van-nav-bar safe-area-inset-top :border="false" />
+    <van-nav-bar safe-area-inset-top :border="false"  title="我的"/>
     <div style="background: #fff; padding-bottom: 10px">
       <van-card
         :desc="userInfo.mobileLabel"
@@ -42,6 +42,10 @@
         <div class="pic"></div>
         <span>卖卡记录</span>
       </div>
+       <div class="down-card" @click="authenticationClick">
+        <div class="pic"></div>
+        <span>修改提现账号</span>
+      </div>
     </div>
     <div style="height: 43px"></div>
   </div>
@@ -73,6 +77,15 @@ export default {
 
   methods: {
     ...mapActions(["getMy"]),
+
+    authenticationClick(){
+         this.$router.replace({
+        path: "/authentication",
+        query: {
+          redirect: this.$router.currentRoute.fullPath,
+        },
+      });
+    },
     maikaClick() {
       this.$router.replace({
         path: "/maikapage",
@@ -190,13 +203,13 @@ export default {
     margin-bottom: 16px;
     display: flex;
     align-items: center;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 500;
     .pic {
-      width: 40px;
-      height: 40px;
-      margin-right: 16px;
-      margin-left: 20px;
+      width: 36px;
+      height: 36px;
+      margin-right: 14px;
+      margin-left: 16px;
     }
   }
   .my-down {
@@ -245,6 +258,15 @@ export default {
     background-image: url("../assets/images/Group4.png");
     background-size: cover;
   }
+    .down-card:nth-child(6) {
+    background-image: url("../assets/images/Component6.png");
+    background-size: cover;
+  }
+  .down-card:nth-child(6) .pic {
+    background-image: url("../assets/images/Group4.png");
+    background-size: cover;
+  }
+
 }
 /deep/ .van-card__title {
   line-height: 50px;

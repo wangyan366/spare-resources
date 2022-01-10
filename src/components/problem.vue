@@ -142,16 +142,14 @@ export default {
 .van-button--primary {
   background: rgba(224, 224, 224, 1);
   border-color: rgba(224, 224, 224, 1);
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, 0%);
+  display: block;
+  margin: auto;
+  margin-top: 10px;
 }
 .van-button--default {
-  position: absolute;
-  top: 48%;
-  left: 50%;
-  transform: translate(-50%, 0%);
+  margin: auto;
   color: rgba(224, 224, 224, 1);
+  display: block;
+  margin-top: 10px;
 }
 </style>

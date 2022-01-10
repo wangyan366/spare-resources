@@ -1,7 +1,7 @@
 <template>
   <div id="notice">
     <van-nav-bar
-      title="通知"
+      title="公告"
       left-arrow
       @click-left="onClickLeft"
       safe-area-inset-top

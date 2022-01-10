@@ -17,6 +17,36 @@ const store = new Vuex.Store({
 	},
 
 	actions: {
+		updateCertificate(commit, payload){
+			return new Promise((resolve, reject) => {
+				//接口
+				let obj = {
+					service: 'voucher.my.updateCertificate',
+					userId:commit.state.userId,
+					...payload
+				}
+				request('post', obj).then(response => {
+					resolve(response)
+				}).catch(error => {
+					reject(error)
+				})
+			})
+		},
+		updateAlipay(commit, payload){
+			return new Promise((resolve, reject) => {
+				//接口
+				let obj = {
+					service: 'voucher.my.updateAlipay',
+					userId:commit.state.userId,
+					...payload
+				}
+				request('post', obj).then(response => {
+					resolve(response)
+				}).catch(error => {
+					reject(error)
+				})
+			})
+		},
 		doPay(commit, payload){
 			return new Promise((resolve, reject) => {
 				//接口
@@ -27,7 +57,6 @@ const store = new Vuex.Store({
 				}
 				request('post', obj).then(response => {
 					resolve(response)
-					commit.state.userInfo = response
 				}).catch(error => {
 					reject(error)
 				})
@@ -42,7 +71,6 @@ const store = new Vuex.Store({
 				}
 				request('post', obj).then(response => {
 					resolve(response)
-					commit.state.userInfo = response
 				}).catch(error => {
 					reject(error)
 				})
@@ -57,7 +85,6 @@ const store = new Vuex.Store({
 				}
 				request('post', obj).then(response => {
 					resolve(response)
-					commit.state.userInfo = response
 				}).catch(error => {
 					reject(error)
 				})
@@ -322,14 +349,15 @@ const store = new Vuex.Store({
 				}
 				request('post', obj).then(response => {
 					resolve(response)
-					commit.state.userInfo = response
+					// commit.state.userInfo = response
+					// localStorage.setItem("userInfo", JSON.stringify(response))
 				}).catch(error => {
 					reject(error)
 				})
 			})
 
 		},
-		login({ context }, payload) {
+		login(commit, payload) {
 
 			const initKey = 'vou2gg';
 			const keySize = 128;
@@ -398,6 +426,7 @@ const store = new Vuex.Store({
 				//接口
 				request('post', obj).then(response => {
 					resolve(response)
+					commit.state.userInfo = response
 				}).catch(error => {
 					reject(error)
 				})

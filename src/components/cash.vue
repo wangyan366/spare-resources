@@ -6,6 +6,7 @@
       @click-left="onClickLeft"
       safe-area-inset-top
     />
+
     <div id="tixian-app">
       <van-form @submit="onSubmit">
         <van-field
@@ -13,7 +14,6 @@
           name="realName"
           label="姓名"
           readonly
-          required
         />
 
         <van-field
@@ -106,7 +106,7 @@ export default {
     [Dialog.Component.name]: Dialog.Component,
   },
   computed: {
-    ...mapState(["userId"]),
+    ...mapState(["userId", "userInfo"]),
   },
   data() {
     return {
@@ -176,9 +176,9 @@ export default {
         this.password = "";
       });
     },
-    changephoneClick() {
+    authenticationClick() {
       this.$router.replace({
-        path: "/changephone",
+        path: "/authentication",
         query: {
           redirect: this.$router.currentRoute.fullPath,
         },
@@ -194,7 +194,6 @@ export default {
     },
   },
   beforeRouteEnter(to, from, next) {
-     
     next((vm) => {
       if (vm.userId == "") {
         vm.$router.replace({
@@ -208,6 +207,12 @@ export default {
       vm.getDetail().then((res) => {
         vm.dataInfo = res;
         vm.placeholderText = `本次最多可提现${res.balance}元`;
+        if (vm.dataInfo && vm.dataInfo.alipay && vm.dataInfo.alipay != "") {
+          next();
+        } else {
+          vm.authenticationClick();
+          return;
+        }
       });
       next();
     });

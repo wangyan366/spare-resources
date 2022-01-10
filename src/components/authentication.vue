@@ -1,20 +1,32 @@
 <template>
-  <div id="certification">
+  <div id="authentication">
     <van-nav-bar
-      title="实名认证"
+      title="设置提现账号"
       left-arrow
       @click-left="onClickLeft"
       safe-area-inset-top
     />
-    <div class="certification">
+    <div class="authentication">
       <van-form @submit="onSubmit" ref="myform">
-        <span class="title">真实姓名</span>
-        <van-field v-model="realName" placeholder="请填写您本人的真实姓名 " name="realName" />
-        <!-- <span class="bar"></span> -->
-        <span class="title">身份证</span>
-        <van-field v-model="certificateNo" placeholder="请填写您本人的真实身份证" name="certificateNo"/>
-        <!-- <span class="bar"></span> -->
-        <!-- <span class="title"></span> -->
+        <span class="title">
+          <span class="redStylle">*</span>
+          支付宝账号</span
+        >
+        <van-field
+          v-model="userInfo.alipay"
+          placeholder="请填写支付宝账号"
+          :rules="[{ required: true }]"
+          name="alipay"
+          clearable
+        />
+        <span class="title"> <span class="redStylle">*</span>输入登录密码</span>
+        <van-field
+          v-model="password"
+          placeholder="请输入登录密码"
+          :rules="[{ required: true }]"
+          name="password"
+          clearable
+        />
         <van-button type="primary" native-type="submit">提交</van-button>
         <van-button type="default" @click="onClickLeft">取消</van-button>
       </van-form>
@@ -23,8 +35,8 @@
 </template>
 
 <script>
-import { NavBar, Button, Field, Cell, CellGroup, Form,Toast } from "vant";
-import { mapMutations, mapActions } from "vuex";
+import { NavBar, Button, Field, Cell, CellGroup, Form, Toast } from "vant";
+import { mapMutations, mapActions, mapState } from "vuex";
 export default {
   name: "Phone",
   components: {
@@ -36,11 +48,15 @@ export default {
     [Form.name]: Form,
     [Toast.name]: Toast,
   },
+  computed: {
+    ...mapState(["userInfo"]),
+  },
   data() {
     return {
       value: "",
-      certificateNo: "",
-      realName: "",
+      password: "",
+      alipay: "",
+      dataInfo: {},
     };
   },
 
@@ -49,13 +65,18 @@ export default {
   },
 
   methods: {
+    ...mapActions(["getDetail", "updateAlipay"]),
     ...mapMutations(["setTabbarShow"]),
-    ...mapActions(["updateCertificate"]),
-    onSubmit(val){
-      this.updateCertificate(val).then(res=>{
-      console.log("🚀 ~ file: certification.vue ~ line 53 ~ this.updateCertificate ~ res", res)
-        Toast("认证成功")
-      })
+    onSubmit(val) {
+      this.updateAlipay(val).then((res) => {
+        Toast("修改成功");
+        if (this.$route.query.redirect == "cash") {
+          this.$router.push({
+            path: decodeURIComponent(this.$route.query.redirect),
+          });
+          this.setTabbarShow(true);
+        }
+      });
     },
     onClickLeft() {
       if (this.$route.query.redirect) {
@@ -70,7 +91,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-#certification {
+#authentication {
   position: relative;
   width: 100%;
   height: 100%;
@@ -90,6 +111,10 @@ export default {
 
   // text-align: center;
 }
+.redStylle {
+  color: #ee0a24;
+  margin-right: 10px;
+}
 .van-button--primary {
   background: rgba(224, 224, 224, 1);
   border-color: rgba(224, 224, 224, 1);
@@ -103,7 +128,7 @@ export default {
   display: block;
   margin-top: 10px;
 }
-.certification {
+.authentication {
   padding: 20px 10px;
   box-sizing: border-box;
   .title {
