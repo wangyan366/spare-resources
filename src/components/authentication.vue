@@ -26,6 +26,9 @@
           :rules="[{ required: true }]"
           name="password"
           clearable
+           right-icon="eye"
+          :type="!passwordStatus ? 'password' : 'text'"
+          @click-right-icon="passwordStatus = !passwordStatus"
         />
         <van-button type="primary" native-type="submit">提交</van-button>
         <van-button type="default" @click="onClickLeft">取消</van-button>
@@ -53,6 +56,7 @@ export default {
   },
   data() {
     return {
+      passwordStatus: false,
       value: "",
       password: "",
       alipay: "",
@@ -71,7 +75,7 @@ export default {
       this.updateAlipay(val).then((res) => {
         Toast("修改成功");
         if (this.$route.query.redirect == "cash") {
-          this.$router.push({
+          this.$router.replace ({
             path: decodeURIComponent(this.$route.query.redirect),
           });
           this.setTabbarShow(true);
@@ -80,7 +84,7 @@ export default {
     },
     onClickLeft() {
       if (this.$route.query.redirect) {
-        this.$router.push({
+        this.$router.replace ({
           path: decodeURIComponent(this.$route.query.redirect),
         });
         this.setTabbarShow(true);

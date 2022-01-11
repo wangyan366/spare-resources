@@ -203,7 +203,7 @@ export default {
     },
     onClickLeft() {
       if (this.$route.query.redirect) {
-        this.$router.push({
+        this.$router.replace ({
           path: decodeURIComponent(this.$route.query.redirect),
         });
         this.setTabbarShow(true);

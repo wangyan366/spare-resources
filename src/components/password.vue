@@ -135,14 +135,14 @@ export default {
       };
       this.updatePassword(newObj).then((res) => {
         Toast.success("修改成功，请重新登录");
-        this.$router.push({
+        this.$router.replace ({
           path: "/login",
         });
       });
     },
     onClickLeft() {
       if (this.$route.query.redirect) {
-        this.$router.push({
+        this.$router.replace ({
           path: decodeURIComponent(this.$route.query.redirect),
         });
         this.setTabbarShow(true);

@@ -24,7 +24,7 @@ export default {
   },
   mounted() {
     setTimeout(() => {
-      this.$router.push({ path: "/index" });
+      this.$router.replace ({ path: "/index" });
     }, 1000);
   },
   methods: {

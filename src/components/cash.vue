@@ -36,6 +36,8 @@
           :rules="[{ required: true }]"
           :placeholder="placeholderText"
           @touchstart.native.stop="show = true"
+            :formatter="formatter"
+          :error-message="errorText"
         >
         </van-field>
         <p class="explain"></p>
@@ -117,6 +119,7 @@ export default {
       placeholderText: "提现现金",
       maxlength: 8,
       show: false,
+      errorText:"",
     };
   },
 
@@ -133,6 +136,19 @@ export default {
   methods: {
     ...mapActions(["getDetail", "doPay"]),
     ...mapMutations(["setTabbarShow"]),
+        formatter(val) {
+      const reg =
+       /^\d+(\.\d{1,2})?$/;
+
+      if (!val) return "";
+      // return reg.test(val);
+      if (!reg.test(val)) {
+        this.errorText = "支持小数点后两位";
+      } else {
+        this.errorText = "";
+      }
+      return val;
+    },
     handleInput(key) {
       this.tixianMoney = this.tixianMoney + "";
       if (this.tixianMoney === "" && key === ".") {
@@ -186,7 +202,7 @@ export default {
     },
     onClickLeft() {
       if (this.$route.query.redirect) {
-        this.$router.push({
+        this.$router.replace ({
           path: decodeURIComponent(this.$route.query.redirect),
         });
         this.setTabbarShow(true);

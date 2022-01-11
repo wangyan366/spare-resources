@@ -26,19 +26,19 @@
     <div class="mark">
       <van-grid :border="false" square class="grid">
         <van-grid-item @click="zhuceClick">
-          <van-image :src="gridItem.zhuce" width="26" height="28" />
+          <van-image :src="gridItem.zhuce" width="26" height="28"  fit="contain"/>
           <span class="grid-text">注册</span>
         </van-grid-item>
         <van-grid-item @click="certificationClick">
-          <van-image :src="gridItem.renzheng" width="22" height="28" />
+          <van-image :src="gridItem.renzheng" width="22" height="28"  fit="contain"/>
           <span class="grid-text">实名认证</span>
         </van-grid-item>
         <van-grid-item @click="tijiaokamiClick">
-          <van-image :src="gridItem.tijiao" width="28" height="20" />
+          <van-image :src="gridItem.tijiao" width="28" height="28"  fit="contain"/>
           <span class="grid-text">提交卡密</span>
         </van-grid-item>
         <van-grid-item @click="withdrawalClick">
-          <van-image :src="gridItem.zhanghu" width="28" height="26" />
+          <van-image :src="gridItem.zhanghu" width="28" height="28"  fit="contain"/>
           <span class="grid-text">账户提现</span>
         </van-grid-item>
       </van-grid>

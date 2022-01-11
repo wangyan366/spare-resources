@@ -82,12 +82,12 @@ export default {
     onClickLeft() {
        
       if (this.$route.query.redirect && this.$route.query.redirect != "/my") {
-        this.$router.push({
+        this.$router.replace ({
           path: decodeURIComponent(this.$route.query.redirect),
         });
         this.setTabbarShow(true);
       } else {
-        this.$router.push({
+        this.$router.replace ({
           path: "/home",
           query: {
             redirect: this.$router.currentRoute.fullPath,
@@ -143,11 +143,11 @@ export default {
           this.setTabbarShow(true);
           that.changeLogin(response.userId);
           if (that.$route.query.redirect) {
-            that.$router.push({
+            that.$router.replace ({
               path: decodeURIComponent(that.$route.query.redirect),
             });
           } else {
-            that.$router.push({
+            that.$router.replace ({
               path: "/home",
             });
           }
