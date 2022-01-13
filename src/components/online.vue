@@ -23,12 +23,13 @@ export default {
   
   },
   mounted() {
+      this.setTabbarShow(false);
     setTimeout(() => {
-      this.$router.replace ({ path: "/index" });
+      this.$router.replace ({ path: "/home" });
     }, 1000);
   },
   methods: {
- 
+  ...mapMutations(["setTabbarShow"]),
   },
   //   beforeRouteLeave(to, from, next) {
   //     //  ;

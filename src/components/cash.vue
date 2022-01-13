@@ -36,7 +36,7 @@
           :rules="[{ required: true }]"
           :placeholder="placeholderText"
           @touchstart.native.stop="show = true"
-            :formatter="formatter"
+          :formatter="formatter"
           :error-message="errorText"
         >
         </van-field>
@@ -119,7 +119,7 @@ export default {
       placeholderText: "提现现金",
       maxlength: 8,
       show: false,
-      errorText:"",
+      errorText: "",
     };
   },
 
@@ -136,9 +136,8 @@ export default {
   methods: {
     ...mapActions(["getDetail", "doPay"]),
     ...mapMutations(["setTabbarShow"]),
-        formatter(val) {
-      const reg =
-       /^\d+(\.\d{1,2})?$/;
+    formatter(val) {
+      const reg = /^\d+(\.\d{1,2})?$/;
 
       if (!val) return "";
       // return reg.test(val);
@@ -186,23 +185,29 @@ export default {
         tixianMoney: val.tixianMoney,
       };
       this.doPay(obj).then((res) => {
-        console.log("🚀 ~ file: tixian.vue ~ line 165 ~ this.doPay ~ res", res);
-        Toast("提现成功");
         this.tixianMoney = "";
         this.password = "";
       });
     },
-    authenticationClick() {
+    authenticationClick(from) {
       this.$router.replace({
         path: "/authentication",
         query: {
-          redirect: this.$router.currentRoute.fullPath,
+          redirect: from.fullPath,
+        },
+      });
+    },
+    certification(from) {
+      this.$router.replace({
+        path: "/certification",
+        query: {
+          redirect:from.fullPath,
         },
       });
     },
     onClickLeft() {
       if (this.$route.query.redirect) {
-        this.$router.replace ({
+        this.$router.replace({
           path: decodeURIComponent(this.$route.query.redirect),
         });
         this.setTabbarShow(true);
@@ -223,11 +228,25 @@ export default {
       vm.getDetail().then((res) => {
         vm.dataInfo = res;
         vm.placeholderText = `本次最多可提现${res.balance}元`;
-        if (vm.dataInfo && vm.dataInfo.alipay && vm.dataInfo.alipay != "") {
-          next();
-        } else {
-          vm.authenticationClick();
+        if(from.name=='certification'){
+              next();
+                  return;
+        }
+         if(from.name=='authentication'){
+              next();
+                  return;
+        }
+        if (!vm.dataInfo.alipay || vm.dataInfo.alipay == "") {
+          vm.authenticationClick(from);
           return;
+        } else if (
+          !vm.dataInfo.realName ||
+          vm.dataInfo.realName == ""
+        ) {
+          vm.certification(from);
+          return;
+        }else{
+              next();
         }
       });
       next();

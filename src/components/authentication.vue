@@ -52,7 +52,7 @@ export default {
     [Toast.name]: Toast,
   },
   computed: {
-    ...mapState(["userInfo"]),
+    ...mapState(["userInfo","userId"]),
   },
   data() {
     return {
@@ -74,7 +74,7 @@ export default {
     onSubmit(val) {
       this.updateAlipay(val).then((res) => {
         Toast("修改成功");
-        if (this.$route.query.redirect == "cash") {
+        if (decodeURIComponent(this.$route.query.redirect) == "cash") {
           this.$router.replace ({
             path: decodeURIComponent(this.$route.query.redirect),
           });
@@ -90,6 +90,20 @@ export default {
         this.setTabbarShow(true);
       }
     },
+  },
+    beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      if (vm.userId == "") {
+        vm.$router.replace({
+          path: "/login",
+          query: {
+            redirect: encodeURIComponent(vm.$router.currentRoute.fullPath),
+          },
+        });
+        return;
+      }
+      next();
+    });
   },
 };
 </script>

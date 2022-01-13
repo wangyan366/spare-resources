@@ -24,7 +24,7 @@
 
 <script>
 import { NavBar, Button } from "vant";
-import { mapMutations, mapActions } from "vuex";
+import { mapMutations, mapActions ,mapState} from "vuex";
 export default {
   name: "Phone",
   components: {
@@ -37,7 +37,11 @@ export default {
       noticeList: [],
     };
   },
-
+ computed: {
+    ...mapState({
+      userId: "userId", // 第一种写法
+    }),
+  },
   mounted() {
     this.setTabbarShow(false);
     this.getlistNotice().then((res) => {

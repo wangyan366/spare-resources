@@ -73,7 +73,7 @@
 
 <script>
 import { NavBar, Button, List, Tab, Tabs, PullRefresh } from "vant";
-import { mapMutations, mapActions } from "vuex";
+import { mapMutations, mapActions,mapState} from "vuex";
 export default {
   name: "Phone",
   components: {
@@ -83,6 +83,11 @@ export default {
     [Tab.name]: Tab,
     [Tabs.name]: Tabs,
     [PullRefresh.name]: PullRefresh,
+  },
+    computed: {
+    ...mapState({
+      userId: "userId", // 第一种写法
+    }),
   },
   data() {
     return {
@@ -165,6 +170,20 @@ export default {
         this.setTabbarShow(true);
       }
     },
+  },
+    beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      if (vm.userId == "") {
+        vm.$router.replace({
+          path: "/login",
+          query: {
+            redirect: encodeURIComponent(vm.$router.currentRoute.fullPath),
+          },
+        });
+        return;
+      }
+      next();
+    });
   },
 };
 </script>

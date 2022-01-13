@@ -33,7 +33,7 @@ export default {
   },
   computed:{
 
-     ...mapState(["userInfo"])
+     ...mapState(["userInfo","userId"])
   },
   data() {
     return {
@@ -64,6 +64,20 @@ export default {
         this.setTabbarShow(true);
       }
     },
+  },
+    beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      if (vm.userId == "") {
+        vm.$router.replace({
+          path: "/login",
+          query: {
+            redirect: encodeURIComponent(vm.$router.currentRoute.fullPath),
+          },
+        });
+        return;
+      }
+      next();
+    });
   },
 };
 </script>

@@ -4,7 +4,7 @@ Vue.use(Router)
 const router = new Router({
   routes: [{
     path: '/',
-    redirect: '/home'　// 路由重定向，当用户访问根路径时，重新跳转到home下的login组件　
+    redirect: '/online'　// 路由重定向，当用户访问根路径时，重新跳转到home下的login组件　
   }, {
     path: '/login',
     name: 'login',

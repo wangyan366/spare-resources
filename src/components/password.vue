@@ -56,7 +56,7 @@
 
 <script>
 import { NavBar, Button, Field, Cell, CellGroup, Form, Toast } from "vant";
-import { mapMutations, mapActions } from "vuex";
+import { mapMutations, mapActions,mapState } from "vuex";
 export default {
   name: "Phone",
   components: {
@@ -78,7 +78,11 @@ export default {
       passwordStatus: false,
     };
   },
-
+  computed: {
+    ...mapState({
+      userId: "userId", // 第一种写法
+    }),
+  },
   mounted() {
     this.setTabbarShow(false);
   },
@@ -135,19 +139,33 @@ export default {
       };
       this.updatePassword(newObj).then((res) => {
         Toast.success("修改成功，请重新登录");
-        this.$router.replace ({
+        this.$router.replace({
           path: "/login",
         });
       });
     },
     onClickLeft() {
       if (this.$route.query.redirect) {
-        this.$router.replace ({
+        this.$router.replace({
           path: decodeURIComponent(this.$route.query.redirect),
         });
         this.setTabbarShow(true);
       }
     },
+  },
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      if (vm.userId == "") {
+        vm.$router.replace({
+          path: "/login",
+          query: {
+            redirect: encodeURIComponent(vm.$router.currentRoute.fullPath),
+          },
+        });
+        return;
+      }
+      next();
+    });
   },
 };
 </script>

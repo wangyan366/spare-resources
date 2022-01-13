@@ -82,7 +82,7 @@ export default {
          this.$router.replace({
         path: "/authentication",
         query: {
-          redirect: this.$router.currentRoute.fullPath,
+          redirect: encodeURIComponent(this.$router.currentRoute.fullPath),
         },
       });
     },
@@ -90,7 +90,7 @@ export default {
       this.$router.replace({
         path: "/maikapage",
         query: {
-          redirect: this.$router.currentRoute.fullPath,
+          redirect: encodeURIComponent(this.$router.currentRoute.fullPath),
         },
       });
     },
@@ -98,7 +98,7 @@ export default {
       this.$router.replace({
         path: "/password",
         query: {
-          redirect: this.$router.currentRoute.fullPath,
+          redirect: encodeURIComponent(this.$router.currentRoute.fullPath),
         },
       });
     },
@@ -106,7 +106,7 @@ export default {
       this.$router.replace({
         path: "/certification",
         query: {
-          redirect: this.$router.currentRoute.fullPath,
+          redirect: encodeURIComponent(this.$router.currentRoute.fullPath),
         },
       });
     },
@@ -114,7 +114,7 @@ export default {
       this.$router.replace({
         path: "/withdrawal",
         query: {
-          redirect: this.$router.currentRoute.fullPath,
+          redirect:encodeURIComponent(this.$router.currentRoute.fullPath) ,
         },
       });
     },
@@ -122,7 +122,7 @@ export default {
       this.$router.replace({
         path: "/phone",
         query: {
-          redirect: this.$router.currentRoute.fullPath,
+          redirect: encodeURIComponent(this.$router.currentRoute.fullPath),
         },
       });
     },
@@ -133,7 +133,7 @@ export default {
         vm.$router.replace({
           path: "/login",
           query: {
-            redirect:vm.$router.currentRoute.fullPath,
+            redirect:encodeURIComponent(vm.$router.currentRoute.fullPath),
           },
         });
         return;

@@ -24,7 +24,7 @@
 
 <script>
 import { NavBar, Button, Field, Cell, CellGroup, Form,Toast } from "vant";
-import { mapMutations, mapActions } from "vuex";
+import { mapMutations, mapActions,mapState } from "vuex";
 export default {
   name: "Phone",
   components: {
@@ -43,7 +43,11 @@ export default {
       realName: "",
     };
   },
-
+  computed: {
+    ...mapState({
+      userId: "userId", // 第一种写法
+    }),
+  },
   mounted() {
     this.setTabbarShow(false);
   },
@@ -65,6 +69,20 @@ export default {
         this.setTabbarShow(true);
       }
     },
+  },
+    beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      if (vm.userId == "") {
+        vm.$router.replace({
+          path: "/login",
+          query: {
+            redirect:vm.$router.currentRoute.fullPath,
+          },
+        });
+        return;
+      }
+      next();
+    });
   },
 };
 </script>
