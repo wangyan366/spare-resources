@@ -8,9 +8,7 @@ import 'vant/lib/index.less'
 import '@/assets/style/common.css'
 import store from './store/index'
 import axios from 'axios'
-import api from './api' // 导入api接口
-axios.defaults.baseURL = '/api'  
-Vue.prototype.$api = api; // 将api挂载到vue的原型上复制代码
+
 Vue.prototype.$store = store; // store
 Vue.prototype.$axios = axios    //全局注册，使用方法为:this.$axios
 Vue.config.productionTip = false
